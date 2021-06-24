@@ -2,6 +2,8 @@ from rpw import revit, DB
 from pyrevit import forms, script
 
 import math
+import clr
+
 
 def transform_z_rotation(transform):
     """
@@ -14,7 +16,6 @@ def transform_z_rotation(transform):
     return angle
 
 
-
 def orient_on_xy_plane(from_plane, to_plane):
     """
     """
@@ -25,16 +26,11 @@ def orient_on_xy_plane(from_plane, to_plane):
         to_plane.Origin.X - from_plane.Origin.X,
     )
 
-
-
     # Rotate
     from_angle = transform_z_rotation(from_plane)
     to_angle = transform_z_rotation(to_plane)
 
     delta_angle = to_angle - from_angle
-
-
-
 
 
 def orient_to_plane(element, plane):
@@ -51,21 +47,25 @@ def align_wall_direction(wall, directions):
 
     for direction in directions:
         angle = wall.Orientation.AngleOnPlaneTo(direction, DB.XYZ(0, 0, 1))
+        print(angle/math.pi*180)
 
         angles.append(angle)
 
     angle = sorted(angles, key=lambda x: abs(math.sin(x)))[0]
-    # print(angles, angle)
 
-    angle = math.atan(math.tan(angle))
+    # print(angle)
+
+    rotation_angle = math.atan(math.tan(angle))# - math.pi/2
+
+    print(angle/math.pi*180.0, rotation_angle/math.pi*180.0)
 
     wall_crv = clr.Convert(wall.Location, DB.LocationCurve)
     wall_center_pt = wall_crv.Curve.Evaluate(0.5, True)
 
-    axis = DB.Line.CreateUnbound(wall_center_pt, DB.XYZ(0,0,1))
+    axis = DB.Line.CreateUnbound(wall_center_pt, DB.XYZ(0, 0, 1))
 
     # print(wall_crv)
 
-    wall.Location.Rotate(axis, angle)
+    wall.Location.Rotate(axis, rotation_angle)
 
     return wall
