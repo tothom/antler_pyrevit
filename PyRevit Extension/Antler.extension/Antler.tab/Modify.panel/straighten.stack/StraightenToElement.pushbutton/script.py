@@ -24,7 +24,7 @@ guides = [a for a in guides if a] # To remove None values
 
 angle_snap = forms.CommandSwitchWindow.show(
     [30, 45, 90],
-    message='Additional rotations?'
+    message='Snap angle. ESC for no additional snapping angles.'
 )
 
 if not angle_snap:

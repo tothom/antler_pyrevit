@@ -96,9 +96,9 @@ def straighten_element(
 
     direction = element_direction(element)
 
-    angles = []
+    angle_snap = angle_snap or math.pi # Cannot be 0
 
-    angle_snap = angle_snap or math.pi
+    angles = []
 
     for guide in guides:
         angle = direction.AngleOnPlaneTo(guide, normal)
