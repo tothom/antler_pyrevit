@@ -21,6 +21,15 @@ guides = [antler.transform.element_direction(a) for a in guide_elements]
 
 guides = [a for a in guides if a] # To remove None values
 
+additional_rotation = forms.CommandSwitchWindow.show(
+    [30, 45, 90],
+    message='Additional rotations?'
+)
+
+# print(additional_rotation)
+
+if not additional_rotation:
+    additional_rotation = 0
 
 # Select Elements to straighten
 selection = uidoc.Selection.PickObjects(UI.Selection.ObjectType.Element)
@@ -32,6 +41,6 @@ if guides:
 
         for element in elements:
             antler.transform.straighten_element(
-                element, guides)
+                element, guides, angle_addition=additional_rotation/180*math.pi)
 
         t.Commit()
