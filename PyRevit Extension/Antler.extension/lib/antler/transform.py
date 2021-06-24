@@ -87,22 +87,14 @@ def element_centre_point(element):
 
 def straighten_element(element, guides, rotation_point=None, normal=DB.XYZ(0, 0, 1), doc=revit.doc):
     direction = element_direction(element)
-    angles = []
 
-    for guide in guides:
-        angle = direction.AngleOnPlaneTo(guide, normal)# + math.pi / 2
-        angles.append(angle)
-
+    angles = [direction.AngleOnPlaneTo(guide, normal) for guide in guides]
     angle = sorted(angles, key=lambda x: abs(math.sin(x)))[0]
-    rotation_angle = math.atan(math.tan(angle))  # - math.pi/2
+    rotation_angle = math.atan(math.tan(angle))
 
     centre_pt = element_centre_point(element)
     axis = DB.Line.CreateUnbound(centre_pt, normal)
 
-    # print(angle/math.pi*180.0, rotation_angle/math.pi*180.0)
-
-    # rotation_transform = DB.Transform.CreateRotationAtPoint(normal, angle, centre_pt)
     DB.ElementTransformUtils.RotateElement(doc, element.Id, axis, rotation_angle)
-    # wall.Location.Rotate(axis, rotation_angle)
 
     return element
