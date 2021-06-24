@@ -3,6 +3,8 @@ from pyrevit import forms, script
 
 import math
 import clr
+# import frange
+import util
 
 logger = script.get_logger()
 
@@ -89,24 +91,21 @@ def straighten_element(
         guides,
         rotation_point=None,
         normal=DB.XYZ(0, 0, 1),
-        angle_addition=None,
+        angle_snap=math.pi,
         doc=revit.doc):
 
     direction = element_direction(element)
 
-    angles_to_element = [direction.AngleOnPlaneTo(guide, normal) for guide in guides]
-
     angles = []
 
-    if angle_addition:
-        additional_angles = range(angle_addition, math.pi, angle_addition)
-        print(additional_angles)
-        for angle in angles_to_element:
-            angles.extend([angle + a for a in additional_angles])
-    else:
-        angles = angles_to_element
+    angle_snap = angle_snap or math.pi
 
-    logger.info(angles)
+    for guide in guides:
+        angle = direction.AngleOnPlaneTo(guide, normal)
+        additions = util.drange(0, math.pi, angle_snap)
+        angles.extend([angle + a for a in additions])
+
+    logger.debug(angles)
 
     angle = sorted(angles, key=lambda x: abs(math.sin(x)))[0]
     rotation_angle = math.atan(math.tan(angle))

@@ -12,3 +12,13 @@ def best_fuzzy_match(str_list, search_str, min=0.33):
         return best_match[0]
     else:
         return None
+
+
+# source: https://stackoverflow.com/questions/7267226/range-for-floats
+import decimal
+
+def drange(x, y, jump):
+    assert jump > 0, "Jump variable must be > 0."
+    while x < y:
+        yield float(x)
+        x += decimal.Decimal(jump)
