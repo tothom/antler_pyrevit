@@ -4,4 +4,4 @@ Functions and libraries for Grasshopper, Rhino, Dynamo and Revit. More coming so
 
 
 ## Sources
-frange: https://github.com/AshleySetter/frange
+drange: https://stackoverflow.com/questions/7267226/range-for-floats
