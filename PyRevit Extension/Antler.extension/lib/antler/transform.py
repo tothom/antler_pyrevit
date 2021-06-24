@@ -42,3 +42,30 @@ def orient_to_plane(element, plane):
     Orients element to plane
     """
     # Create
+
+
+def align_wall_direction(wall, directions):
+    """
+    """
+    angles = []
+
+    for direction in directions:
+        angle = wall.Orientation.AngleOnPlaneTo(direction, DB.XYZ(0, 0, 1))
+
+        angles.append(angle)
+
+    angle = sorted(angles, key=lambda x: abs(math.sin(x)))[0]
+    # print(angles, angle)
+
+    angle = math.atan(math.tan(angle))
+
+    wall_crv = clr.Convert(wall.Location, DB.LocationCurve)
+    wall_center_pt = wall_crv.Curve.Evaluate(0.5, True)
+
+    axis = DB.Line.CreateUnbound(wall_center_pt, DB.XYZ(0,0,1))
+
+    # print(wall_crv)
+
+    wall.Location.Rotate(axis, angle)
+
+    return wall
