@@ -1,7 +1,7 @@
 from System.Collections.Generic import *
 from rpw import revit, DB, UI
 
-from pyrevit import forms
+from pyrevit import forms, script
 
 import math
 import clr
@@ -10,35 +10,28 @@ import antler
 uidoc = revit.uidoc
 doc = revit.doc
 
+logger = script.get_logger()
 
-# Select Element to straighten
-guide_ref = uidoc.Selection.PickObject(
-    UI.Selection.ObjectType.Element)  # TODO: Grid, Line, Wall, FamilyInstance
-
-guide_element = doc.GetElement(guide_ref.ElementId)
-
-try:
-    # guide_crv = clr.Convert(guide_element.Location, DB.LocationCurve)
-
-    guide_line = clr.Convert(guide_element.Curve, DB.Line)
-    guide_direction = guide_line.Direction
-
-except Exception as e:
-    print(e)
-
-# print(guide_direction)
-
-# Select Elements
+# Select elements to work as direction guides
 selection = uidoc.Selection.GetElementIds() or uidoc.Selection.PickObjects(
     UI.Selection.ObjectType.Element)
+
+guide_elements = [doc.GetElement(id) for id in selection]
+guides = [antler.transform.element_direction(a) for a in guide_elements]
+
+guides = [a for a in guides if a] # To remove None values
+
+
+# Select Elements to straighten
+selection = uidoc.Selection.PickObjects(UI.Selection.ObjectType.Element)
 elements = [doc.GetElement(id) for id in selection]
 
+if guides:
+    with DB.Transaction(doc, __commandname__) as t:
+        t.Start()
 
-with DB.Transaction(doc, __commandname__) as t:
-    t.Start()
+        for element in elements:
+            antler.transform.straighten_element(
+                element, guides)
 
-    for element in elements:
-        antler.transform.align_wall_direction(
-            element, [guide_direction])
-
-    t.Commit()
+        t.Commit()
