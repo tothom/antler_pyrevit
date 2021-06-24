@@ -1,8 +1,2 @@
-title: Straighten
-tooltip: Straighten Elements To View
-
-
-context:
-  - walls
-  - active-floor-plan
-  - selection
+title: Straighten To Element
+tooltip: Straighten element to other element
