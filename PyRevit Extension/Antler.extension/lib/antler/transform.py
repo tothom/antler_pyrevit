@@ -68,33 +68,6 @@ def element_direction(element):
     return direction
 
 
-def align_wall_direction(wall, directions):
-    """
-    """
-    angles = []
-
-    for direction in directions:
-        angle = wall.Orientation.AngleOnPlaneTo(
-            direction, DB.XYZ(0, 0, 1)) + math.pi / 2
-        # print(angle/math.pi*180)
-
-        angles.append(angle)
-
-    angle = sorted(angles, key=lambda x: abs(math.sin(x)))[0]
-
-    rotation_angle = math.atan(math.tan(angle))  # - math.pi/2
-
-    # print(angle/math.pi*180.0, rotation_angle/math.pi*180.0)
-
-    wall_crv = clr.Convert(wall.Location, DB.LocationCurve)
-    wall_center_pt = wall_crv.Curve.Evaluate(0.5, True)
-
-    axis = DB.Line.CreateUnbound(wall_center_pt, DB.XYZ(0, 0, 1))
-
-    wall.Location.Rotate(axis, rotation_angle)
-
-    return wall
-
 
 def element_centre_point(element):
     """
