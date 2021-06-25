@@ -1,2 +1,5 @@
 title: Straighten To Element
 tooltip: Straighten element to other element
+
+context:
+  - active-floor-plan

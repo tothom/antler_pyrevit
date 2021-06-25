@@ -49,7 +49,7 @@ def element_direction(element):
         line = clr.Convert(element.Curve, DB.Line)
         direction = line.Direction
 
-    elif isinstance(element, (DB.Wall)):
+    elif isinstance(element, (DB.Wall, DB.DetailLine)):
         location_crv = clr.Convert(element.Location, DB.LocationCurve)
 
         try:
@@ -64,7 +64,7 @@ def element_direction(element):
         direction = element.FacingOrientation
 
     else:
-        print("Element of type {} not supported".format(type(element)))
+        logger.warning("Element of type {} not supported".format(type(element)))
         return
 
     return direction
@@ -76,12 +76,13 @@ def element_centre_point(element):
     if isinstance(element, (DB.Wall)):
         location_crv = clr.Convert(element.Location, DB.LocationCurve)
         centre_pt = location_crv.Curve.Evaluate(0.5, True)
+    elif isinstance(element, (DB.FamilyInstance)):
+        return element.Location.Point
     else:
         message = "Centre point for type {} not yet supported".format(
             type(element))
         # logger.debug(message)
         raise TypeError(message)
-        # return
 
     return centre_pt
 
@@ -89,7 +90,7 @@ def element_centre_point(element):
 def straighten_element(
         element,
         guides,
-        rotation_point=None,
+        axis_pt=None,
         normal=DB.XYZ(0, 0, 1),
         angle_snap=math.pi,
         doc=revit.doc):
@@ -110,8 +111,14 @@ def straighten_element(
     angle = sorted(angles, key=lambda x: abs(math.sin(x)))[0]
     rotation_angle = math.atan(math.tan(angle))
 
-    centre_pt = element_centre_point(element)
-    axis = DB.Line.CreateUnbound(centre_pt, normal)
+    if rotation_angle == 0:
+        return element
+
+    if axis_pt:
+        axis =  DB.Line.CreateUnbound(axis_pt, normal)
+    else:
+        centre_pt = element_centre_point(element)
+        axis = DB.Line.CreateUnbound(centre_pt, normal)
 
     DB.ElementTransformUtils.RotateElement(
         doc, element.Id, axis, rotation_angle)
