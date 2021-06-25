@@ -1,10 +1,8 @@
 # from System.Collections.Generic import *
 from rpw import revit, DB, UI
-
 from pyrevit import forms, script, EXEC_PARAMS
 
 import antler.transform
-
 import math
 # import clr
 

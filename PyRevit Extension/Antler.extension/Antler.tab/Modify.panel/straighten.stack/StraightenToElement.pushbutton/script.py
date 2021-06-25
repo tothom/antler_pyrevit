@@ -1,11 +1,11 @@
-from System.Collections.Generic import *
+from System.Collections.Generic import List
 from rpw import revit, DB, UI
 
 from pyrevit import forms, script, EXEC_PARAMS
 
 import math
-import clr
-import antler
+# import clr
+import antler.transform
 
 uidoc = revit.uidoc
 doc = revit.doc
@@ -16,11 +16,13 @@ config = script.get_config()
 def configure(config):
     global guide_ids, angle_snap
 
-    if uidoc.Selection.GetElementIds():
-        ids = uidoc.Selection.GetElementIds()
-    else:
-        references = uidoc.Selection.PickObjects(UI.Selection.ObjectType.Element, "Select objects to act as guides...")
-        ids = [ref.ElementId for ref in references]
+    # if uidoc.Selection.GetElementIds():
+    #     ids = uidoc.Selection.GetElementIds()
+    #     uidoc.Selection.SetElementIds([List[DB.ElementId]()]) # Deselect all
+    # else:
+    
+    references = uidoc.Selection.PickObjects(UI.Selection.ObjectType.Element, "Select objects to act as guides...")
+    ids = [ref.ElementId for ref in references]
 
     # logger.info(guide_ids)
     config.guide_ids = [id.IntegerValue for id in ids]
@@ -73,7 +75,7 @@ axis_pt = None
 #     axis_pt = None
 
 # Select Elements to straighten
-selection = uidoc.Selection.PickObjects(UI.Selection.ObjectType.Element, "Select objects to straighten...")
+selection = uidoc.Selection.GetElementIds() or uidoc.Selection.PickObjects(UI.Selection.ObjectType.Element, "Select objects to straighten...")
 elements = [doc.GetElement(id) for id in selection]
 
 if guides:

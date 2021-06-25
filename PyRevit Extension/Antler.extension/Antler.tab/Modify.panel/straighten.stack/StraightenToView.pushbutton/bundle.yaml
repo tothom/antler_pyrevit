@@ -2,8 +2,7 @@ title:        Straighten To View
 
 tooltip:      "Straighten element to view. By default elements will be
               straighten to the orthogonal directions of the view.
-              \n\nShift+Click to configure additional snapping angles.
-              \n\nCtrl+Shift+Click to pick point for rotation axis"
+              \n\nShift+Click to configure additional snapping angles."
 
 
 context:
