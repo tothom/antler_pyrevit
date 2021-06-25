@@ -1,5 +1,10 @@
-title: Straighten To Element
-tooltip: Straighten element to other element
+title:      Straighten To Guides
+
+tooltip:    "Straighten element to guides. Guide elements can be most elements
+            which are straight, like straight walls or lines. Also family
+            instances can be used as guides.\n\nShift+Click to configurate
+            guides and additional snapping angles.\n\nCtrl+Shift+Click to pick
+            point for rotation axis"
 
 context:
   - active-floor-plan

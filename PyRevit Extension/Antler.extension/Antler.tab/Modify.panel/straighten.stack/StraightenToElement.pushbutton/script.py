@@ -11,32 +11,66 @@ uidoc = revit.uidoc
 doc = revit.doc
 
 logger = script.get_logger()
+config = script.get_config()
 
-# Select elements to work as direction guides
-selection = uidoc.Selection.GetElementIds() or uidoc.Selection.PickObjects(
-    UI.Selection.ObjectType.Element, "Select objects to act as guides...")
+def configure(config):
+    global guide_ids, angle_snap
 
-guide_elements = [doc.GetElement(id) for id in selection]
-guides = [antler.transform.element_direction(a) for a in guide_elements]
+    if uidoc.Selection.GetElementIds():
+        ids = uidoc.Selection.GetElementIds()
+    else:
+        references = uidoc.Selection.PickObjects(UI.Selection.ObjectType.Element, "Select objects to act as guides...")
+        ids = [ref.ElementId for ref in references]
 
-guides = [a for a in guides if a] # To remove None values
+    # logger.info(guide_ids)
+    config.guide_ids = [id.IntegerValue for id in ids]
+
+    angle_snap = forms.CommandSwitchWindow.show(
+        [15, 30, 45, 60, 90],
+        message='Snap angle. ESC for no additional angle snapping.'
+    )
+
+    config.angle_snap = angle_snap
+
+# Config mode
+if EXEC_PARAMS.config_mode:
+    configure(config)
+
+try:
+    guide_ids = config.guide_ids
+    angle_snap = config.angle_snap
+except Exception as e:
+    logger.debug(e)
+    configure(config)
+
+script.save_config()
+
+logger.debug(guide_ids)
+logger.debug(angle_snap)
 
 
-angle_snap = forms.CommandSwitchWindow.show(
-    [30, 45, 90],
-    message='Snap angle. ESC for no additional snapping angles.'
-)
+guides = []
+
+for id_integer in guide_ids:
+    element_id = DB.ElementId(id_integer)
+    element = doc.GetElement(element_id)
+    guide = antler.transform.element_direction(element)
+
+    if guide:
+        guides.append(guide)
 
 if not angle_snap:
     angle_snap = 0
 
 angle_snap = angle_snap / 180.0 * math.pi
 
+axis_pt = None
 
-if EXEC_PARAMS.config_mode:
-    axis_pt = uidoc.Selection.PickPoint("Select axis point for rotation...")
-else:
-    axis_pt = None
+# Axis of rotation settings
+# if EXEC_PARAMS.debug_mode:
+#     axis_pt = uidoc.Selection.PickPoint("Select axis point for rotation...")
+# else:
+#     axis_pt = None
 
 # Select Elements to straighten
 selection = uidoc.Selection.PickObjects(UI.Selection.ObjectType.Element, "Select objects to straighten...")

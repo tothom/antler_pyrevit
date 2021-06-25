@@ -1,32 +1,48 @@
-from System.Collections.Generic import *
+# from System.Collections.Generic import *
 from rpw import revit, DB, UI
 
-from pyrevit import forms, EXEC_PARAMS
+from pyrevit import forms, script, EXEC_PARAMS
 
-import antler
+import antler.transform
 
 import math
-import clr
+# import clr
 
 uidoc = revit.uidoc
 doc = revit.doc
 
+logger = script.get_logger()
+config = script.get_config()
+
 # Angle snap settings
-angle_snap = forms.CommandSwitchWindow.show(
-    [30, 45, 90],
-    message='Snap angle. ESC for no additional snapping angles.'
-)
+def configure(config):
+    global angle_snap
 
-if not angle_snap:
-    angle_snap = 0
+    angle_snap = forms.CommandSwitchWindow.show(
+        [15, 30, 45, 60, 90],
+        message='Snap angle. ESC for no additional angle snapping.'
+    )
 
+    config.angle_snap = angle_snap
+
+# Config mode
+if EXEC_PARAMS.config_mode:
+    configure(config)
+
+try:
+    angle_snap = config.angle_snap
+except Exception as e:
+    logger.debug(e)
+    configure(config)
+
+angle_snap = angle_snap or 0
 angle_snap = angle_snap / 180.0 * math.pi
 
 # Axis of rotation settings
-if EXEC_PARAMS.config_mode:
-    axis_pt = uidoc.Selection.PickPoint("Select axis point for rotation...")
-else:
-    axis_pt = None
+# if EXEC_PARAMS.debug_mode:
+#     axis_pt = uidoc.Selection.PickPoint("Select axis point for rotation...")
+# else:
+#     axis_pt = None
 
 
 # Select Elements
