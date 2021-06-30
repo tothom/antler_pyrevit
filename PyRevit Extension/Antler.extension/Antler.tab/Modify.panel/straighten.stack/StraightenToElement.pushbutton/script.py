@@ -14,17 +14,18 @@ logger = script.get_logger()
 config = script.get_config()
 
 def configure(config):
-    global guide_ids, angle_snap
-
-    # if uidoc.Selection.GetElementIds():
-    #     ids = uidoc.Selection.GetElementIds()
-    #     uidoc.Selection.SetElementIds([List[DB.ElementId]()]) # Deselect all
-    # else:
-    
     references = uidoc.Selection.PickObjects(UI.Selection.ObjectType.Element, "Select objects to act as guides...")
-    ids = [ref.ElementId for ref in references]
 
-    # logger.info(guide_ids)
+    ids = []
+
+    for ref in references:
+        if antler.transform.element_direction(doc.GetElement(ref)): # Only elements where direction can be extracted are included.
+            ids.append(ref.ElementId)
+
+    if not ids:
+        logger.error("No valid guide elements selected")
+        return
+
     config.guide_ids = [id.IntegerValue for id in ids]
 
     angle_snap = forms.CommandSwitchWindow.show(

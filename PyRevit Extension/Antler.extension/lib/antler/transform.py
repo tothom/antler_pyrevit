@@ -45,29 +45,35 @@ def orient_to_plane(element, plane):
 
 
 def element_direction(element):
-    if isinstance(element, (DB.Grid)):
+    """
+    Returns direction of element as XYZ. For a wall it will return the running direction of the wall.
+    """
+    # First try. Works on grids.
+    try:
         line = clr.Convert(element.Curve, DB.Line)
         direction = line.Direction
+        return direction
+    except Exception as e:
+        logger.debug(e)
 
-    elif isinstance(element, (DB.Wall, DB.DetailLine)):
+    # Second try. Works on line based elements such as Walls. Will not work if Wall is curved.
+    try:
         location_crv = clr.Convert(element.Location, DB.LocationCurve)
-
-        try:
-            line = clr.Convert(location_crv.Curve, DB.Line)
-        except TypeError:
-            logger.warning('Element not straight...')
-            return
-
+        line = clr.Convert(location_crv.Curve, DB.Line)
         direction = line.Direction
+        return direction
+    except Exception as e:
+        logger.debug(e)
 
-    elif isinstance(element, (DB.FamilyInstance)):
+    # Third try. Works on FamilyInstances.
+    try:
         direction = element.FacingOrientation
+        return direction
+    except Exception as e:
+        logger.debug(e)
 
-    else:
-        logger.warning("Element of type {} not supported".format(type(element)))
-        return
-
-    return direction
+    logger.warning("Failed to get direction from {element}".format(element=element))
+    return None
 
 
 def element_centre_point(element):
