@@ -1,7 +1,21 @@
 from rpw import revit, DB
 import json
 
+from pyrevit import script
+logger = script.get_logger()
+
+class Serializer():
+    """
+    Should use RPW to serialize parameters... https://revitpythonwrapper.readthedocs.io/en/latest/db/element.html
+    """
+    pass
+
 def lookup_parameters(element, include_parameters=None):
+    """
+    Returns all parameters of element, unless parameters are provided in include_parameters. Parameters can be provided as Parameter, Definition or as a string.
+
+    # TODO: Deprecate function?
+    """
     # print(include_parameters)
     parameters = []
 
@@ -16,9 +30,12 @@ def lookup_parameters(element, include_parameters=None):
                 parameter = element.get_Parameter(a)
 
             parameters.append(parameter)
-            # print(parameters)
+
+    logger.debug(parameters)
 
     return parameters
+
+
 
 def element_to_dict(element):
     parameters = lookup_parameters(element)
