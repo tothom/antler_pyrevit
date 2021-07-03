@@ -72,7 +72,8 @@ def element_direction(element):
     except Exception as e:
         logger.debug(e)
 
-    logger.warning("Failed to get direction from {element}".format(element=element))
+    logger.warning(
+        "Failed to get direction from {element}".format(element=element))
     return None
 
 
@@ -103,16 +104,23 @@ def straighten_element(
 
     direction = element_direction(element)
 
-    angle_snap = angle_snap or math.pi # Cannot be 0
+    if not direction:
+        return element
+
+    angle_snap = angle_snap or math.pi  # Cannot be 0
 
     angles = []
 
     for guide in guides:
         angle = direction.AngleOnPlaneTo(guide, normal)
-        additions = util.drange(0, math.pi, angle_snap)
+        logger.debug(angle / math.pi * 180.0)
+
+        additions = list(util.drange(0, math.pi, angle_snap))
+        logger.debug([addition / math.pi * 180.0 for addition in additions])
+
         angles.extend([angle + a for a in additions])
 
-    logger.debug(angles)
+    logger.debug([angle / math.pi * 180.0 for angle in angles])
 
     angle = sorted(angles, key=lambda x: abs(math.sin(x)))[0]
     rotation_angle = math.atan(math.tan(angle))
@@ -121,7 +129,7 @@ def straighten_element(
         return element
 
     if axis_pt:
-        axis =  DB.Line.CreateUnbound(axis_pt, normal)
+        axis = DB.Line.CreateUnbound(axis_pt, normal)
     else:
         centre_pt = element_centre_point(element)
         axis = DB.Line.CreateUnbound(centre_pt, normal)
