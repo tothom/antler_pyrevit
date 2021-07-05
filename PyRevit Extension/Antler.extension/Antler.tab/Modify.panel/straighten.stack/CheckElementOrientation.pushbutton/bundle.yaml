@@ -1,0 +1,9 @@
+title:        Check Orientation
+
+tooltip:      "Checks if element is straight in relation to view.
+
+              Shift+Click for angle settings"
+
+
+context:
+  - active-floor-plan
