@@ -80,18 +80,18 @@ def element_direction(element):
 def element_centre_point(element):
     """
     """
-    if isinstance(element, (DB.Wall)):
+    try:
         location_crv = clr.Convert(element.Location, DB.LocationCurve)
-        centre_pt = location_crv.Curve.Evaluate(0.5, True)
-    elif isinstance(element, (DB.FamilyInstance)):
-        return element.Location.Point
-    else:
-        message = "Centre point for type {} not yet supported".format(
-            type(element))
-        # logger.debug(message)
-        raise TypeError(message)
+        return location_crv.Curve.Evaluate(0.5, True)
+    except Exception as e:
+        logger.debug(e)
 
-    return centre_pt
+    try:
+        return element.Location.Point
+    except Exception as e:
+        logger.debug(e)
+
+    return None
 
 
 def straighten_element(

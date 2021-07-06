@@ -33,6 +33,8 @@ except Exception as e:
     logger.debug(e)
     configure(config)
 
+script.save_config()
+
 angle_snap = angle_snap or 0
 angle_snap = angle_snap / 180.0 * math.pi
 
