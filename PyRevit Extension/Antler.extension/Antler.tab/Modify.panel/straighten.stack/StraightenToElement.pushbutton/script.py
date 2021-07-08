@@ -37,6 +37,8 @@ def configure(config):
 
     config.angle_snap = angle_snap
 
+    script.save_config()
+
 # Config mode
 if EXEC_PARAMS.config_mode:
     configure(config)
@@ -48,7 +50,7 @@ except Exception as e:
     logger.debug(e)
     configure(config)
 
-script.save_config()
+
 
 logger.debug(guide_ids)
 logger.debug(angle_snap)

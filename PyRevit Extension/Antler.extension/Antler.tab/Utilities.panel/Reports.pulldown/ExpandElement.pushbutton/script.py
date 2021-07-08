@@ -24,10 +24,17 @@ for element in elements:
     print("Element: {}".format(element))
 
     print("\n\t Instance Parameters")
-    parameter_dict = {parameter.Definition.Name: parameter.AsString(
+    parameter_dicts = {parameter.Definition.Name: parameter.AsString(
     ) or parameter.AsValueString() for parameter in element.Parameters}
 
-    for k, v in parameter_dict.items():
+    for k, v in parameter_dicts.items():
+        print(k, v)
+
+    print("\n\t Parameters Map")
+    parameters_map = {parameter.Definition.Name: parameter.AsString(
+    ) or parameter.AsValueString() for parameter in element.ParametersMap}
+
+    for k, v in parameters_map.items():
         print(k, v)
 
     # print("\n\t dir(element.Parameters)")
