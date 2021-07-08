@@ -17,6 +17,8 @@ def configure(config):
     global guide_ids, angle_snap
 
     references = uidoc.Selection.PickObjects(UI.Selection.ObjectType.Element, "Select objects to act as guides...")
+    # except Autodesk.Revit.Exceptions.OperationCanceledException:
+    #     script.exit()
 
     guide_ids = []
 
