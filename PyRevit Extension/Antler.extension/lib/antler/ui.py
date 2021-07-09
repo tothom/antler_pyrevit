@@ -1,5 +1,12 @@
-# from rpw import revit, DB
+from rpw import revit, DB
 from pyrevit import forms, script
+
+import clr
+
+import util
+
+logger = script.get_logger()
+
 
 def select_element_parameters(element):
     definition_dict = {
@@ -12,7 +19,47 @@ def select_element_parameters(element):
         multiselect=True
     )
 
-    return selected_definitions
+    return selected_definitions  # TODO: Return Parameter objects, not just strings
+
+
+def select_instance_parameters_of_category(category, doc=revit.doc):
+    """
+
+    """
+    # TODO: Does not work well on familyinstances such as doors. All instances must be processed to make this work.
+    builtin_category = util.builtin_category_from_category(category)
+
+    element = DB.FilteredElementCollector(doc).OfCategory(
+        builtin_category).WhereElementIsNotElementType().FirstElement()
+
+    parameters_dict = {e.Definition.Name: e for e in element.ParametersMap}
+
+    parameters_selected = forms.SelectFromList.show(
+        sorted(parameters_dict.keys()),
+        title='Select Parameters',
+        multiselect=True
+    )
+
+    return [parameters_dict[a] for a in parameters_selected]
+
+
+def select_category(doc=revit.doc):
+    """
+    """
+    categories_dict = {c.Name: c for c in doc.Settings.Categories}
+
+    categories_selected = forms.SelectFromList.show(
+        sorted(categories_dict.keys()),
+        button_name='Select Categories',
+        multiselect=True
+    )
+
+    logger.debug(categories_selected)
+
+    return [categories_dict[a] for a in categories_selected]
+
+    # category_found = Revit.Elements.Category.ByName(str(category))
+
 
 def print_dict_list(dict_list, title=""):
     # Collect all keys and set as table columns
