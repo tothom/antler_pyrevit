@@ -8,6 +8,8 @@ from pyrevit import EXEC_PARAMS
 
 from collections import OrderedDict
 
+from Autodesk.Revit.Exceptions import InvalidOperationException
+
 __doc__ = "Sync All"
 __title__ = "Sync All\nOpen Docs"
 __author__ = "Thomas Holth"
@@ -27,13 +29,13 @@ options["View worksets owned by the current user should be relinquished."] = 'Vi
 
 
 selected = forms.SelectFromList.show(
-	options.keys(),
-	title="Select relinquish options",
-	multiselect=True
-	)
+    options.keys(),
+    title="Select relinquish options",
+    multiselect=True
+)
 
 for a in selected:
-	setattr(relinquish_options, options[a], True)
+    setattr(relinquish_options, options[a], True)
 
 
 transact_options = DB.TransactWithCentralOptions()
@@ -51,23 +53,27 @@ sync_options.SetRelinquishOptions(relinquish_options)
 # 	sync_options.SaveLocalFile
 # 	)
 
-docs_to_sync = [doc for doc in revit.docs if doc.IsWorkshared and not doc.IsLinked]
+docs_to_sync = [
+    doc for doc in revit.docs if doc.IsWorkshared and not doc.IsLinked]
 
 print("Synchronising {0} docs...".format(len(docs_to_sync)))
 output.indeterminate_progress(True)
 
 for i, doc in enumerate(docs_to_sync):
-	print("Trying to synchronize {0}...".format(doc.Title))
+    print("Trying to synchronize {0}...".format(doc.Title))
 
-	try:
-		doc.SynchronizeWithCentral(transact_options, sync_options)
-		print("Document synchronized!")
-	except Exception as e:
-		logger.warning("Document NOT synchronized!")
-		logger.debug(type(e), e)
-	else:
-		if EXEC_PARAMS.config_mode:
-			doc.Close()
+    try:
+        doc.SynchronizeWithCentral(transact_options, sync_options)
+        print("Document synchronized!")
+    except Exception as e:
+        logger.warning("Document NOT synchronized!")
+        logger.debug(type(e), e)
+    else:
+        try:
+            if EXEC_PARAMS.config_mode:
+                doc.Close()
+        except InvalidOperationException as e:
+            logger.warning(e.Message)
 
-	output.indeterminate_progress(False)
-	output.update_progress(i+1, len(docs_to_sync))
+    output.indeterminate_progress(False)
+    output.update_progress(i + 1, len(docs_to_sync))
