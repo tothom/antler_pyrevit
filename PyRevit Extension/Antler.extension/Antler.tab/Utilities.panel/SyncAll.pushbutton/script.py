@@ -3,7 +3,7 @@
 from System.Collections.Generic import *
 from rpw import revit, DB, UI
 
-from pyrevit import forms
+from pyrevit import forms, script
 from pyrevit import EXEC_PARAMS
 
 from collections import OrderedDict
@@ -11,6 +11,9 @@ from collections import OrderedDict
 __doc__ = "Sync All"
 __title__ = "Sync All\nOpen Docs"
 __author__ = "Thomas Holth"
+
+logger = script.get_logger()
+output = script.get_output()
 
 relinquish_options = DB.RelinquishOptions(False)
 
@@ -48,16 +51,23 @@ sync_options.SetRelinquishOptions(relinquish_options)
 # 	sync_options.SaveLocalFile
 # 	)
 
+docs_to_sync = [doc for doc in revit.docs if doc.IsWorkshared and not doc.IsLinked]
 
-for doc in revit.docs:
-	if doc.IsWorkshared and not doc.IsLinked:
-		print("Trying to synchronize {0}...".format(doc.Title))
-		try:
-			doc.SynchronizeWithCentral(transact_options, sync_options)
-			print("Document synchronized!")
+print("Synchronising {0} docs...".format(len(docs_to_sync)))
+output.indeterminate_progress(True)
 
-			if EXEC_PARAMS.config_mode:
-				doc.Close()
+for i, doc in enumerate(docs_to_sync):
+	print("Trying to synchronize {0}...".format(doc.Title))
 
-		except Exception as e:
-			print e
+	try:
+		doc.SynchronizeWithCentral(transact_options, sync_options)
+		print("Document synchronized!")
+	except Exception as e:
+		logger.warning("Document NOT synchronized!")
+		logger.debug(type(e), e)
+	else:
+		if EXEC_PARAMS.config_mode:
+			doc.Close()
+
+	output.indeterminate_progress(False)
+	output.update_progress(i+1, len(docs_to_sync))

@@ -17,10 +17,10 @@ units = doc.GetUnits()
 print(units)
 
 # Select Elements to straighten
-selection = uidoc.Selection.PickObject(UI.Selection.ObjectType.Element)
+selection = uidoc.Selection.PickObject(UI.Selection.ObjectType.Element, "Select object to translate.")
 element = doc.GetElement(selection)
 
-coordinates = forms.ask_for_string()
+coordinates = forms.ask_for_string(message="Provide comma-separated coordinates...")
 coordinates = [float(a)/304.8 for a in coordinates.split(',')]
 translation_vector = DB.XYZ(coordinates[0], coordinates[1], 0)
 
