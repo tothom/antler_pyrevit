@@ -5,6 +5,8 @@ import clr
 
 import util
 
+import System.Drawing
+
 logger = script.get_logger()
 
 
@@ -62,7 +64,8 @@ def select_category(doc=revit.doc):
 
 
 def print_dict_list(dict_list, title=""):
-    # Collect all keys and set as table columns
+    """Prints a list of dictionaries as a table with keys as column names.
+    """
     columns = []
 
     for row in dict_list:
@@ -87,3 +90,15 @@ def print_dict_list(dict_list, title=""):
         title=title,
         columns=columns
     )
+
+def quick_color_element(element, color):
+    """"""
+    line_color = color
+    fill_color = lighten_color(color)
+
+
+
+def lighten_color(color, factor=0.5):
+    r, g, b = color.R, color.G, color.B
+    # Do something
+    return System.Drawing.Color.FromArgb(r, g, b)
