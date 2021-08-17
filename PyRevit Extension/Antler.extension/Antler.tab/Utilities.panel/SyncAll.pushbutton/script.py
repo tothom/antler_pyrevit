@@ -77,3 +77,5 @@ for i, doc in enumerate(docs_to_sync):
 
     output.indeterminate_progress(False)
     output.update_progress(i + 1, len(docs_to_sync))
+
+print("Done! 👍")
