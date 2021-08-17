@@ -6,4 +6,4 @@ tooltip:      "Checks if element is straight in relation to view.
 
 
 context:
-  - active-floor-plan
+  - active-plan-view

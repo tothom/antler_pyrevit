@@ -6,4 +6,4 @@ tooltip:    "Straighten element to guides. Guide elements can be most elements
             guides and additional snapping angles."
 
 context:
-  - active-floor-plan
+  - active-plan-view
