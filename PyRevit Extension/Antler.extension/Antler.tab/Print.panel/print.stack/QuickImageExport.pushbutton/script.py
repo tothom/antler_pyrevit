@@ -3,15 +3,11 @@
 from System.Collections.Generic import *
 from rpw import revit, DB, UI
 
-from pyrevit import forms
+from pyrevit import forms, EXEC_PARAMS
 from collections import OrderedDict
 
 import csv
 import json
-
-__doc__ = "Quick PNG image export."
-__title__ = "Quick Image"
-__author__ = "Thomas Holth"
 
 uidoc = revit.uidoc
 doc = revit.doc
@@ -55,6 +51,10 @@ if file_path:
     image_export_options.HLRandWFViewsFileType = DB.ImageFileType.PNG
     image_export_options.ShadowViewsFileType = DB.ImageFileType.PNG
     image_export_options.ImageResolution = dpi_options[selected_option]
-    image_export_options.ExportRange = DB.ExportRange.CurrentView
+
+    if EXEC_PARAMS.config_mode:
+        image_export_options.ExportRange = DB.ExportRange.VisibleRegionOfCurrentView
+    else:
+        image_export_options.ExportRange = DB.ExportRange.CurrentView
 
     doc.ExportImage(image_export_options)
