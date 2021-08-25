@@ -3,6 +3,10 @@ import difflib
 from rpw import revit, DB
 import System.Enum
 
+from pyrevit import script
+
+logger = script.get_logger()
+
 
 def best_fuzzy_match(str_list, search_str, min=0.33):
     ratios = [(c, difflib.SequenceMatcher(None, search_str, c).ratio())
@@ -36,3 +40,43 @@ def builtin_category_from_category(category):
         if DB.ElementId(builtin_category).IntegerValue == category.Id.IntegerValue:
             return builtin_category
     return None
+
+
+def string_from_template(element, template_string):
+    import re
+    """
+    Use "... {Parameter Name} ... {Other Parameter Name} ..." to create strings from Elements.
+
+    Usage:
+    string_from_template(element, "{Comments} - {Mark}")
+
+    Returns "Some comment - 123"
+    """
+    pattern = '\{\w*\}'
+    pattern_compiled = re.compile(pattern)
+
+    matches = re.finditer(pattern_compiled, template_string)
+
+    new_string = template_string
+
+    for match in matches:
+        match_substring = match.string[match.start():match.end()]
+
+        # parameter_name = match.string[1:-1] # Python 3
+        parameter_name = match_substring[1:-1]
+
+        parameter = element.LookupParameter(parameter_name)
+
+        if not parameter:
+            raise ValueError, "Parameter '{}' not found".format(parameter_name)
+
+        value = parameter.AsString() or ""
+
+        if not value:
+            logger.warning("Parameter '{}' has empty value".format(parameter_name))
+
+        logger.info("{parameter}: {value}".format(parameter=parameter_name, value=value))
+
+        new_string = new_string.replace(match_substring, value)
+
+    return new_string
