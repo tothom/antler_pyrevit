@@ -52,25 +52,29 @@ def string_from_template(element, template_string):
 
     Returns "Some comment - 123"
     """
-    pattern = '\{\w*\}'
+    pattern = '\{.*?\}'
     pattern_compiled = re.compile(pattern)
 
     matches = re.finditer(pattern_compiled, template_string)
+    logger.info(matches)
 
     new_string = template_string
 
     for match in matches:
-        match_substring = match.string[match.start():match.end()]
-
+        logger.info(match)
         # parameter_name = match.string[1:-1] # Python 3
+
+        match_substring = match.string[match.start():match.end()]
         parameter_name = match_substring[1:-1]
+
+        logger.info(parameter_name)
 
         parameter = element.LookupParameter(parameter_name)
 
         if not parameter:
             raise ValueError, "Parameter '{}' not found".format(parameter_name)
 
-        value = parameter.AsString() or ""
+        value = parameter.AsString() or parameter.AsValueString() or ""
 
         if not value:
             logger.warning("Parameter '{}' has empty value".format(parameter_name))
