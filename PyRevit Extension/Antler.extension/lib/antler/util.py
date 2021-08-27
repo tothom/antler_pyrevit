@@ -22,10 +22,9 @@ def best_fuzzy_match(str_list, search_str, min=0.33):
         return None
 
 
-# source: https://stackoverflow.com/questions/7267226/range-for-floats
-
-
 def drange(x, y, jump):
+    """source: https://stackoverflow.com/questions/7267226/range-for-floats
+    """
     assert jump > 0, "Jump variable must be > 0."
     while x < y:
         yield float(x)
