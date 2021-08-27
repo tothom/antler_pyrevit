@@ -105,10 +105,9 @@ def compound_structure_to_dict(compound_structure):
     return layers_dict
 
 def room_to_dict(room):
+    pass
     # ID: Room Number
 
     # Properties: Name, area, level,
 
     # Get connected rooms
-
-    

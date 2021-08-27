@@ -1,10 +1,14 @@
 from System.Collections.Generic import *
 from rpw import revit, DB, UI
 
-from pyrevit import forms
+from pyrevit import forms, script
 
 from collections import OrderedDict
 from System.Collections.Generic import List
+
+import antler.util
+
+logger = script.get_logger()
 
 __doc__ = "Gets all Elements hosted by a Level"
 __title__ = "Elements on Level"
@@ -22,21 +26,34 @@ def get_elements_on_level(level):
 
     return elements
 
-# Select Levels
-levels = DB.FilteredElementCollector(doc).OfCategory(DB.BuiltInCategory.OST_Levels).WhereElementIsNotElementType().ToElements()
-levels_dict = {"{} ({})".format(level.Name, level.Elevation): level for level in levels}
+# Get selected
+levels = antler.util.preselect(revit_class=DB.Level)
 
-levels_dict = OrderedDict(sorted(levels_dict.items(), key=lambda (key, value): value.Elevation, reverse=True))
-level_key = forms.SelectFromList.show(levels_dict.keys(), button_name='Select Level', multiple=False, message='Select level to change to.')
-level = levels_dict.get(level_key) # Using get() to avoid error message when cancelling dialog.
-# levels = forms.select_levels()
+logger.debug(levels)
+
+# Select Levels
+if not levels:
+    levels = DB.FilteredElementCollector(doc).OfCategory(
+        DB.BuiltInCategory.OST_Levels).WhereElementIsNotElementType().ToElements()
+    levels_dict = {"{} ({})".format(
+        level.Name, level.Elevation): level for level in levels}
+
+    levels_dict = OrderedDict(sorted(levels_dict.items(), key=lambda (key, value): value.Elevation, reverse=True))
+    level_keys = forms.SelectFromList.show(levels_dict.keys(
+    ), button_name='Select Level', multiselect=True, message='Select level to change to.')
+    print(level_keys)
+
+    levels = [levels_dict.get(key) for key in level_keys]
+
+logger.debug(levels)
 
 elements = []
 
-if level:
-    # for level in levels:
-    elements.extend(get_elements_on_level(level))
+if levels:
+    for level in levels:
+        elements.extend(get_elements_on_level(level))
 
-element_id_collection = List[DB.ElementId]([element.Id for element in elements])
+element_id_collection = List[DB.ElementId](
+    [element.Id for element in elements])
 
 uidoc.Selection.SetElementIds(element_id_collection)

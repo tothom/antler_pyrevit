@@ -84,3 +84,17 @@ def string_from_template(element, template_string):
         new_string = new_string.replace(match_substring, value)
 
     return new_string
+
+
+def preselect(revit_class=DB.Element):
+    selected_element_ids = revit.uidoc.Selection.GetElementIds()
+
+    filtered_elements = []
+
+    for element_id in selected_element_ids:
+        element = revit.doc.GetElement(element_id)
+
+        if isinstance(element, revit_class):
+            filtered_elements.append(element)
+
+    return filtered_elements
