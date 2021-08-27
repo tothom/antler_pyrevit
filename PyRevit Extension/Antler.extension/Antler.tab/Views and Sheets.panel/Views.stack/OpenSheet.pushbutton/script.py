@@ -5,9 +5,6 @@ from rpw import revit, DB, UI
 
 from pyrevit import forms, script
 
-from collections import OrderedDict
-from System.Collections.Generic import List
-
 logger = script.get_logger()
 
 uidoc = revit.uidoc
@@ -17,13 +14,18 @@ try:
     # Don't bother if view is already a sheet.
     assert not isinstance(uidoc.ActiveView, DB.ViewSheet)
 
-    sheet_number = uidoc.ActiveView.get_Parameter(
-        DB.BuiltInParameter.VIEWPORT_SHEET_NUMBER).AsString()
+    sheet_number_parameter = uidoc.ActiveView.get_Parameter(
+        DB.BuiltInParameter.VIEWPORT_SHEET_NUMBER)
+
+    assert sheet_number_parameter.HasValue
+
+    sheet_number = sheet_number_parameter.AsString()
+
+    logger.info("Sheet Number: {}".format(sheet_number))
+
 except Exception as e:
     logger.warning("View is not on a Sheet")
 else:
-    logger.info(sheet_number)
-
     sheets = DB.FilteredElementCollector(
         doc).OfClass(DB.ViewSheet).ToElements()
 
