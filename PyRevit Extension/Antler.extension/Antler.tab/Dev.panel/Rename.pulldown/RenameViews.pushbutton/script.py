@@ -12,24 +12,24 @@ logger = script.get_logger()
 config = script.get_config()
 
 # Select Views
-# Preselect Views
-selected_element_ids = uidoc.Selection.GetElementIds()
+selected_views_or_sheets = antler.util.preselect((DB.View, DB.ViewSheet))
 
-selected_views = []
+# If Sheet is selected, get the views on the sheet.
+if selected_views_or_sheets:
+    selected_views = []
+    for element in selected_views_or_sheets:
+        if isinstance(element, DB.ViewSheet):
+            view_ids = element.GetAllPlacedViews()
+            selected_views.extend([doc.GetElement(id) for id in view_ids])
+        else:
+            selected_views.append(element)
 
-for element_id in selected_element_ids:
-    element = doc.GetElement(element_id)
-
-    if isinstance(element, DB.View):
-        selected_views.append(element)
-
-# Select Views
-if not selected_views:
+# Select Views by menu if not views were already selected.
+else:
     selected_views = forms.select_views(
         title="Select Views to rename"
     )
 
 if selected_views:
     input_string = rename_utils.ask_for_template_string()
-
-    rename_utils.rename_elements_with_template(selected_views, input_string)
+    rename_utils.rename_elements(selected_views, input_string)
