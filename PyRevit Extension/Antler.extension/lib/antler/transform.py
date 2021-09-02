@@ -72,6 +72,13 @@ def element_direction(element):
     except Exception as e:
         logger.debug(e)
 
+    # Fourth try! Simply get the direction... Works on Reference Planes
+    try:
+        direction = element.Direction
+        return direction
+    except Exception as e:
+        logger.debug(e)
+
     logger.warning(
         "Failed to get direction from {element}".format(element=element))
     return None
@@ -88,6 +95,11 @@ def element_centre_point(element):
 
     try:
         return element.Location.Point
+    except Exception as e:
+        logger.debug(e)
+
+    try:
+        return element.GetPlane().Origin
     except Exception as e:
         logger.debug(e)
 
