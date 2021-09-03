@@ -48,6 +48,8 @@ def element_direction(element):
     """
     Returns direction of element as XYZ. For a wall it will return the running direction of the wall.
     """
+    logger.debug(type(element))
+
     # First try. Works on grids.
     try:
         line = clr.Convert(element.Curve, DB.Line)
@@ -65,6 +67,16 @@ def element_direction(element):
     except Exception as e:
         logger.debug(e)
 
+    # Second try. Works on line based elements such as Walls. Will not work if Wall is curved.
+    # try:
+    #     location_pt = clr.Convert(element.Location, DB.LocationPoint)
+    #     # line = clr.Convert(location_crv.Curve, DB.Line)
+    #     # direction = line.Direction
+    #     logger.debug(location_pt.Rotation)
+    #     # return direction
+    # except Exception as e:
+    #     logger.debug(e)
+
     # Third try. Works on FamilyInstances.
     try:
         direction = element.FacingOrientation
@@ -75,6 +87,14 @@ def element_direction(element):
     # Fourth try! Simply get the direction... Works on Reference Planes
     try:
         direction = element.Direction
+        return direction
+    except Exception as e:
+        logger.debug(e)
+
+    # Fifth try! Jeezes! What about casting it to a View???
+    try:
+        view = clr.Convert(element, DB.ViewSection)
+        direction = view.ViewDirection
         return direction
     except Exception as e:
         logger.debug(e)
@@ -102,6 +122,11 @@ def element_centre_point(element):
         return element.GetPlane().Origin
     except Exception as e:
         logger.debug(e)
+    #
+    # try:
+    #     return element.Origin
+    # except Exception as e:
+    #     logger.debug(e)
 
     return None
 

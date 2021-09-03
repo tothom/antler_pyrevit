@@ -49,6 +49,7 @@ axis_pt = None
 # Select Elements
 selection = uidoc.Selection.GetElementIds() or uidoc.Selection.PickObjects(
     UI.Selection.ObjectType.Element, "Select objects to straighten to view...")
+
 elements = [doc.GetElement(id) for id in selection]
 
 
