@@ -12,17 +12,13 @@ logger = script.get_logger()
 config = script.get_config()
 
 # Select
-# selected_sheets = antler.util.preselect(DB.ViewSheet)
+family = antler.ui.select_families(multiselect=False)
 
-# if not selected_sheets:
-#     selected_sheets = forms.select_sheets(
-#         title="Select Sheets to rename"
-#     )
+script.exit()
 
-families = antler.ui.select_families()
+if family:
+    input_string = rename_utils.ask_for_template_string()
 
-print(families)
+    family_symbols = [doc.GetElement(id) for id in family.GetFamilySymbolIds()]
 
-# if selected_sheets:
-#     input_string = rename_utils.ask_for_template_string()
-#     rename_utils.rename_elements(selected_sheets, input_string)
+    rename_utils.rename_elements(family_symbols, input_string)

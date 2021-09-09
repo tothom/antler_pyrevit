@@ -14,10 +14,14 @@ doc = revit.doc
 
 # Get file name
 try:
-    default_name = "{} - {}".format(uidoc.ActiveView.SheetNumber,
-                                    uidoc.ActiveView.Name)
+    default_name = "{project_name} - {sheet_number} - {view_name}".format(
+        project_name=doc.ProjectInformation.Name,
+        sheet_number=uidoc.ActiveView.SheetNumber,
+        view_name=uidoc.ActiveView.Name)
 except:
-    default_name = "{}".format(uidoc.ActiveView.Name)
+    default_name = "{project_name} - {view_name}".format(
+        project_name=doc.ProjectInformation.Name,
+        view_name=uidoc.ActiveView.Name)
 
 # EXPORT IMAGE FROM VIEW
 file_path = forms.save_file(file_ext='png', default_name=default_name)
