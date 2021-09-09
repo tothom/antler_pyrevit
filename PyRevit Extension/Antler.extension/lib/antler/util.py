@@ -85,7 +85,7 @@ def string_from_template(element, template_string):
     return new_string
 
 
-def preselect(revit_class=DB.Element):
+def preselect(revit_class=()):
     selected_element_ids = revit.uidoc.Selection.GetElementIds()
 
     filtered_elements = []
@@ -93,7 +93,7 @@ def preselect(revit_class=DB.Element):
     for element_id in selected_element_ids:
         element = revit.doc.GetElement(element_id)
 
-        if isinstance(element, revit_class):
+        if isinstance(element, revit_class) or not revit_class:
             filtered_elements.append(element)
 
     return filtered_elements

@@ -65,7 +65,7 @@ def select_category(doc=revit.doc):
     # category_found = Revit.Elements.Category.ByName(str(category))
 
 
-def select_of_class(revit_class, key_function, select_types=True, doc=revit.doc):
+def select_of_class(revit_class, key_function, select_types=True, doc=revit.doc, **kwargs):
     collector = DB.FilteredElementCollector(doc)
 
     if select_types:
@@ -86,7 +86,7 @@ def select_of_class(revit_class, key_function, select_types=True, doc=revit.doc)
 
     selected = forms.SelectFromList.show(
         sorted(selection_dict.keys()),
-        multiselect=True
+        **kwargs
     )
 
     if selected:
@@ -94,29 +94,41 @@ def select_of_class(revit_class, key_function, select_types=True, doc=revit.doc)
     else:
         return []
 
-def select_families(doc=revit.doc):
+def collect_families(doc=revit.doc):
     collector = DB.FilteredElementCollector(doc)
     collector.WhereElementIsNotElementType()
     collector.OfClass(clr.GetClrType(DB.Family))
 
+    return collector.ToElements()
+
+
+def select_families(doc=revit.doc, multiselect=True):
+    families = collect_families()
+
     selection_dict = OrderedDict()
 
-    for family in collector:
+    for family in families:
         key = "({}) {}".format(family.FamilyCategory.Name, family.Name)
 
         selection_dict[key] = family
 
     selected = forms.SelectFromList.show(
         sorted(selection_dict.keys()),
-        multiselect=True
+        multiselect=multiselect
     )
 
-    if selected:
-        return [selection_dict[key] for key in selected]
+    if multiselect:
+        if selected:
+            return [selection_dict[key] for key in selected]
+        else:
+            return []
     else:
-        return []
+        if selected:
+            return selection_dict[selected]
+        else:
+            return None
 
-def select_family_types():
+def select_family_types(**kwargs):
     return select_of_class(
         DB.FamilySymbol, lambda x: "{0} - {1}".format(
             x.FamilyName,
