@@ -6,7 +6,7 @@ logger = script.get_logger()
 
 class Serializer():
     """
-    Should use RPW to serialize parameters... https://revitpythonwrapper.readthedocs.io/en/latest/db/element.html
+    Should use RPW to serialize parameters...? https://revitpythonwrapper.readthedocs.io/en/latest/db/element.html
     """
     pass
 
