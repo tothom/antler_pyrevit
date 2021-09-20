@@ -102,7 +102,7 @@ def collect_families(doc=revit.doc):
     return collector.ToElements()
 
 
-def select_families(doc=revit.doc, multiselect=True):
+def select_families(doc=revit.doc):#, multiselect=True):
     families = collect_families()
 
     selection_dict = OrderedDict()
@@ -114,19 +114,10 @@ def select_families(doc=revit.doc, multiselect=True):
 
     selected = forms.SelectFromList.show(
         sorted(selection_dict.keys()),
-        multiselect=multiselect
+        multiselect=True
     )
 
-    if multiselect:
-        if selected:
-            return [selection_dict[key] for key in selected]
-        else:
-            return []
-    else:
-        if selected:
-            return selection_dict[selected]
-        else:
-            return None
+    return [selection_dict[key] for key in selected]
 
 def select_family_types(**kwargs):
     return select_of_class(
