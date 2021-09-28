@@ -8,10 +8,6 @@ from pyrevit import forms
 from collections import OrderedDict
 from System.Collections.Generic import List
 
-__doc__ = "Select all Elements visible in View"
-__title__ = "Elements in View"
-__author__ = "Thomas Holth"
-
 uidoc = revit.uidoc
 doc = revit.doc
 app = revit.app

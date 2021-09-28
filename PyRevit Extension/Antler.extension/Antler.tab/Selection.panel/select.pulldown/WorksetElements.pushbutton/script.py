@@ -1,23 +1,24 @@
 from System.Collections.Generic import *
 from rpw import revit, DB, UI
 
-from pyrevit import forms
+from pyrevit import forms, EXEC_PARAMS
 
 from collections import OrderedDict
 from System.Collections.Generic import List
 
-__doc__ = "Gets all Elements in Workset"
-__title__ = "Elements in Workset"
-__author__ = "Thomas Holth"
-
 uidoc = revit.uidoc
 doc = revit.doc
 
-def get_elements_on_workset(workset):
+def get_elements_on_workset(workset, view=None, *args, **kwargs):
     """
     """
-    element_collector = DB.FilteredElementCollector(doc)
+    if view:
+        element_collector = DB.FilteredElementCollector(doc, view)
+    else:
+        element_collector = DB.FilteredElementCollector(doc)
+
     element_workset_filter = DB.ElementWorksetFilter(workset.Id)
+
     workset_elements = element_collector.WherePasses(element_workset_filter).ToElements()
 
     return workset_elements
@@ -33,11 +34,17 @@ workset_key = forms.SelectFromList.show(workset_dict.keys(), button_name='Select
 workset = workset_dict.get(workset_key) # Using get() to avoid error message when cancelling dialog.
 # worksets = forms.select_worksets()
 
+if EXEC_PARAMS.config_mode:
+    view = uidoc.ActiveView.Id
+else:
+    view = None
+
 elements = []
 
 if workset:
     # for workset in worksets:
-    elements.extend(get_elements_on_workset(workset))
+
+    elements.extend(get_elements_on_workset(workset, view=view))
 
 element_id_collection = List[DB.ElementId]([element.Id for element in elements])
 
