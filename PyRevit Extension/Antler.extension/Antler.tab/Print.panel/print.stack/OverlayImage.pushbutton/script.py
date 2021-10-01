@@ -9,10 +9,6 @@ from collections import OrderedDict
 import csv
 import json
 
-__doc__ = "Exports drawing as image and imports it back as overlay. Overlay image can be overriden to synchronize sketch with Revit"
-__title__ ="Quick Image Overlay"
-__author__ = "Thomas Holth"
-
 uidoc = revit.uidoc
 doc = revit.doc
 

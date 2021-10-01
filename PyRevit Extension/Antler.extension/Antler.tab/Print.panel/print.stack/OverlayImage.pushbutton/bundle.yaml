@@ -1,0 +1,4 @@
+title: "Quick Image\nOverlay"
+
+
+tooltip: "Exports drawing as image and imports it back as overlay. Overlay image can be overriden to synchronize sketch with Revit"

@@ -10,10 +10,6 @@ import antler.util
 
 logger = script.get_logger()
 
-__doc__ = "Gets all Elements hosted by a Level"
-__title__ = "Elements on Level"
-__author__ = "Thomas Holth"
-
 uidoc = revit.uidoc
 doc = revit.doc
 
@@ -25,6 +21,17 @@ def get_elements_on_level(level):
     elements = collector.WherePasses(level_filter).ToElements()
 
     return elements
+
+def parameter_filter(elements, parameter, parameter_value):
+    for element in elements:
+        element_parameter = element.get_Parameter(parameter)
+
+def level_filter(element, level):
+    element_level = None
+
+    element_parameter = element.get_Parameter(parameter)
+
+
 
 # Get selected
 levels = antler.util.preselect(revit_class=DB.Level)
@@ -41,17 +48,33 @@ if not levels:
     levels_dict = OrderedDict(sorted(levels_dict.items(), key=lambda (key, value): value.Elevation, reverse=True))
     level_keys = forms.SelectFromList.show(levels_dict.keys(
     ), button_name='Select Level', multiselect=True, message='Select level to change to.')
-    print(level_keys)
+
+    logger.debug(level_keys)
 
     levels = [levels_dict.get(key) for key in level_keys]
 
 logger.debug(levels)
+
+# print(len(elements))
 
 elements = []
 
 if levels:
     for level in levels:
         elements.extend(get_elements_on_level(level))
+
+
+selection = antler.util.preselect()
+
+# print(elements, selection)
+
+if selection:
+    selection_ids = [a.Id for a in selection]
+    element_ids = [a.Id for a in elements]
+
+    element_ids = list(set(selection_ids).intersection(set(element_ids)))
+
+    elements = [doc.GetElement(id) for id in element_ids]
 
 element_id_collection = List[DB.ElementId](
     [element.Id for element in elements])
