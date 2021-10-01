@@ -1,7 +1,7 @@
 {
   "Uuid": "def6a634-ab2b-402b-b35a-9169a0a8a5e2",
   "IsCustomNode": true,
-  "Category": "tholth.View.Actions",
+  "Category": "Antler.View.Actions",
   "Description": "Set view scopebox.",
   "Name": "View.SetScopeBox",
   "ElementResolver": {

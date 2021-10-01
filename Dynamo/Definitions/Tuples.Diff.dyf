@@ -1,7 +1,7 @@
 {
   "Uuid": "f88d1114-68c3-44be-aa43-855096aa3f88",
   "IsCustomNode": true,
-  "Category": "tholth.List",
+  "Category": "Antler.List",
   "Description": "",
   "Name": "Tuples.Diff",
   "ElementResolver": {

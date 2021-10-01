@@ -1,7 +1,7 @@
 {
   "Uuid": "f4ed6a85-c24d-472c-b1f9-3132081cf99e",
   "IsCustomNode": true,
-  "Category": "antler.Element",
+  "Category": "Antler.Element",
   "Description": "Gets SubElements of Element, if any.",
   "Name": "SubElements",
   "ElementResolver": {

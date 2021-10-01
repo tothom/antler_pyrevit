@@ -1,7 +1,7 @@
 {
   "Uuid": "8f540e67-1e31-4c66-8874-f4eacb15d8df",
   "IsCustomNode": true,
-  "Category": "antler.PointCloudInstance",
+  "Category": "Antler.PointCloudInstance",
   "Description": "Get transforms of Point Cloud Instance, both Transform and Total Transform.",
   "Name": "Transforms",
   "ElementResolver": {

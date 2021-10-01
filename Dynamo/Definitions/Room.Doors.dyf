@@ -1,7 +1,7 @@
 {
   "Uuid": "c77e34c1-c169-4d65-aec8-00d31512c4ed",
   "IsCustomNode": true,
-  "Category": "tholth.Rooms",
+  "Category": "Antler.Rooms",
   "Description": "Gets doors to room and from room",
   "Name": "Room.Doors",
   "ElementResolver": {

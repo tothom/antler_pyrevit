@@ -1,7 +1,7 @@
 {
   "Uuid": "6ddb18bf-be3b-4f7f-b745-566df9eb24bb",
   "IsCustomNode": true,
-  "Category": "antler.Parameters",
+  "Category": "Antler.Parameters",
   "Description": "Associates this parameter with a global parameter in the same document. ",
   "Name": "AssociateWithGlobalParameter",
   "ElementResolver": {

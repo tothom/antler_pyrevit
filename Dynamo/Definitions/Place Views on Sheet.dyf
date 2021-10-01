@@ -1,7 +1,7 @@
 {
   "Uuid": "22e63cae-8554-44a3-b6ba-98910fc53dfa",
   "IsCustomNode": true,
-  "Category": "tholth.Sheet",
+  "Category": "Antler.Sheet",
   "Description": "Places a view on sheet at (0,0,0)",
   "Name": "Place Views on Sheet",
   "ElementResolver": {

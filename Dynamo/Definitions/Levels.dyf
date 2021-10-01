@@ -1,7 +1,7 @@
 {
   "Uuid": "87bf0d7d-7e46-4390-a850-90eab9fbeebf",
   "IsCustomNode": true,
-  "Category": "tholth.Collector",
+  "Category": "Antler.Collector",
   "Description": "Gets all Levels in project",
   "Name": "Levels",
   "ElementResolver": {

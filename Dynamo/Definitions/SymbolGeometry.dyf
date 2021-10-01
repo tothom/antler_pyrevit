@@ -1,7 +1,7 @@
 {
   "Uuid": "a068d10d-4fc7-4f7a-8600-ea1e95bee18e",
   "IsCustomNode": true,
-  "Category": "antler.FamilyInstance",
+  "Category": "Antler.FamilyInstance",
   "Description": "The geometric representation of the symbol which generates this instance. ",
   "Name": "SymbolGeometry",
   "ElementResolver": {

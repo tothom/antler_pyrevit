@@ -1,7 +1,7 @@
 {
   "Uuid": "05d1de7e-7374-4e91-83b9-bc0f4dc465f0",
   "IsCustomNode": true,
-  "Category": "Bonetools.CurtainGrid",
+  "Category": "Antler.CurtainGrid",
   "Description": "Adds gridline to curtain grid",
   "Name": "CurtainGrid.AddGridLine",
   "ElementResolver": {

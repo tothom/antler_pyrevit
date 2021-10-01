@@ -1,7 +1,7 @@
 {
   "Uuid": "8e6947f8-56bc-43ca-a3c1-3d68ad0e8e35",
   "IsCustomNode": true,
-  "Category": "tholth.Grid",
+  "Category": "Antler.Grid",
   "Description": "",
   "Name": "GridAngleToY",
   "ElementResolver": {

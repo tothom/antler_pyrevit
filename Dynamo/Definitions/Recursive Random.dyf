@@ -1,7 +1,7 @@
 {
   "Uuid": "aeb10aca-f39d-4b3b-8bd1-28d20742fe51",
   "IsCustomNode": true,
-  "Category": "antler.Math",
+  "Category": "Antler.Math",
   "Description": "Turns all values in list of list (of list etc) to random values between 0 and 1. Randomize boolean adds extra time based randomness.",
   "Name": "Recursive Random",
   "ElementResolver": {

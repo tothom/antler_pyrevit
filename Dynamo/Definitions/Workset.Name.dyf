@@ -1,7 +1,7 @@
 {
   "Uuid": "1383ebc2-4f3b-4dac-a7f4-b8afea3a8fe3",
   "IsCustomNode": true,
-  "Category": "tholth.Workset.Query",
+  "Category": "Antler.Workset.Query",
   "Description": "",
   "Name": "Workset.Name",
   "ElementResolver": {

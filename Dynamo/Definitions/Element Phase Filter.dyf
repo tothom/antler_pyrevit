@@ -1,7 +1,7 @@
 {
   "Uuid": "00ab90e4-19e9-4e33-8986-d82572b81ced",
   "IsCustomNode": true,
-  "Category": "tholth.Filter",
+  "Category": "Antler.Filter",
   "Description": "Filters in all elements new or existing in given phase.",
   "Name": "Phase Filter",
   "ElementResolver": {

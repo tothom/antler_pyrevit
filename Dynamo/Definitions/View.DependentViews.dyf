@@ -1,7 +1,7 @@
 {
   "Uuid": "f023c4e3-1074-4a61-a08a-2380ab8e3e69",
   "IsCustomNode": true,
-  "Category": "tholth.View.Query",
+  "Category": "Antler.View.Query",
   "Description": "Get dependent views from view",
   "Name": "View.DependentViews",
   "ElementResolver": {

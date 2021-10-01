@@ -1,7 +1,7 @@
 {
   "Uuid": "eeeb623d-0065-4f7c-92b4-3e118a3e3702",
   "IsCustomNode": true,
-  "Category": "tholth.Vector",
+  "Category": "Antler.Vector",
   "Description": "Converts a vector to a line",
   "Name": "VectorToLine",
   "ElementResolver": {

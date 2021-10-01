@@ -1,7 +1,7 @@
 {
   "Uuid": "78721334-91b6-45d2-9c21-2425fb2307dc",
   "IsCustomNode": true,
-  "Category": "tholth.Element.Action",
+  "Category": "Antler.Element.Action",
   "Description": "Delete elements if commit? = True",
   "Name": "Delete Element",
   "ElementResolver": {

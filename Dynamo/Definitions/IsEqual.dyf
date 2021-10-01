@@ -1,7 +1,7 @@
 {
   "Uuid": "c6f3a3ce-b87a-45be-9f51-94f07f3a3fd7",
   "IsCustomNode": true,
-  "Category": "tholth.Boolean",
+  "Category": "Antler.Boolean",
   "Description": "",
   "Name": "IsEqual",
   "ElementResolver": {

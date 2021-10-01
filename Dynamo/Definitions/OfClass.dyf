@@ -1,7 +1,7 @@
 {
   "Uuid": "744d319e-6cc4-4c55-912f-244dfe39f569",
   "IsCustomNode": true,
-  "Category": "antler.Collector",
+  "Category": "Antler.Collector",
   "Description": "Collects elements of API Class. Provide Class name as case sensitive string.",
   "Name": "OfClass",
   "ElementResolver": {

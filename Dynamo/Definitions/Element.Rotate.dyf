@@ -1,7 +1,7 @@
 {
   "Uuid": "5f9ba369-479a-49a5-840b-0a977bf2b0f6",
   "IsCustomNode": true,
-  "Category": "tholth.Element.Action",
+  "Category": "Antler.Element.Action",
   "Description": "Rotate Revit element",
   "Name": "Element.Rotate",
   "ElementResolver": {

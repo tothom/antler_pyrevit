@@ -1,7 +1,7 @@
 {
   "Uuid": "fee69ac0-cb0e-43d4-857b-f25d072dbe9b",
   "IsCustomNode": true,
-  "Category": "tholth.Element.Query",
+  "Category": "Antler.Element.Query",
   "Description": "",
   "Name": "ElementCurve",
   "ElementResolver": {

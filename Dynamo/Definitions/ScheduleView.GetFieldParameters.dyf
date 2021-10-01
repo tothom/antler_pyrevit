@@ -1,7 +1,7 @@
 {
   "Uuid": "fea26526-7624-4497-ab30-8679a673daf2",
   "IsCustomNode": true,
-  "Category": "tholth.ScheduleView",
+  "Category": "Antler.ScheduleView",
   "Description": "",
   "Name": "ScheduleView.GetFieldParameters",
   "ElementResolver": {

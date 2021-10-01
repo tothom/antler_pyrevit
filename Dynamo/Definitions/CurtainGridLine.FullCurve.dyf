@@ -1,7 +1,7 @@
 {
   "Uuid": "c528b697-2464-472b-af67-353808b4c085",
   "IsCustomNode": true,
-  "Category": "antler.CurtainWall",
+  "Category": "Antler.CurtainGrid",
   "Description": "Retrieve the geometry curve of the curtain grid line. ",
   "Name": "CurtainGridLine.FullCurve",
   "ElementResolver": {

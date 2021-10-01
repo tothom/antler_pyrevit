@@ -1,7 +1,7 @@
 {
   "Uuid": "b6deba55-d006-42eb-9966-81bc5fd2d420",
   "IsCustomNode": true,
-  "Category": "antler.PointCloudInstance",
+  "Category": "Antler.PointCloudInstance",
   "Description": "Get Scans of Point Cloud",
   "Name": "Scans",
   "ElementResolver": {

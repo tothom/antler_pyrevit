@@ -1,7 +1,7 @@
 {
   "Uuid": "ad12ca71-0b05-4232-8040-b1bb0573e077",
   "IsCustomNode": true,
-  "Category": "tholth",
+  "Category": "Antler",
   "Description": "Generates a random list of numbers. Seed input accepts anything that can be hashed, even Revit classes.",
   "Name": "Random Number List",
   "ElementResolver": {

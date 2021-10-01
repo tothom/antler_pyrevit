@@ -1,7 +1,7 @@
 {
   "Uuid": "08f4ddea-cda2-410e-b8b3-1ea8729b6e70",
   "IsCustomNode": true,
-  "Category": "antler.CurtainWall",
+  "Category": "Antler.CurtainGrid",
   "Description": "Get all the CurtainGrid object of this CurtainSystem. Each CurtainGrid corresponds to one face. ",
   "Name": "CurtainGrids",
   "ElementResolver": {

@@ -1,7 +1,7 @@
 {
   "Uuid": "af32dc2e-2fe6-43e4-99a6-27f96089570d",
   "IsCustomNode": true,
-  "Category": "antler.CurtainWall",
+  "Category": "Antler.CurtainGrid",
   "Description": "Retrieve the curves of all segments. ",
   "Name": "CurtainGridLine.AllSegmentCurves",
   "ElementResolver": {

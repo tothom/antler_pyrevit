@@ -1,7 +1,7 @@
 {
   "Uuid": "d68b6253-0195-4563-ac6e-1264a8441d25",
   "IsCustomNode": true,
-  "Category": "antler",
+  "Category": "Antler",
   "Description": "Gets Wall properties.",
   "Name": "Wall.Properties",
   "ElementResolver": {

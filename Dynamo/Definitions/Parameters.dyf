@@ -1,7 +1,7 @@
 {
   "Uuid": "909eafac-01a2-4295-881b-fc84585102b2",
   "IsCustomNode": true,
-  "Category": "antler.Element",
+  "Category": "Antler.Element",
   "Description": "Gets non-wrapped Parameters from Element.",
   "Name": "Parameters",
   "ElementResolver": {

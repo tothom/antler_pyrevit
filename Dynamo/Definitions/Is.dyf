@@ -1,7 +1,7 @@
 {
   "Uuid": "0fd5397f-a32b-43e8-89c5-fdc0574d4358",
   "IsCustomNode": true,
-  "Category": "tholth.Boolean",
+  "Category": "Antler.Boolean",
   "Description": "True if input is something",
   "Name": "Is",
   "ElementResolver": {

@@ -1,7 +1,7 @@
 {
   "Uuid": "63f0fc0e-ad93-4242-b79b-68da70d5ad1c",
   "IsCustomNode": true,
-  "Category": "tholth.Collector",
+  "Category": "Antler.Collector",
   "Description": "",
   "Name": "PrimaryDesignOptionMemberFilter",
   "ElementResolver": {

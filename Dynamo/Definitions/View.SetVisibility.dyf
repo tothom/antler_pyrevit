@@ -1,7 +1,7 @@
 {
   "Uuid": "38d1547d-fb68-45c3-8364-1beb469919f4",
   "IsCustomNode": true,
-  "Category": "tholth.View.Action",
+  "Category": "Antler.View.Action",
   "Description": "Sets visibility of category in view to either on or off",
   "Name": "View.SetVisibility",
   "ElementResolver": {

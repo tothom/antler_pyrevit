@@ -1,7 +1,7 @@
 {
   "Uuid": "44675d3b-7232-4bcf-aaa6-f8054dfb8d36",
   "IsCustomNode": true,
-  "Category": "tholth.List",
+  "Category": "Antler.List",
   "Description": "Count occurences of item in list",
   "Name": "CountOccurences",
   "ElementResolver": {

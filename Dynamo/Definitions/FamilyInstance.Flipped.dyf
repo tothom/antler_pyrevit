@@ -1,7 +1,7 @@
 {
   "Uuid": "d269395a-03fc-4c25-ba1e-da7c17e1a3b3",
   "IsCustomNode": true,
-  "Category": "tholth.FamilyInstance",
+  "Category": "Antler.FamilyInstance",
   "Description": "Returns True if familyinstance is flipped from direction in family editor",
   "Name": "FamilyInstance.Flipped",
   "ElementResolver": {

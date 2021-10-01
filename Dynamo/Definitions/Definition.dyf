@@ -1,7 +1,7 @@
 {
   "Uuid": "51547e0e-203b-4e25-b1c0-971b0ee3812c",
   "IsCustomNode": true,
-  "Category": "antler.Parameters",
+  "Category": "Antler.Parameters",
   "Description": "Returns the Definition object that describes the data type, name and other details of the parameter. ",
   "Name": "Definition",
   "ElementResolver": {

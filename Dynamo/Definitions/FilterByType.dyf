@@ -1,7 +1,7 @@
 {
   "Uuid": "a538938c-7e00-4733-b62d-4e4e8518926f",
   "IsCustomNode": true,
-  "Category": "tholth.Util",
+  "Category": "Antler.Util",
   "Description": "Filters in and out types given a string with type name. Example: \"Floors\" for all floors, or \"int\" for all integers.",
   "Name": "FilterByType",
   "ElementResolver": {

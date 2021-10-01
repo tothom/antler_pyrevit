@@ -1,7 +1,7 @@
 {
   "Uuid": "3c4a0477-5a3a-4b3f-a417-022ed0326f3d",
   "IsCustomNode": true,
-  "Category": "tholth.Color.Create",
+  "Category": "Antler.Color.Create",
   "Description": "Create color from hue, saturation and lightness",
   "Name": "ColorByHSL",
   "ElementResolver": {

@@ -1,7 +1,7 @@
 {
   "Uuid": "6c11503f-f5f0-45e9-82a3-97bf0f387f97",
   "IsCustomNode": true,
-  "Category": "tholth.Time",
+  "Category": "Antler.Time",
   "Description": "Outputs the input and a time decimal",
   "Name": "Time",
   "ElementResolver": {

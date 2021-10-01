@@ -1,7 +1,7 @@
 {
   "Uuid": "48b27d67-1efa-47bb-a9a6-e2723ee01cd6",
   "IsCustomNode": true,
-  "Category": "tholth.Element.Query",
+  "Category": "Antler.Element.Query",
   "Description": "Get Design Option of element",
   "Name": "Element.DesignOption",
   "ElementResolver": {

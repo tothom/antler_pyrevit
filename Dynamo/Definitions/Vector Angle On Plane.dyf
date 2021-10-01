@@ -1,7 +1,7 @@
 {
   "Uuid": "bc112f3b-4b88-4a59-8672-4c2878445c14",
   "IsCustomNode": true,
-  "Category": "tholth.Vector",
+  "Category": "Antler.Vector",
   "Description": "",
   "Name": "Vector Angle On Plane",
   "ElementResolver": {

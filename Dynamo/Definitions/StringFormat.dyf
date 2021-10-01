@@ -1,7 +1,7 @@
 {
   "Uuid": "5ed86291-629b-4edf-9d5d-abd23a219156",
   "IsCustomNode": true,
-  "Category": "tholth.String",
+  "Category": "Antler.String",
   "Description": "Format string with Python string format",
   "Name": "StringFormat",
   "ElementResolver": {

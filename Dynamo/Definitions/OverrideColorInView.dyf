@@ -1,7 +1,7 @@
 {
   "Uuid": "b087b0a7-4e8e-476a-8ad7-ca4ab29f3b22",
   "IsCustomNode": true,
-  "Category": "tholth.View",
+  "Category": "Antler.View",
   "Description": "Overrides color in view from list of elements, list of colors and a view",
   "Name": "OverrideColorInView",
   "ElementResolver": {

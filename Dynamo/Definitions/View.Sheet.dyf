@@ -1,7 +1,7 @@
 {
   "Uuid": "d2dadd7d-71b8-47fa-a99f-12dde11a5f0a",
   "IsCustomNode": true,
-  "Category": "tholth.View.Query",
+  "Category": "Antler.View.Query",
   "Description": "Get sheet from given view",
   "Name": "View.Sheet",
   "ElementResolver": {

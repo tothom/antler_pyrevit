@@ -1,9 +1,9 @@
 {
   "Uuid": "75f26df4-3b90-4544-bd66-e9f0fb7e690d",
   "IsCustomNode": true,
-  "Category": "tholth.Curves",
-  "Description": "",
-  "Name": "CurveLoop",
+  "Category": "Antler.Geometry.Curves",
+  "Description": "Create Curveloop from input curves.",
+  "Name": "CurveLoopFromCrvs",
   "ElementResolver": {
     "ResolutionMap": {
       "Math": {
@@ -135,27 +135,28 @@
     }
   ],
   "Dependencies": [],
+  "NodeLibraryDependencies": [],
   "Bindings": [],
   "View": {
     "Dynamo": {
       "ScaleFactor": 1.0,
       "HasRunWithoutCrash": false,
       "IsVisibleInDynamoLibrary": true,
-      "Version": "2.0.2.6826",
+      "Version": "2.6.1.8786",
       "RunType": "Manual",
       "RunPeriod": "1000"
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": 10128.645223132276,
-      "EyeY": 8585.3445898033133,
-      "EyeZ": 5652.7189498540638,
-      "LookX": -2893.0648836177133,
-      "LookY": -8247.0856048139976,
-      "LookZ": -6608.1379395774393,
-      "UpX": -0.2382421936885411,
-      "UpY": 0.8044332390925798,
-      "UpZ": -0.544176277495985
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
     },
     "NodeViews": [
       {
@@ -190,8 +191,8 @@
       }
     ],
     "Annotations": [],
-    "X": 325.33333333333326,
-    "Y": 181.77777777777777,
-    "Zoom": 1.0
+    "X": 140.22921570133951,
+    "Y": 193.24571867167128,
+    "Zoom": 1.5105184564313476
   }
 }

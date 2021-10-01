@@ -1,7 +1,7 @@
 {
   "Uuid": "50ea3f2e-ba6d-4abd-b5c0-d488f3f1e3f5",
   "IsCustomNode": true,
-  "Category": "antler.PointCloudInstance",
+  "Category": "Antler.PointCloudInstance",
   "Description": "Extract Point Cloud Points inside Bounding Box. Optional toggle to ignore top and bottom limits of Bounding Box",
   "Name": "PointsInBoundingBox",
   "ElementResolver": {

@@ -1,7 +1,7 @@
 {
   "Uuid": "b6504c12-3569-4f88-ac05-c929fc88fb57",
   "IsCustomNode": true,
-  "Category": "tholth.ScopeBox.Query",
+  "Category": "Antler.ScopeBox.Query",
   "Description": "",
   "Name": "ScopeBox.Query",
   "ElementResolver": {

@@ -1,7 +1,7 @@
 {
   "Uuid": "5526c21b-cd34-458c-b32e-63caf18f3c77",
   "IsCustomNode": true,
-  "Category": "tholth.Element.Query",
+  "Category": "Antler.Element.Query",
   "Description": "",
   "Name": "Element.Ownership",
   "ElementResolver": {

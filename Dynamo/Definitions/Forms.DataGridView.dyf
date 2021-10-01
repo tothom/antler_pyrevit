@@ -1,7 +1,7 @@
 {
   "Uuid": "ecd90c2b-6136-4a99-8e1f-6c2b136659d4",
   "IsCustomNode": true,
-  "Category": "tholth",
+  "Category": "Antler",
   "Description": "Shows list of lists as a grid view in a window.",
   "Name": "Forms.DataGridView",
   "ElementResolver": {

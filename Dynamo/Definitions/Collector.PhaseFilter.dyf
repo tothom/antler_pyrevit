@@ -1,7 +1,7 @@
 {
   "Uuid": "d2675cf0-1aa3-44cb-97e5-6d0e99b11258",
   "IsCustomNode": true,
-  "Category": "tholth.Selection",
+  "Category": "Antler.Collectors",
   "Description": "Gets all phase filters in document",
   "Name": "Collector.PhaseFilter",
   "ElementResolver": {

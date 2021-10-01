@@ -1,7 +1,7 @@
 {
   "Uuid": "9ccd1405-816c-4561-b80e-e93cc2fbb566",
   "IsCustomNode": true,
-  "Category": "antler.Points",
+  "Category": "Antler.Points",
   "Description": "",
   "Name": "PointGridFromCrvGrid",
   "ElementResolver": {

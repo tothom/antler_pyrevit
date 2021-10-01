@@ -1,7 +1,7 @@
 {
   "Uuid": "61605690-2ab6-4ca9-9f2b-6671839deb94",
   "IsCustomNode": true,
-  "Category": "tholth.Util",
+  "Category": "Antler.Util",
   "Description": "",
   "Name": "Parellize Element",
   "ElementResolver": {

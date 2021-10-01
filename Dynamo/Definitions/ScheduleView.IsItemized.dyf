@@ -1,7 +1,7 @@
 {
   "Uuid": "34496b22-678c-40b4-9eb4-21d1ac608942",
   "IsCustomNode": true,
-  "Category": "tholth.ScheduleView",
+  "Category": "Antler.ScheduleView",
   "Description": "Returns True if \"Itemize every instance\" is turned on.",
   "Name": "ScheduleView.IsItemized",
   "ElementResolver": {

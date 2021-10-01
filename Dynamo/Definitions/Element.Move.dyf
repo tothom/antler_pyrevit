@@ -1,7 +1,7 @@
 {
   "Uuid": "90c2615a-cf17-4f4c-ae11-c6837f6674a4",
   "IsCustomNode": true,
-  "Category": "tholth.Element.Action",
+  "Category": "Antler.Element.Action",
   "Description": "Moves element in Revit",
   "Name": "Element.Move",
   "ElementResolver": {

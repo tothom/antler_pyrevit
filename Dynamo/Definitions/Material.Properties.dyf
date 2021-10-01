@@ -1,7 +1,7 @@
 {
   "Uuid": "92d99750-062c-49af-83b2-551656a98d82",
   "IsCustomNode": true,
-  "Category": "tholth.Material",
+  "Category": "Antler.Material",
   "Description": "",
   "Name": "Material.Properties",
   "ElementResolver": {

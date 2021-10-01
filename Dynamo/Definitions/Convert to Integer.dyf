@@ -1,7 +1,7 @@
 {
   "Uuid": "29eeca25-bfe6-4e8e-b423-4a447876f540",
   "IsCustomNode": true,
-  "Category": "tholth.Math",
+  "Category": "Antler.Math",
   "Description": "",
   "Name": "Convert to Integer",
   "ElementResolver": {

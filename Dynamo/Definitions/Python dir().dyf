@@ -1,7 +1,7 @@
 {
   "Uuid": "c68c57ec-f67d-4a3e-bbcc-882cb5086d0e",
   "IsCustomNode": true,
-  "Category": "antler.Utils",
+  "Category": "Antler.Utils",
   "Description": "The dir() method tries to return a list of valid attributes of the object.",
   "Name": "Python dir()",
   "ElementResolver": {

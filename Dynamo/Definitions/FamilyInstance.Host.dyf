@@ -1,7 +1,7 @@
 {
   "Uuid": "23f70a6b-e67f-4ad7-824c-bf64213c1a5d",
   "IsCustomNode": true,
-  "Category": "tholth",
+  "Category": "Antler",
   "Description": "Gets Host, Host Face and Host Parameter for a Family Instance",
   "Name": "FamilyInstance.Host",
   "ElementResolver": {

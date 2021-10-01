@@ -1,7 +1,7 @@
 {
   "Uuid": "1210a889-c6bc-4575-88ef-11b3addf6362",
   "IsCustomNode": true,
-  "Category": "antler.FamilyInstance",
+  "Category": "Antler.FamilyInstance",
   "Description": "",
   "Name": "Change Type",
   "ElementResolver": {

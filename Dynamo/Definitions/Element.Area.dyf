@@ -1,7 +1,7 @@
 {
   "Uuid": "09b19ffe-eb36-497e-bc85-f0f7bee21235",
   "IsCustomNode": true,
-  "Category": "tholth.Element.Query",
+  "Category": "Antler.Element.Query",
   "Description": "Location point of element",
   "Name": "Element.Area",
   "ElementResolver": {

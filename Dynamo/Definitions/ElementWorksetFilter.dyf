@@ -1,7 +1,7 @@
 {
   "Uuid": "afe85e02-e511-44e1-95d1-7f7c7ecae00e",
   "IsCustomNode": true,
-  "Category": "tholth.Collector",
+  "Category": "Antler.Collector",
   "Description": "Element Workset Filter to use with Filtered Element Collector. Can be combined with other Filters.",
   "Name": "ElementWorksetFilter",
   "ElementResolver": {

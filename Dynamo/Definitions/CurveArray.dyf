@@ -1,7 +1,7 @@
 {
   "Uuid": "00a2c2de-4efe-458c-9226-68d962a3bc87",
   "IsCustomNode": true,
-  "Category": "tholth",
+  "Category": "Antler.Geometry",
   "Description": "",
   "Name": "CurveArray",
   "ElementResolver": {

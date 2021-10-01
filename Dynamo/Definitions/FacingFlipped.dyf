@@ -1,7 +1,7 @@
 {
   "Uuid": "66b4e370-4229-4472-82bf-046bb6eb1886",
   "IsCustomNode": true,
-  "Category": "antler.FamilyInstance",
+  "Category": "Antler.FamilyInstance",
   "Description": "True if FamilyInstance is facing flipped.",
   "Name": "FacingFlipped",
   "ElementResolver": {

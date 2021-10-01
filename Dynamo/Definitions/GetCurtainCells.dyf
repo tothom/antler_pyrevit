@@ -1,7 +1,7 @@
 {
   "Uuid": "7b1c0223-749c-4d0f-a1bd-f2b4b162641d",
   "IsCustomNode": true,
-  "Category": "antler.CurtainWall",
+  "Category": "Antler.CurtainWall",
   "Description": "Gets the CurtainCells owned by this curtain grid. ",
   "Name": "GetCurtainCells",
   "ElementResolver": {

@@ -1,7 +1,7 @@
 {
   "Uuid": "085c0efc-a89c-4a97-8363-6d89cf842be0",
   "IsCustomNode": true,
-  "Category": "tholth.Color.Query",
+  "Category": "Antler.Color.Query",
   "Description": "Deconstructs color to hue, saturation and lightness",
   "Name": "HSL from DSColor",
   "ElementResolver": {

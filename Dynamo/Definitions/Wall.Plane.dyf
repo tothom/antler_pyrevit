@@ -1,7 +1,7 @@
 {
   "Uuid": "55a7e6ca-389d-4f2c-9c0c-96636dbb0046",
   "IsCustomNode": true,
-  "Category": "antler",
+  "Category": "Antler",
   "Description": "[WIP] Wall face Plane. ",
   "Name": "Wall.Plane",
   "ElementResolver": {

@@ -1,7 +1,7 @@
 {
   "Uuid": "f8c1662c-07e0-4fd0-8ec5-d574146737b9",
   "IsCustomNode": true,
-  "Category": "tholth",
+  "Category": "Antler.Collectors",
   "Description": "Gets all elements in model of either Instances or Types (not both). Use with caution.",
   "Name": "Collector.AllElements",
   "ElementResolver": {

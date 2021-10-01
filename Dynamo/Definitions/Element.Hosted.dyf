@@ -1,7 +1,7 @@
 {
   "Uuid": "ad91c8fb-b803-4f7c-8623-28b86a227196",
   "IsCustomNode": true,
-  "Category": "antler",
+  "Category": "Antler",
   "Description": "Gets all Elements hosted by selected Elements",
   "Name": "Element.Hosted",
   "ElementResolver": {

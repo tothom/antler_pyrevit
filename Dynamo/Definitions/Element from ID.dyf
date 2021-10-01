@@ -1,7 +1,7 @@
 {
   "Uuid": "a446efa3-02b0-4c15-a07a-2c445a039422",
   "IsCustomNode": true,
-  "Category": "tholth.Collect",
+  "Category": "Antler.Collectors",
   "Description": "Get elements from element ID",
   "Name": "Element from ID",
   "ElementResolver": {

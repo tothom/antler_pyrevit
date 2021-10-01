@@ -1,7 +1,7 @@
 {
   "Uuid": "89af5f94-7a5a-45cc-bcc1-7d24f8a379c6",
   "IsCustomNode": true,
-  "Category": "antler.PointCloudInstance",
+  "Category": "Antler.PointCloudInstance",
   "Description": "",
   "Name": "PointCloudTypeProperties",
   "ElementResolver": {

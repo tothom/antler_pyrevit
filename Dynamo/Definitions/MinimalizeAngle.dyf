@@ -1,7 +1,7 @@
 {
   "Uuid": "bcba1ec6-7b49-4173-9102-bf896ebbaf63",
   "IsCustomNode": true,
-  "Category": "tholth.Math",
+  "Category": "Antler.Math",
   "Description": "",
   "Name": "MinimalizeAngle",
   "ElementResolver": {

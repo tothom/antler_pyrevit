@@ -1,7 +1,7 @@
 {
   "Uuid": "b48718e7-85cb-4dc2-9ea4-ea58786ce299",
   "IsCustomNode": true,
-  "Category": "antler.Points",
+  "Category": "Antler.Points",
   "Description": "Expands 2d grid of points by add points to start and end, in both X and Y direction.",
   "Name": "ExpandPointGrid",
   "ElementResolver": {

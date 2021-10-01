@@ -1,7 +1,7 @@
 {
   "Uuid": "998e943a-e68a-46b3-975a-fca5f431dabd",
   "IsCustomNode": true,
-  "Category": "tholth.Workset.Query",
+  "Category": "Antler.Workset.Query",
   "Description": "Counts elements on workset.",
   "Name": "WorksetElementCount",
   "ElementResolver": {

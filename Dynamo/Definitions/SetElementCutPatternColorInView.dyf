@@ -1,7 +1,7 @@
 {
   "Uuid": "f38f5fe0-a801-4d5d-9e20-6cd4cd141ae9",
   "IsCustomNode": true,
-  "Category": "tholth.View",
+  "Category": "Antler.View",
   "Description": "SetElementProjectionLineColorInView",
   "Name": "SetElementCutPatternColorInView",
   "ElementResolver": {

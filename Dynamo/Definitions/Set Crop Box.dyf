@@ -1,7 +1,7 @@
 {
   "Uuid": "7ab2adcb-095a-4a38-a469-39e9a9dfe150",
   "IsCustomNode": true,
-  "Category": "tholth.Views",
+  "Category": "Antler.Views",
   "Description": "Sets crop box of view.",
   "Name": "Set Crop Box",
   "ElementResolver": {

@@ -1,7 +1,7 @@
 {
   "Uuid": "e94b3014-5782-4447-b7fb-b29c70dd95fd",
   "IsCustomNode": true,
-  "Category": "tholth.Collector",
+  "Category": "Antler.Collector",
   "Description": "Element Level Filter to use with Filtered Element Collector. Can be combined with other filters.",
   "Name": "ElementLevelFilter",
   "ElementResolver": {

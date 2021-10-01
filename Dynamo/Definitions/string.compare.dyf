@@ -1,7 +1,7 @@
 {
   "Uuid": "34e8aba9-113a-442c-9074-8e7c57ea28eb",
   "IsCustomNode": true,
-  "Category": "tholth.String",
+  "Category": "Antler.String",
   "Description": "Compares 2 strings and returns similarity as a ratio.",
   "Name": "string.compare",
   "ElementResolver": {

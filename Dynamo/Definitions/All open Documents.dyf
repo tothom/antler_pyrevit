@@ -1,7 +1,7 @@
 {
   "Uuid": "34c76e47-7ef0-480a-9987-a8b929944aaa",
   "IsCustomNode": true,
-  "Category": "tholth",
+  "Category": "Antler",
   "Description": "Gets all open documents, including Links.",
   "Name": "All open Documents",
   "ElementResolver": {

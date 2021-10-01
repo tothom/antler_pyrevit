@@ -1,7 +1,7 @@
 {
   "Uuid": "cc037360-e9f7-4763-bde3-8a538b927092",
   "IsCustomNode": true,
-  "Category": "tholth.Collector",
+  "Category": "Antler.Collector",
   "Description": "Fetches all elements on given workset",
   "Name": "Elements on Workset",
   "ElementResolver": {

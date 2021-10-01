@@ -1,7 +1,7 @@
 {
   "Uuid": "e26bd234-65b3-40d2-a547-d47fc68fb04b",
   "IsCustomNode": true,
-  "Category": "tholth.ScheduleView",
+  "Category": "Antler.ScheduleView",
   "Description": "Grouping and sorting fields in Schedule",
   "Name": "ScheduleSortGroupFields",
   "ElementResolver": {

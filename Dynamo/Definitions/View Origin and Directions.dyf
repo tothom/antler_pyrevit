@@ -1,7 +1,7 @@
 {
   "Uuid": "9e63b48c-773b-4fa9-a074-1cf9e01484c6",
   "IsCustomNode": true,
-  "Category": "tholth.Views",
+  "Category": "Antler.Views",
   "Description": "Gets origin and direction vectors for view. Z-vector is towards the viewer.",
   "Name": "View Origin and Directions",
   "ElementResolver": {

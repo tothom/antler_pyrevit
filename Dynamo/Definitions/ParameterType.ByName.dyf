@@ -1,7 +1,7 @@
 {
   "Uuid": "a68113f7-1464-49fb-b3e5-2142d42fd01d",
   "IsCustomNode": true,
-  "Category": "tholth.Parameters",
+  "Category": "Antler.Parameters",
   "Description": "",
   "Name": "ParameterType.ByName",
   "ElementResolver": {

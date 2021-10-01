@@ -1,7 +1,7 @@
 {
   "Uuid": "aeabe61e-09dd-4cba-b486-d68ac3093e9e",
   "IsCustomNode": true,
-  "Category": "tholth.View",
+  "Category": "Antler.View",
   "Description": "Get view by name",
   "Name": "View.ByName",
   "ElementResolver": {

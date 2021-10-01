@@ -1,7 +1,7 @@
 {
   "Uuid": "cbb2d777-da74-425b-96af-8c50f285b487",
   "IsCustomNode": true,
-  "Category": "tholth.String",
+  "Category": "Antler.String",
   "Description": "Returns best matches from string list of given word. Uses the Python difflib library for comparing sequenses.",
   "Name": "String.BestMatches",
   "ElementResolver": {

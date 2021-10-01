@@ -1,7 +1,7 @@
 {
   "Uuid": "e409fa40-ea8d-484e-a6c4-56c36525b5a0",
   "IsCustomNode": true,
-  "Category": "tholth",
+  "Category": "Antler",
   "Description": "",
   "Name": "MutualDifference",
   "ElementResolver": {

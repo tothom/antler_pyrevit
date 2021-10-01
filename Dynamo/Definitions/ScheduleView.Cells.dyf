@@ -1,7 +1,7 @@
 {
   "Uuid": "210bf6cf-138d-4e50-9dcc-96633bec46a2",
   "IsCustomNode": true,
-  "Category": "tholth.ScheduleView.Query",
+  "Category": "Antler.ScheduleView.Query",
   "Description": "Gets all cells in schedule",
   "Name": "ScheduleView.Cells",
   "ElementResolver": {

@@ -1,7 +1,7 @@
 {
   "Uuid": "5c7e69ff-6993-42fa-b0ff-f8532e0c7ee4",
   "IsCustomNode": true,
-  "Category": "tholth.View.Query",
+  "Category": "Antler.View.Query",
   "Description": "Gets name of the scope box of the view.",
   "Name": "View.ScopeBox.Name",
   "ElementResolver": {

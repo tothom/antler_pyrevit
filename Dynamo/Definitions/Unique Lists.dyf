@@ -1,7 +1,7 @@
 {
   "Uuid": "9c360740-feab-4265-b27a-6ab3a0f31008",
   "IsCustomNode": true,
-  "Category": "tholth.List",
+  "Category": "Antler.List",
   "Description": "Returns unique lists and indices of lists in input list of lists.",
   "Name": "Unique Lists",
   "ElementResolver": {

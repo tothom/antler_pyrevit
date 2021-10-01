@@ -1,7 +1,7 @@
 {
   "Uuid": "61b7b1c5-768b-4133-9df4-4e529051b9bb",
   "IsCustomNode": true,
-  "Category": "antler.FamilyInstance",
+  "Category": "Antler.FamilyInstance",
   "Description": "",
   "Name": "FromRoom",
   "ElementResolver": {

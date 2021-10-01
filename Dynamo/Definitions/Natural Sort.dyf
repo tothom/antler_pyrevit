@@ -1,7 +1,7 @@
 {
   "Uuid": "a5cc3f7f-6125-4905-b25b-0fbe4785e6d1",
   "IsCustomNode": true,
-  "Category": "tholth",
+  "Category": "Antler",
   "Description": "Sort list of strings by in \"human order\", i.e. [\"item1\", \"item2, \"item12\", \"item25\"].",
   "Name": "Natural Sort",
   "ElementResolver": {

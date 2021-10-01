@@ -1,7 +1,7 @@
 {
   "Uuid": "0313837b-588c-495e-b6ac-8d95ec237bf5",
   "IsCustomNode": true,
-  "Category": "tholth.Group",
+  "Category": "Antler.Group",
   "Description": "",
   "Name": "Group.GroupType",
   "ElementResolver": {

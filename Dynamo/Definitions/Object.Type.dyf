@@ -1,7 +1,7 @@
 {
   "Uuid": "7cee0817-8e97-4447-b822-6da9ebe1d67e",
   "IsCustomNode": true,
-  "Category": "tholth.Util",
+  "Category": "Antler.Util",
   "Description": "",
   "Name": "Object.Type",
   "ElementResolver": {

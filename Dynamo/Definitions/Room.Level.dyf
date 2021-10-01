@@ -1,7 +1,7 @@
 {
   "Uuid": "a8399566-013a-426f-b313-c30a82858f3d",
   "IsCustomNode": true,
-  "Category": "tholth.Room",
+  "Category": "Antler.Room",
   "Description": "Get Room Level",
   "Name": "Room.Level",
   "ElementResolver": {

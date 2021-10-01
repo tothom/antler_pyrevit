@@ -1,7 +1,7 @@
 {
   "Uuid": "02b8d319-5498-4eb9-853c-59709342448a",
   "IsCustomNode": true,
-  "Category": "tholth.ModellingAid",
+  "Category": "Antler.ModellingAid",
   "Description": "",
   "Name": "Parallelize Element",
   "ElementResolver": {

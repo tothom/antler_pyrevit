@@ -1,7 +1,7 @@
 {
   "Uuid": "547e00e3-7c95-4aca-b05b-9f6e5ecbb532",
   "IsCustomNode": true,
-  "Category": "tholth.Material",
+  "Category": "Antler.Material",
   "Description": "",
   "Name": "Material.Transparency",
   "ElementResolver": {

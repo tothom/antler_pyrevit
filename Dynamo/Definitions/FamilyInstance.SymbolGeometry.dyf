@@ -1,7 +1,7 @@
 {
   "Uuid": "6d8522a2-75f3-4ca6-8e68-8cd8865077bf",
   "IsCustomNode": true,
-  "Category": "tholth.FamilyInstance",
+  "Category": "Antler.FamilyInstance",
   "Description": "Gets symbol geometry as solid and faces with materials",
   "Name": "FamilyInstance.SymbolGeometry",
   "ElementResolver": {

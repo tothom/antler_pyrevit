@@ -1,7 +1,7 @@
 {
   "Uuid": "8c384652-50a6-4840-9820-125c2c1cd4bb",
   "IsCustomNode": true,
-  "Category": "antler.CurtainWall",
+  "Category": "Antler.CurtainWall",
   "Description": "The planarized curve loops for cell boundaries. The boundaries can have more than one CurveLoop. Each item in the returned array represents a CurveLoop containing 3 or more than 3 edges. ",
   "Name": "PlanarizedCurveLoops",
   "ElementResolver": {

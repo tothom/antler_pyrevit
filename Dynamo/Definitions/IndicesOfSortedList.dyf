@@ -1,7 +1,7 @@
 {
   "Uuid": "5fd42293-483e-402f-a882-6eafff7ab889",
   "IsCustomNode": true,
-  "Category": "tholth.List.Sort",
+  "Category": "Antler.List.Sort",
   "Description": "",
   "Name": "IndicesOfSortedList",
   "ElementResolver": {

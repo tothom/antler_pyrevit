@@ -1,7 +1,7 @@
 {
   "Uuid": "9085b6e6-b180-4cd0-a1d7-044a738ee2eb",
   "IsCustomNode": true,
-  "Category": "tholth.ScheduleView",
+  "Category": "Antler.ScheduleView",
   "Description": "Category Id of Schedule",
   "Name": "Category Id",
   "ElementResolver": {

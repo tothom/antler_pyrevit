@@ -1,7 +1,7 @@
 {
   "Uuid": "e672ed8b-eebc-4f0b-b75b-6360bd145419",
   "IsCustomNode": true,
-  "Category": "antler.Math",
+  "Category": "Antler.Math",
   "Description": "Random choose from options. Each option has a chance value. Higher chance value means higher chance of option being chosen.",
   "Name": "Random Choice",
   "ElementResolver": {

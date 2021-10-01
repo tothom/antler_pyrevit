@@ -1,7 +1,7 @@
 {
   "Uuid": "4932c911-675c-4023-9bfe-509270393b7e",
   "IsCustomNode": true,
-  "Category": "tholth.Color.Create",
+  "Category": "Antler.Color.Create",
   "Description": "",
   "Name": "DSColor by HSL",
   "ElementResolver": {

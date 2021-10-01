@@ -1,7 +1,7 @@
 {
   "Uuid": "db6f6379-613e-4dbb-9a2b-b20203129447",
   "IsCustomNode": true,
-  "Category": "Bonetools.CurtainGrid.CurtainGridLine",
+  "Category": "Antler.CurtainGrid.CurtainGridLine",
   "Description": "",
   "Name": "CurtainGridLine.RemoveSegment ",
   "ElementResolver": {

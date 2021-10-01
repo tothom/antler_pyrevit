@@ -1,7 +1,7 @@
 {
   "Uuid": "a6c435bc-6fab-4f20-b04f-ec9df7deb99e",
   "IsCustomNode": true,
-  "Category": "antler.CurtainWall",
+  "Category": "Antler.CurtainGrid",
   "Description": "All properties of Curtain Grid.",
   "Name": "CurtainGrid.Properties",
   "ElementResolver": {

@@ -1,7 +1,7 @@
 {
   "Uuid": "00a775bd-6be9-4c4f-a8b5-5a7279577ac6",
   "IsCustomNode": true,
-  "Category": "tholth.UI",
+  "Category": "Antler.UI",
   "Description": "Displays a simple Message Box",
   "Name": "MessageBox",
   "ElementResolver": {

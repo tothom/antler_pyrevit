@@ -1,7 +1,7 @@
 {
   "Uuid": "dccb46b1-d5a1-48c7-a184-91abd088bfdc",
   "IsCustomNode": true,
-  "Category": "tholth.Vector",
+  "Category": "Antler.Vector",
   "Description": "Returns true if angle between two vectors is within tolerance",
   "Name": "IsAlmostParallel",
   "ElementResolver": {

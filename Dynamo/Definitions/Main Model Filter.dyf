@@ -1,7 +1,7 @@
 {
   "Uuid": "1d39883a-4e86-454f-86eb-4479ed994dc1",
   "IsCustomNode": true,
-  "Category": "tholth.Filter",
+  "Category": "Antler.Filter",
   "Description": "Filters in only elements in main model",
   "Name": "Main Model Filter",
   "ElementResolver": {

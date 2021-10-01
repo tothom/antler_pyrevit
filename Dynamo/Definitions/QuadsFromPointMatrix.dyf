@@ -1,7 +1,7 @@
 {
   "Uuid": "7d383835-3dd3-481a-8821-553663422ee8",
   "IsCustomNode": true,
-  "Category": "antler.Points",
+  "Category": "Antler.Points",
   "Description": "Returns point quads from 2-dimensional point matrix.",
   "Name": "QuadsFromPointMatrix",
   "ElementResolver": {

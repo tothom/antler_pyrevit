@@ -1,7 +1,7 @@
 {
   "Uuid": "3309e787-bd32-4476-ae17-d0345a9434d8",
   "IsCustomNode": true,
-  "Category": "tholth.Logic",
+  "Category": "Antler.Logic",
   "Description": "",
   "Name": "Python All",
   "ElementResolver": {

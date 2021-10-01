@@ -1,7 +1,7 @@
 {
   "Uuid": "ccafc2ad-4835-4e12-93d0-617d2a74f4df",
   "IsCustomNode": true,
-  "Category": "tholth.Views",
+  "Category": "Antler.Views",
   "Description": "",
   "Name": "View.SetCropShape",
   "ElementResolver": {

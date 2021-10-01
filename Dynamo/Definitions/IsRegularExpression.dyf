@@ -1,7 +1,7 @@
 {
   "Uuid": "d85e4307-5e57-4ef6-8547-a173bbcb176f",
   "IsCustomNode": true,
-  "Category": "tholth.String",
+  "Category": "Antler.String",
   "Description": "Test string for regular expression match",
   "Name": "IsRegularExpression",
   "ElementResolver": {

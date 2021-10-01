@@ -1,7 +1,7 @@
 {
   "Uuid": "7e99bfcb-4db9-4715-8ca6-a2a53b6aba71",
   "IsCustomNode": true,
-  "Category": "antler",
+  "Category": "Antler.DividedSurface",
   "Description": "",
   "Name": "DividedSurface.FamilyInstances",
   "ElementResolver": {

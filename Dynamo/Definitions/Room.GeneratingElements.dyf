@@ -1,7 +1,7 @@
 {
   "Uuid": "67f30755-f3ec-4421-a5bc-22702e789b4c",
   "IsCustomNode": true,
-  "Category": "tholth.Rooms",
+  "Category": "Antler.Rooms",
   "Description": "Gets surfaces of room solid, and associated elements generating room geometry, together with the surface material. Will only get surfaces where room is bounded by an element, and not any surfaces where room is not bounded. For example if a room is not bounded on top, this node will not output the top surface of the room geometry.",
   "Name": "Room.GeneratingElements",
   "ElementResolver": {

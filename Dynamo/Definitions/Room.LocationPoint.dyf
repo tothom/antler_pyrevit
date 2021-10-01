@@ -1,7 +1,7 @@
 {
   "Uuid": "b883bd2f-3723-43d8-a887-b671ba090bd3",
   "IsCustomNode": true,
-  "Category": "tholth.Rooms",
+  "Category": "Antler.Rooms",
   "Description": "Returns locationpoint of rooom",
   "Name": "Room.LocationPoint",
   "ElementResolver": {

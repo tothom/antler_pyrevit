@@ -1,7 +1,7 @@
 {
   "Uuid": "94d41bb5-652b-415f-83c5-1aed0598799c",
   "IsCustomNode": true,
-  "Category": "antler",
+  "Category": "Antler.AdaptiveComponent",
   "Description": "Gets Placement Adaptive Point Element Refs to which the instance geometry adapts. ",
   "Name": "AdaptiveComponent.PlacementPointElements",
   "ElementResolver": {

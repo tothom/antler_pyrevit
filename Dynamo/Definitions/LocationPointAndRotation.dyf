@@ -1,7 +1,7 @@
 {
   "Uuid": "02893dc5-33b0-4c2b-870d-37654b345076",
   "IsCustomNode": true,
-  "Category": "antler.FamilyInstance",
+  "Category": "Antler.FamilyInstance",
   "Description": "Gets location point and rotation of a family instance or an element.",
   "Name": "LocationPointAndRotation",
   "ElementResolver": {
