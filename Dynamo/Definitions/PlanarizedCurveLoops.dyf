@@ -1,0 +1,185 @@
+{
+  "Uuid": "8c384652-50a6-4840-9820-125c2c1cd4bb",
+  "IsCustomNode": true,
+  "Category": "antler.CurtainWall",
+  "Description": "The planarized curve loops for cell boundaries. The boundaries can have more than one CurveLoop. Each item in the returned array represents a CurveLoop containing 3 or more than 3 edges. ",
+  "Name": "PlanarizedCurveLoops",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "List": {
+        "Key": "List",
+        "Value": "BuiltIn.ds"
+      },
+      "Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      },
+      "Geometry": {
+        "Key": "Autodesk.DesignScript.Geometry.Geometry",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Vector": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Math": {
+        "Key": "DSCore.Math",
+        "Value": "DSCoreNodes.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n#The inputs to this node will be stored as a list in the IN variable.\r\nelements = IN[0]\r\n\r\ndef function(element):\r\n\tif isinstance(element, (list, tuple)):\r\n\t\treturn [function(e) for e in element]\r\n\telse:\r\n\t\t# Code follows here:\r\n\t\telement = UnwrapElement(element)\r\n\t\t\r\n\t\ttry:\r\n\t\t\tcrvs = [a.ToProtoType() for a in element.PlanarizedCurveLoops]\r\n\t\texcept:\r\n\t\t\tcrvs = None\r\n\t\t\r\n\t\treturn crvs\r\n\r\nOUT = function(elements)",
+      "VariableInputPorts": true,
+      "Id": "2f3612ee4d2e46819db655beafe1c97e",
+      "Inputs": [
+        {
+          "Id": "80bf879471bd48328ef6e1780b31ad45",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "e028d3a03bf94850aa8bf0fca4b1e24c",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "curtain_cell",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "2baf99f537c74f3f972eb8fdccffdbe2",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "5d8a78bd8fce495bb226b6490e219245",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "crvs",
+      "Id": "abecd4a3420648ab9626f1f20e0deaac",
+      "Inputs": [
+        {
+          "Id": "d85fc057e6d44de7a043ae3da02e8823",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "e028d3a03bf94850aa8bf0fca4b1e24c",
+      "End": "d85fc057e6d44de7a043ae3da02e8823",
+      "Id": "140cc17709614e6792fe89b9b130370b"
+    },
+    {
+      "Start": "5d8a78bd8fce495bb226b6490e219245",
+      "End": "80bf879471bd48328ef6e1780b31ad45",
+      "Id": "ed13c235c08a49cc825a8025384751ac"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.3.8810",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 11732.763802396146,
+      "EyeY": -82947.602004036133,
+      "EyeZ": 8973.1647408019635,
+      "LookX": -12378.025765286771,
+      "LookY": -11892.866745963867,
+      "LookZ": -8973.1647408019653,
+      "UpX": -0.34855837590003813,
+      "UpY": 0.90258528434987684,
+      "UpZ": -0.25267936810316416
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "2f3612ee4d2e46819db655beafe1c97e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "2baf99f537c74f3f972eb8fdccffdbe2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "abecd4a3420648ab9626f1f20e0deaac",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.5,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": 0.0,
+    "Y": 0.0,
+    "Zoom": 1.0
+  }
+}

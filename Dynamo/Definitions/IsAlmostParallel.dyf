@@ -1,0 +1,265 @@
+{
+  "Uuid": "dccb46b1-d5a1-48c7-a184-91abd088bfdc",
+  "IsCustomNode": true,
+  "Category": "tholth.Vector",
+  "Description": "Returns true if angle between two vectors is within tolerance",
+  "Name": "IsAlmostParallel",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\nclr.AddReference('ProtoGeometry')\nfrom Autodesk.DesignScript.Geometry import *\n\nclr.AddReference(\"RevitNodes\")\nimport Revit\n\n# Import ToProtoType, ToRevitType geometry conversion extension methods\nclr.ImportExtensions(Revit.GeometryConversion)\n\n#The inputs to this node will be stored as a list in the IN variable.\nvec0 = IN[0].ToXyz()\nvec1 = IN[1].ToXyz()\ntolerance = IN[2]\n\nresult = False\n\nif vec0.AngleTo(vec1) <= tolerance or vec0.AngleTo(vec1.Negate()) <= tolerance:\n\tresult = True\nelse:\n\tresult = False\n\n#Assign your output to the OUT variable\nOUT = result",
+      "VariableInputPorts": true,
+      "Id": "ed65087218dc4e3fa07c36f9aa7d9926",
+      "Inputs": [
+        {
+          "Id": "0e7f8248163f407991e4c46ac141e95a",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a753728cc8ee4e4896be797479ebf0ef",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4220e0c0135745a183084eb3a729ed2b",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "567032d1af2c4f8b9962999d4b03f297",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "a",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "1f3dee612f78483a8691ed533db9d8dc",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "610e4b451a3d4c6ea7a11117127607d6",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "a",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "fbc2051203a0409f832f7ffbc2a6127c",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "adc4de4e335e4ceb8752348e0af8221e",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "tolerance",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "eb319254f029421db5ae3685b0b258a3",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "4d6ab7ddfa62435faa44b2ade0215cdd",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "boolean",
+      "Id": "718ce57a57354979b1c4e95679cbdab0",
+      "Inputs": [
+        {
+          "Id": "7ece464feebb46c687317d0bee907722",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "567032d1af2c4f8b9962999d4b03f297",
+      "End": "7ece464feebb46c687317d0bee907722",
+      "Id": "bd0bbb0d7c1a49a7a41e7badf8e6cb82"
+    },
+    {
+      "Start": "610e4b451a3d4c6ea7a11117127607d6",
+      "End": "0e7f8248163f407991e4c46ac141e95a",
+      "Id": "e3c0a149f1a84507aff05aa4eeb7ab0a"
+    },
+    {
+      "Start": "adc4de4e335e4ceb8752348e0af8221e",
+      "End": "a753728cc8ee4e4896be797479ebf0ef",
+      "Id": "78341baff9a743e2b9ab7d0047d9e017"
+    },
+    {
+      "Start": "4d6ab7ddfa62435faa44b2ade0215cdd",
+      "End": "4220e0c0135745a183084eb3a729ed2b",
+      "Id": "ad4b15f329d04896be81e963a5806a5b"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "ed65087218dc4e3fa07c36f9aa7d9926",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "1f3dee612f78483a8691ed533db9d8dc",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "fbc2051203a0409f832f7ffbc2a6127c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 150.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "eb319254f029421db5ae3685b0b258a3",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 300.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "718ce57a57354979b1c4e95679cbdab0",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.0,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": 98.1952634477838,
+    "Y": 146.431139140824,
+    "Zoom": 0.954042924882813
+  }
+}

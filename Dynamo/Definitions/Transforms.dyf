@@ -1,0 +1,402 @@
+{
+  "Uuid": "8f540e67-1e31-4c66-8874-f4eacb15d8df",
+  "IsCustomNode": true,
+  "Category": "antler.PointCloudInstance",
+  "Description": "Get transforms of Point Cloud Instance, both Transform and Total Transform.",
+  "Name": "Transforms",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n#The inputs to this node will be stored as a list in the IN variable.\r\nelements = IN[0]\r\n\r\ndef function(element):\r\n\tif isinstance(element, (list, tuple)):\r\n\t\treturn [function(e) for e in element]\r\n\telse:\r\n\t\t# Code follows here:\r\n\t\telement = UnwrapElement(element)\r\n\t\t\r\n\t\t\r\n\t\treturn {'Transform': element.GetTransform().ToCoordinateSystem(), 'TotalTransform': element.GetTotalTransform().ToCoordinateSystem()}\r\n\t\t\r\nOUT = function(elements)",
+      "VariableInputPorts": true,
+      "Id": "47a97aa99db84731b24e308a52a84734",
+      "Inputs": [
+        {
+          "Id": "02139de45469428cba115189c51ecccb",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "44080d0b39354e1188148097831c7eea",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "element",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "3c3c816b75374ddeb968dc74a576d34f",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "7fdef709af5844e4938d1c88995f3e0f",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "transform",
+      "Id": "ac3fb5c3e174484098a317813f6d429d",
+      "Inputs": [
+        {
+          "Id": "3210e15255f841c7affb07bb82b57e54",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "e87d24a7ebde49c8859cb79f5ee60278",
+      "Inputs": [
+        {
+          "Id": "74b84cd7870a4d4890ae480c9beae0dd",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "68df307244d945c5b2b49e360416a163",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DesignScript.Builtin.Dictionary.ValueAtKey@string",
+      "Id": "c3bfb2e676284dd09b4f431afd157473",
+      "Inputs": [
+        {
+          "Id": "010495ffc3de46d69668e77d5c5c79d2",
+          "Name": "dictionary",
+          "Description": "DesignScript.Builtin.Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4fa16383312e437ea920ad4372ac9660",
+          "Name": "key",
+          "Description": "The key in the Dictionary to obtain.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "b2fa5076a736438bb0b8dab28bc9525c",
+          "Name": "value",
+          "Description": "The value at the specified key or null if it is not set.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Obtain the value at a specified key\n\nDictionary.ValueAtKey (key: string): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"Transform\";\n\"TotalTransform\";",
+      "Id": "52ef7bd6f3e74279806009ce2536124e",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "3df65b1503df49e28f94dbaf2700690e",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4114afd36e6444fcb6c72d971dec0b67",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "total_transform",
+      "Id": "8eb056b780af453493b31d6b62634339",
+      "Inputs": [
+        {
+          "Id": "5cd9fe91df3249e38c81b7577ff412b1",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DesignScript.Builtin.Dictionary.ValueAtKey@string",
+      "Id": "3728916e95234602b03f50dc3c234bc4",
+      "Inputs": [
+        {
+          "Id": "5612abe1ee89483d924341397c42c11e",
+          "Name": "dictionary",
+          "Description": "DesignScript.Builtin.Dictionary",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3dd8869a437a4b9c9a1f2287acd694ad",
+          "Name": "key",
+          "Description": "The key in the Dictionary to obtain.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "ae4143959b014421be14ddac24bd8b8d",
+          "Name": "value",
+          "Description": "The value at the specified key or null if it is not set.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Obtain the value at a specified key\n\nDictionary.ValueAtKey (key: string): var[]..[]"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "44080d0b39354e1188148097831c7eea",
+      "End": "010495ffc3de46d69668e77d5c5c79d2",
+      "Id": "636f771d6bc6495d826fb1072a62a2ab"
+    },
+    {
+      "Start": "44080d0b39354e1188148097831c7eea",
+      "End": "5612abe1ee89483d924341397c42c11e",
+      "Id": "632eeb88a2e04c87b7613ffed6ae616c"
+    },
+    {
+      "Start": "7fdef709af5844e4938d1c88995f3e0f",
+      "End": "02139de45469428cba115189c51ecccb",
+      "Id": "1b9b856aa4324e54b49787fce700704f"
+    },
+    {
+      "Start": "b2fa5076a736438bb0b8dab28bc9525c",
+      "End": "3210e15255f841c7affb07bb82b57e54",
+      "Id": "d45d095a9ec04cfbb6b4add06f088be0"
+    },
+    {
+      "Start": "3df65b1503df49e28f94dbaf2700690e",
+      "End": "4fa16383312e437ea920ad4372ac9660",
+      "Id": "8ba4f780b50649d79e5ae0fa57476a96"
+    },
+    {
+      "Start": "4114afd36e6444fcb6c72d971dec0b67",
+      "End": "3dd8869a437a4b9c9a1f2287acd694ad",
+      "Id": "a2ddf35a43154151b050d020c0df48a2"
+    },
+    {
+      "Start": "ae4143959b014421be14ddac24bd8b8d",
+      "End": "5cd9fe91df3249e38c81b7577ff412b1",
+      "Id": "f3b9406cff6b4a38921304f74f97f62c"
+    },
+    {
+      "Start": "ae4143959b014421be14ddac24bd8b8d",
+      "End": "74b84cd7870a4d4890ae480c9beae0dd",
+      "Id": "25da18122bed4df385e8b54cdea9ab7d"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 9581.4584457321689,
+      "EyeY": 54381.337393284681,
+      "EyeZ": 20626.520913985176,
+      "LookX": -4374.5614730759189,
+      "LookY": -54381.337393284681,
+      "LookZ": -21385.794351485176,
+      "UpX": -0.16565254201967636,
+      "UpY": 0.56280492769506951,
+      "UpZ": -0.809820874443582
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "47a97aa99db84731b24e308a52a84734",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 236.48611100826542,
+        "Y": -40.648148539941531
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "3c3c816b75374ddeb968dc74a576d34f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -67.478559378705285,
+        "Y": -49.115778912727762
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "ac3fb5c3e174484098a317813f6d429d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 824.73659320046784,
+        "Y": -86.876044177334734
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Watch",
+        "Id": "e87d24a7ebde49c8859cb79f5ee60278",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 753.688504919355,
+        "Y": 113.31703535466909
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionary.ValueAtKey",
+        "Id": "c3bfb2e676284dd09b4f431afd157473",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 488.7046797131834,
+        "Y": -81.098256411453889
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "52ef7bd6f3e74279806009ce2536124e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 190.96654918904972,
+        "Y": 54.04056949469998
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "8eb056b780af453493b31d6b62634339",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 831.07139617729365,
+        "Y": 44.907613302006894
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Dictionary.ValueAtKey",
+        "Id": "3728916e95234602b03f50dc3c234bc4",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 495.03948269000864,
+        "Y": 50.685401067887696
+      }
+    ],
+    "Annotations": [],
+    "X": 83.588444601514055,
+    "Y": 216.11246310857615,
+    "Zoom": 1.2060220085363735
+  }
+}

@@ -1,0 +1,292 @@
+{
+  "Uuid": "b6909c3e-b0b5-463e-81fb-2fecb8872133",
+  "IsCustomNode": true,
+  "Category": "Bru",
+  "Description": "",
+  "Name": "ProjectCoordinateSystemByFile",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "524dbeab-108b-488f-a322-2250b64f8fee",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "55a3dcfafbea43408c95acf54aae191d",
+      "Inputs": [
+        {
+          "Id": "384b33567a964adb9029fbe50c00600e",
+          "Name": "north",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "9444ce8bd1f54d44a5f712c9ec3d07ae",
+          "Name": "east",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "73c79a19f40e4acbb3c09b33d322c326",
+          "Name": "elevation",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4b2d0e95ffef43128d6e645cd851d008",
+          "Name": "AngleToTrueNorth",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "dc644c516432423493c42cfce8fc24a1",
+          "Name": "ProjectCoordinateSystem",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": ""
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "ProjectCoordinateSystem",
+      "Id": "b7cbdb47d7834e5fa6ec44558b3eccf0",
+      "Inputs": [
+        {
+          "Id": "ab2a675045214c91b41729cdd73fb83c",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "e3a477c8-2f8d-430d-9b74-5411ec392137",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "7399895ff5f74cc3b2885fcdc8a4eea1",
+      "Inputs": [
+        {
+          "Id": "e5df87f07acc4d6aa8717e3d7f2a7191",
+          "Name": "FileName",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "bc7a0369814642f098c8ba5c8731b52b",
+          "Name": "FileName",
+          "Description": "Output #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "38ba0efe6a7b409f9ff32d8facdbff04",
+          "Name": "N/S",
+          "Description": "Output #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3cd27680ba87421f8564beb8138c3c51",
+          "Name": "E/W",
+          "Description": "Output #3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e1a274291aa04f3eadd7158faa067033",
+          "Name": "Elev.",
+          "Description": "Output #4",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b0dc09f8a1464d66a8ec330e3f8fa24e",
+          "Name": "AngleToTrueNorth",
+          "Description": "Output #5",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Reads a Project Basepoint Information file (*.MCInf) Containing information on Norting, Easting, Elevation and Angle to True North."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "file_path",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "f439006c29f84cefa212ddbcad5e6ccc",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "4d16d830891d4978814f5c94dce791e1",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "dc644c516432423493c42cfce8fc24a1",
+      "End": "ab2a675045214c91b41729cdd73fb83c",
+      "Id": "20f1e931240b435eac9c52f3ca0777a3"
+    },
+    {
+      "Start": "38ba0efe6a7b409f9ff32d8facdbff04",
+      "End": "384b33567a964adb9029fbe50c00600e",
+      "Id": "742ec495662249cb97c7f3dcc63a50fb"
+    },
+    {
+      "Start": "3cd27680ba87421f8564beb8138c3c51",
+      "End": "9444ce8bd1f54d44a5f712c9ec3d07ae",
+      "Id": "84e9ae1fd56e41c896004f8e0717edf5"
+    },
+    {
+      "Start": "e1a274291aa04f3eadd7158faa067033",
+      "End": "73c79a19f40e4acbb3c09b33d322c326",
+      "Id": "456bc83eba3e4238b11672194780c1a0"
+    },
+    {
+      "Start": "b0dc09f8a1464d66a8ec330e3f8fa24e",
+      "End": "4b2d0e95ffef43128d6e645cd851d008",
+      "Id": "fc0ac6f0e6f8404eb82cdd53589882ee"
+    },
+    {
+      "Start": "4d16d830891d4978814f5c94dce791e1",
+      "End": "e5df87f07acc4d6aa8717e3d7f2a7191",
+      "Id": "24670d6f1ab44c21ba6de5aafcaeb8a0"
+    }
+  ],
+  "Dependencies": [
+    "524dbeab-108b-488f-a322-2250b64f8fee",
+    "e3a477c8-2f8d-430d-9b74-5411ec392137"
+  ],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -23504.048828125,
+      "EyeY": 14149.7041015625,
+      "EyeZ": 45280.359375,
+      "LookX": 27654.83203125,
+      "LookY": -14744.298828125,
+      "LookZ": -39954.484375,
+      "UpX": 0.044653195887804031,
+      "UpY": 0.99691730737686157,
+      "UpZ": -0.0645129531621933
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": false,
+        "Name": "ProjectCoordinateSystem",
+        "Id": "55a3dcfafbea43408c95acf54aae191d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1316.51663434323,
+        "Y": 474.859155360823
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "b7cbdb47d7834e5fa6ec44558b3eccf0",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1771.5,
+        "Y": 476.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Document.ReadProjectBasepointInformationFile",
+        "Id": "7399895ff5f74cc3b2885fcdc8a4eea1",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 941.5,
+        "Y": 470.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "f439006c29f84cefa212ddbcad5e6ccc",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 643.0,
+        "Y": 457.5
+      }
+    ],
+    "Annotations": [],
+    "X": -538.5913489921877,
+    "Y": -26.647918335937533,
+    "Zoom": 0.59376714062500013
+  }
+}

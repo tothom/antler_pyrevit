@@ -1,0 +1,165 @@
+{
+  "Uuid": "b7a0b475-4788-428a-ad90-4d1ac826f0ff",
+  "IsCustomNode": true,
+  "Category": "tholth.Element.Query",
+  "Description": "Location point of element",
+  "Name": "Element.Ara",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\nclr.AddReference('ProtoGeometry')\nfrom Autodesk.DesignScript.Geometry import *\n\nclr.AddReference('RevitAPI')\nfrom Autodesk.Revit.DB import *\n\nclr.AddReference( \"RevitNodes\")\nimport Revit\n\n# Import geometry conversion extension methods\nclr.ImportExtensions(Revit.GeometryConversion)\n\n# Import Element wrapper extension methods\nclr.ImportExtensions(Revit.Elements)\n\n#The inputs to this node will be stored as a list in the IN variables.\ninput = IN[0]\n\ndef function(item):\n\tlocation_pt = item.Location\n\tpoint = location_pt.Point\n\treturn point.ToPoint()\n\noutput = None\n\nif isinstance(input, list):\n    output = [function(a) for a in UnwrapElement(input)]\nelse:\n    output = function(UnwrapElement(input))\n\n#Assign your output to the OUT variable.\nOUT = output",
+      "VariableInputPorts": true,
+      "Id": "a7272bd6499e4df6b11b58706da59e5b",
+      "Inputs": [
+        {
+          "Id": "5febbce51bd345cc8bbecb89f9a4321f",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "a4d4baf9bb9045be80f91c10db712f2d",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "element",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "d70a6904ac794065ada2895ebb4a637d",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "3fa5130e4fe74b2c951222dea224f494",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "point",
+      "Id": "7fffbacb9a6448b2a877227ea8aee800",
+      "Inputs": [
+        {
+          "Id": "42efb14332334bf1a988c4a549a0b746",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "a4d4baf9bb9045be80f91c10db712f2d",
+      "End": "42efb14332334bf1a988c4a549a0b746",
+      "Id": "f153200afed241e2ac22ad65ff5cc409"
+    },
+    {
+      "Start": "3fa5130e4fe74b2c951222dea224f494",
+      "End": "5febbce51bd345cc8bbecb89f9a4321f",
+      "Id": "900b2df35b3e4acf86e65cd7ad7b85a3"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -3451.468505859375,
+      "EyeY": 12746.0205078125,
+      "EyeZ": 14475.08203125,
+      "LookX": 12333.03125,
+      "LookY": -7246.0205078125,
+      "LookZ": -19592.58203125,
+      "UpX": 0.046429544687271118,
+      "UpY": 0.99619472026824951,
+      "UpZ": -0.073759213089942932
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "a7272bd6499e4df6b11b58706da59e5b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "d70a6904ac794065ada2895ebb4a637d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "7fffbacb9a6448b2a877227ea8aee800",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.0,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": -189.45010704674024,
+    "Y": 57.621815814089459,
+    "Zoom": 1.7835993623828124
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "Uuid": "78721334-91b6-45d2-9c21-2425fb2307dc",
+  "IsCustomNode": true,
+  "Category": "tholth.Element.Action",
+  "Description": "Delete elements if commit? = True",
+  "Name": "Delete Element",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\nclr.AddReference('ProtoGeometry')\nfrom Autodesk.DesignScript.Geometry import *\n\n# Import DocumentManager and TransactionManager\nclr.AddReference (\"RevitServices\")\nimport RevitServices\nfrom RevitServices.Persistence import DocumentManager\nfrom RevitServices.Transactions import TransactionManager\n\nclr.AddReference(\"RevitNodes\")\nimport Revit\n\nclr.AddReference(\"System.Drawing\")\nclr.AddReference(\"System.Windows.Forms\")\n\nfrom System.Drawing import Point\nfrom System.Windows.Forms import Application, Button, Form, Label, CheckBox\n\n# Import Element wrapper extension methods\nclr.ImportExtensions(Revit.Elements)\n\n#The inputs to this node will be stored as a list in the IN variable.\nelements = UnwrapElement(IN[0])\n\ndoc = DocumentManager.Instance.CurrentDBDocument\n\nclass DeletionForm(Form):\n    def __init__(self):\n        self.Text = 'Message'\n\n        self.label = Label()\n        self.label.Text = \"{0} elements will be deleted!\".format(len(elements))\n        self.label.Location = Point(50, 50)\n        self.label.Height = 30\n        self.label.Width = 200\n\n        button = Button()\n        button.Text = \"OK\"\n        button.Location = Point(50, 150)\n\n        button.Click += self.buttonPressed\n        \n        self.check1 = CheckBox()\n        self.check1.Text = \"Check to delete\"\n        self.check1.Location = Point(50, 100)\n        self.check1.Width = 90\n\n        self.Controls.Add(self.label)\n        self.Controls.Add(button)\n        self.Controls.Add(self.check1)\n\n    def buttonPressed(self, sender, args):\n        #print 'The label *used to say* : %s' % self.label.Text\n        self.Close()\n        \nform = DeletionForm()\n\nApplication.Run(form)\n\nif form.check1.Checked:\n\n\t# Start Transaction\n\tTransactionManager.Instance.EnsureInTransaction(doc)\n\n\t# Example Transaction\n\tfor element in elements:\n\t\ttry:\n\t\t\tdoc.Delete(element.Id)\n\t\texcept:\n\t\t\tpass\n\n\t# End Transaction\n\tTransactionManager.Instance.TransactionTaskDone()\n\n#Assign your output to the OUT variable\nOUT = None",
+      "VariableInputPorts": true,
+      "Id": "033be184f5d4497ab45b5c9d19af0edc",
+      "Inputs": [
+        {
+          "Id": "88f9d23e2fa94f1280844600e82e10dd",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "13a5eb1c30ce44c9a1780cc1a382d1f4",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "elements",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "32761f9fb004432087316d019701c26e",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "66acab3caa364f8aa7ae0151afd65b37",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "OUT",
+      "Id": "79f8002a71764e0c9ea729cacdf20aa9",
+      "Inputs": [
+        {
+          "Id": "eb7489c31d774198a83dc3e121bf2389",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "13a5eb1c30ce44c9a1780cc1a382d1f4",
+      "End": "eb7489c31d774198a83dc3e121bf2389",
+      "Id": "4628012ebace42728e5fc6f340507d41"
+    },
+    {
+      "Start": "66acab3caa364f8aa7ae0151afd65b37",
+      "End": "88f9d23e2fa94f1280844600e82e10dd",
+      "Id": "5fc1743c8c204324816e5f78a5d48893"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.2.6826",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "033be184f5d4497ab45b5c9d19af0edc",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 223.00337707973893,
+        "Y": 9.39012971139519
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "32761f9fb004432087316d019701c26e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "79f8002a71764e0c9ea729cacdf20aa9",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.0,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": 275.20167805896233,
+    "Y": 249.1869947228123,
+    "Zoom": 1.753503785640848
+  }
+}

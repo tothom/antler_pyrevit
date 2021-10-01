@@ -1,0 +1,165 @@
+{
+  "Uuid": "bcba1ec6-7b49-4173-9102-bf896ebbaf63",
+  "IsCustomNode": true,
+  "Category": "tholth.Math",
+  "Description": "",
+  "Name": "MinimalizeAngle",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\nimport math\n\nclr.AddReference('ProtoGeometry')\nfrom Autodesk.DesignScript.Geometry import *\n#The inputs to this node will be stored as a list in the IN variable.\nangle = IN[0]\n\nif angle <= (math.pi/2):\n\tangle = angle\nelif angle <= math.pi:\n\tangle = angle - math.pi\nelif angle <= (3*math.pi/2):\n\tangle = angle - math.pi\nelif angle <= (2*math.pi):\n\tangle = angle - (2*math.pi)\n\n#Assign your output to the OUT variable\nOUT = angle",
+      "VariableInputPorts": true,
+      "Id": "c23be8ebe0974e499908e79c4eb6f61d",
+      "Inputs": [
+        {
+          "Id": "9a228d5f2c3b4420a036a3cc78d1a556",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "d375463c0f5f429395bf24f9a7543d33",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "angle",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "48fc023b8f8d49e98e5f8f02b9ab7fc9",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "aa909248cec04eba929bbb091e7b9bdf",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "angle",
+      "Id": "778fd0d24e7e45c3b5ed0078bef44c87",
+      "Inputs": [
+        {
+          "Id": "aa2e8a69a95a421fb29425b4a7a5cc55",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "d375463c0f5f429395bf24f9a7543d33",
+      "End": "aa2e8a69a95a421fb29425b4a7a5cc55",
+      "Id": "807b016f28bc432087031cf401b38acd"
+    },
+    {
+      "Start": "aa909248cec04eba929bbb091e7b9bdf",
+      "End": "9a228d5f2c3b4420a036a3cc78d1a556",
+      "Id": "92a8e19ad8bd4d3bb6a431e1d8e4ed6c"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "c23be8ebe0974e499908e79c4eb6f61d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "48fc023b8f8d49e98e5f8f02b9ab7fc9",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "778fd0d24e7e45c3b5ed0078bef44c87",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.0,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": 32.1175,
+    "Y": 60.975,
+    "Zoom": 1.1575
+  }
+}

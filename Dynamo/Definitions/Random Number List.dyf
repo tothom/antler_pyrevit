@@ -1,0 +1,214 @@
+{
+  "Uuid": "ad12ca71-0b05-4232-8040-b1bb0573e077",
+  "IsCustomNode": true,
+  "Category": "tholth",
+  "Description": "Generates a random list of numbers. Seed input accepts anything that can be hashed, even Revit classes.",
+  "Name": "Random Number List",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Enable Python support and load DesignScript library\r\n#import random¨\r\nfrom System import Random\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nseed = IN[0]\r\ncount = IN[1]\r\n\r\n# Place your code below this line\r\nrand = Random(int(hash(seed)))\r\n\r\nnumbers = [rand.NextDouble() for _ in range(count)]\r\n\r\n# Assign your output to the OUT variable.\r\nOUT = numbers",
+      "VariableInputPorts": true,
+      "Id": "ef3d92b0ba5b47dabc5e5777ca0b3747",
+      "Inputs": [
+        {
+          "Id": "f6f25e34e2ea45e182cf9446968d9c9c",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7c7d8841b5ae44148b3f8d18a722824f",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "cbc049ecf41e42a29ff6b3e705e9c325",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "seed",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "bba4a62de0f24b6290b519d8e96db000",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "5a0f99d7b9b545e983b839703442b254",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "count",
+        "TypeName": "int",
+        "TypeRank": 0,
+        "DefaultValue": "1",
+        "Description": ""
+      },
+      "Id": "d2e80b68469a4a7889e3e2a683e84421",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "ac7af4c16c734853a2cd337e04d0fe9f",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "numbers",
+      "Id": "306fd642841e482ea5b22bf101fe0c4d",
+      "Inputs": [
+        {
+          "Id": "c60538fdc4f14706a7b2236901f6b5d1",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "cbc049ecf41e42a29ff6b3e705e9c325",
+      "End": "c60538fdc4f14706a7b2236901f6b5d1",
+      "Id": "0b3443ed56f34a65bbc75d5b54f0425f"
+    },
+    {
+      "Start": "5a0f99d7b9b545e983b839703442b254",
+      "End": "f6f25e34e2ea45e182cf9446968d9c9c",
+      "Id": "9acf7551139b4877a64cd0d406dee5fd"
+    },
+    {
+      "Start": "ac7af4c16c734853a2cd337e04d0fe9f",
+      "End": "7c7d8841b5ae44148b3f8d18a722824f",
+      "Id": "8a44ae2203144c328f6ed75650ab7b9c"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.3.8104",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "ef3d92b0ba5b47dabc5e5777ca0b3747",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "bba4a62de0f24b6290b519d8e96db000",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "d2e80b68469a4a7889e3e2a683e84421",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -40.0,
+        "Y": 86.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "306fd642841e482ea5b22bf101fe0c4d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.0,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": 120.0,
+    "Y": 72.0,
+    "Zoom": 1.0
+  }
+}

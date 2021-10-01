@@ -1,0 +1,165 @@
+{
+  "Uuid": "48b27d67-1efa-47bb-a9a6-e2723ee01cd6",
+  "IsCustomNode": true,
+  "Category": "tholth.Element.Query",
+  "Description": "Get Design Option of element",
+  "Name": "Element.DesignOption",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\n\n# Import RevitAPI\nclr.AddReference(\"RevitAPI\")\nimport Autodesk\nfrom Autodesk.Revit.DB import *\n#The inputs to this node will be stored as a list in the IN variable.\ninput = IN[0]\n\noutput = []\n\nfunction = lambda x: x.DesignOption #.Name\n\nif isinstance(input, list):\n\tfor i in UnwrapElement(input):\n\t\ttry:\n\t\t\toutput.append(function(i))\n\t\t\n\n\t\texcept Exception,e:\n\t\t\tprint str(e)\n\t\t\toutput.append(None)\n\t#output = [function(a) for a in input]\nelse:\n\toutput = function(UnwrapElement(input))\n\n#Assign your output to the OUT variable\nOUT = output",
+      "VariableInputPorts": true,
+      "Id": "6a5323a3197444789d1c6c91da902b20",
+      "Inputs": [
+        {
+          "Id": "5470e0da48a94716957c8d5a4c69072c",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "4b30e310aad14d94a6e0678fd7abbce9",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "element",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "d8f889e261974fee9a445892d83d8bd0",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "2b35bab4740c420bb58869bdc2b52a05",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "design_option",
+      "Id": "ef508b8b5a6a4ae489f04efbe8a6c85d",
+      "Inputs": [
+        {
+          "Id": "052412de8e5b4e209987254bb7f8ab4a",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "4b30e310aad14d94a6e0678fd7abbce9",
+      "End": "052412de8e5b4e209987254bb7f8ab4a",
+      "Id": "42f93d54d72c490f8cbd695249bdc8f7"
+    },
+    {
+      "Start": "2b35bab4740c420bb58869bdc2b52a05",
+      "End": "5470e0da48a94716957c8d5a4c69072c",
+      "Id": "3f02da67efe84fa3bc9ea11374e2dc0f"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -278.64956614170461,
+      "EyeY": 3339.5853694916877,
+      "EyeZ": -5655.5284136512955,
+      "LookX": 325.53884218573404,
+      "LookY": -4076.9242709853979,
+      "LookZ": 4081.1444130226846,
+      "UpX": 0.042722839455728918,
+      "UpY": 0.84339144581288938,
+      "UpZ": 0.53559838322990772
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Element.DesignOption",
+        "Id": "6a5323a3197444789d1c6c91da902b20",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 253.889763578312,
+        "Y": 7.29330670933534
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "d8f889e261974fee9a445892d83d8bd0",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "ef508b8b5a6a4ae489f04efbe8a6c85d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 556.0,
+        "Y": -27.0
+      }
+    ],
+    "Annotations": [],
+    "X": -81.2022338809578,
+    "Y": 302.85569301239326,
+    "Zoom": 1.9210132043015378
+  }
+}

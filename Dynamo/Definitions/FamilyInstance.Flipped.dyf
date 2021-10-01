@@ -1,0 +1,270 @@
+{
+  "Uuid": "d269395a-03fc-4c25-ba1e-da7c17e1a3b3",
+  "IsCustomNode": true,
+  "Category": "tholth.FamilyInstance",
+  "Description": "Returns True if familyinstance is flipped from direction in family editor",
+  "Name": "FamilyInstance.Flipped",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "String": {
+        "Key": "DSCore.String",
+        "Value": "DSCoreNodes.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "#The inputs to this node will be stored as a list in the IN variables.\ndoors = IN[0]\n\nif isinstance(doors, list):\n\tdoors = UnwrapElement(doors)\nelse:\n\tdoors = UnwrapElement([doors])\n\nflip_hand= [a.HandFlipped for a in doors]  \n\n#Assign your output to the OUT variable.\nOUT = flip_hand",
+      "VariableInputPorts": true,
+      "Id": "98634c1e511841fbbae51abc2dc950e7",
+      "Inputs": [
+        {
+          "Id": "79aebc84a1444c22b9ccab8d34f0c430",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "5e2393d3890f49cc92b15f31afe9ae63",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "#The inputs to this node will be stored as a list in the IN variables.\ndoors = IN[0]\n\nif isinstance(doors, list):\n\tdoors = UnwrapElement(doors)\nelse:\n\tdoors = UnwrapElement([doors])\n\nflip_facing= [a.FacingFlipped for a in doors]  \n\n#Assign your output to the OUT variable.\nOUT = flip_facing",
+      "VariableInputPorts": true,
+      "Id": "cabd5925195b426db4f3d5f167a5e465",
+      "Inputs": [
+        {
+          "Id": "ec58c306a6df49cda1c254d8c47024e8",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "fff4f8a5e7524703b3dcb154c0757c42",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "family_instance",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "bc11cd5d960b437bad825b77d0635168",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "500e8c209c76447d9088ff8f3e673c6b",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "hand_flipped",
+      "Id": "a5b6c8106519417aa83cd952d915a852",
+      "Inputs": [
+        {
+          "Id": "f835946b3f2a4c418d28b676af62d799",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "facing_flipped",
+      "Id": "f3c0c335b27244d99f76af5b57b47f5c",
+      "Inputs": [
+        {
+          "Id": "081a19bec4f14a3dabb41a2cc2b96d3c",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "5e2393d3890f49cc92b15f31afe9ae63",
+      "End": "f835946b3f2a4c418d28b676af62d799",
+      "Id": "ba7b7b031849445f8b51e49f4b797bda"
+    },
+    {
+      "Start": "fff4f8a5e7524703b3dcb154c0757c42",
+      "End": "081a19bec4f14a3dabb41a2cc2b96d3c",
+      "Id": "f570f843fb0d4a2daa89a0f51cfd508f"
+    },
+    {
+      "Start": "500e8c209c76447d9088ff8f3e673c6b",
+      "End": "79aebc84a1444c22b9ccab8d34f0c430",
+      "Id": "040361d2f5964453af6d18880c63d7f7"
+    },
+    {
+      "Start": "500e8c209c76447d9088ff8f3e673c6b",
+      "End": "ec58c306a6df49cda1c254d8c47024e8",
+      "Id": "ca6a77e68ddf4cc0b66cfdba4dbc88b9"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 27600.612781984222,
+      "EyeY": 6269.5059776292192,
+      "EyeZ": -1589.8335660190646,
+      "LookX": -2640.8144356686244,
+      "LookY": -5019.6814864748858,
+      "LookZ": -2635.2318941535464,
+      "UpX": -0.46439435369407139,
+      "UpY": 0.75470950365180367,
+      "UpZ": -0.46341256747665455
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "FamilyInstance.HandFlipped",
+        "Id": "98634c1e511841fbbae51abc2dc950e7",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 259.56704692050744,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "FamilyInstance.FacingFlipped",
+        "Id": "cabd5925195b426db4f3d5f167a5e465",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 256.91144708423326,
+        "Y": 165.11719439590729
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "bc11cd5d960b437bad825b77d0635168",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -198.72714182865354,
+        "Y": 107.82625389968797
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "a5b6c8106519417aa83cd952d915a852",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1012.0463218450336,
+        "Y": 40.561460348901988
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "f3c0c335b27244d99f76af5b57b47f5c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1013.9418270848194,
+        "Y": 139.45861893261144
+      }
+    ],
+    "Annotations": [
+      {
+        "Id": "45af9112f85740688a3fb14c347e1aed",
+        "Title": "Bestemme slagretning",
+        "Nodes": [
+          "98634c1e511841fbbae51abc2dc950e7",
+          "cabd5925195b426db4f3d5f167a5e465"
+        ],
+        "Left": 246.91144708423326,
+        "Top": -96.5,
+        "Width": 210.15559983627418,
+        "Height": 329.61719439590729,
+        "FontSize": 36.0,
+        "InitialTop": 0.0,
+        "InitialHeight": 310.11719439590729,
+        "TextblockHeight": 86.5,
+        "Background": "#FFC1D676"
+      }
+    ],
+    "X": 211.74824387799595,
+    "Y": 395.58375876316262,
+    "Zoom": 0.910063803931439
+  }
+}

@@ -1,0 +1,255 @@
+{
+  "Uuid": "c77e34c1-c169-4d65-aec8-00d31512c4ed",
+  "IsCustomNode": true,
+  "Category": "tholth.Rooms",
+  "Description": "Gets doors to room and from room",
+  "Name": "Room.Doors",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\nclr.AddReference('ProtoGeometry')\nfrom Autodesk.DesignScript.Geometry import *\n\n# Import RevitAPI\nclr.AddReference(\"RevitAPI\")\nimport Autodesk\nfrom Autodesk.Revit.DB import *\n\n# Import DocumentManager and TransactionManager\nclr.AddReference(\"RevitServices\")\nimport RevitServices\nfrom RevitServices.Persistence import DocumentManager\n\n#The inputs to this node will be stored as a list in the IN variable.\nrooms = IN[0]\n\ndoc = DocumentManager.Instance.CurrentDBDocument\nphase = list(doc.Phases)[-1] \n\noutput = []\n\nif not isinstance(rooms, list):\n    rooms = [UnwrapElement(rooms)]\nelse:\n\trooms = UnwrapElement(rooms)\n\nroom_ids = [room.Id for room in rooms]\n\nroom_range = range(len(rooms))\nroom_fromdoors = [[] for i in room_range]\nroom_todoors = [[] for i in room_range]\n\ndoor_collector = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Doors).OfClass(FamilyInstance)\n\n\nfor door in door_collector:\n\ttry:\n\t\tfromroom = door.FromRoom[phase]\n\t\tif fromroom.Id in room_ids:\n\t\t\troom_fromdoors[room_ids.index(fromroom.Id)].append(door)\n\texcept:\n\t\tpass\n\ttry:\n\t\ttoroom = door.ToRoom[phase]\n\t\tif toroom.Id in room_ids:\n\t\t\troom_todoors[room_ids.index(toroom.Id)].append(door)\n\texcept:\n\t\tpass\n\n#Assign your output to the OUT variable\nOUT = room_fromdoors, room_todoors",
+      "VariableInputPorts": true,
+      "Id": "31994f2ae55546bba4515dcb9f2ac749",
+      "Inputs": [
+        {
+          "Id": "cbb67ed44ea341648d36fb2c1d535e0c",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "0a08df2275674a0cbab5b4ec72943a2c",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "rooms",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "2a295bc6212a4165a2c9a13774c6c0c1",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "68cbc27286e24faa99cd4c6ea213b9f5",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "doors.fromroom",
+      "Id": "2f2c5db91427456d8a29c40509025c02",
+      "Inputs": [
+        {
+          "Id": "932ff06be3b1439094a56ac3d3e5da55",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "a[0];\na[1];",
+      "Id": "e239ef8b998346d6b2077ddaed2aaebb",
+      "Inputs": [
+        {
+          "Id": "dce71843842f4d369881d9383a40ae0a",
+          "Name": "a",
+          "Description": "a",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "6aa4213171594bc697398b5570cd26fb",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4a4e2ff266564e9f827b98714930b587",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "doors.toroom",
+      "Id": "6c86baffffd84236818fbd76b59f28e6",
+      "Inputs": [
+        {
+          "Id": "928187769e9a458db4a176196808a5e3",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "0a08df2275674a0cbab5b4ec72943a2c",
+      "End": "dce71843842f4d369881d9383a40ae0a",
+      "Id": "d17ef2116bba48b59cf54626f1bd1089"
+    },
+    {
+      "Start": "68cbc27286e24faa99cd4c6ea213b9f5",
+      "End": "cbb67ed44ea341648d36fb2c1d535e0c",
+      "Id": "5a60911e543948b687019734a67c09d1"
+    },
+    {
+      "Start": "6aa4213171594bc697398b5570cd26fb",
+      "End": "932ff06be3b1439094a56ac3d3e5da55",
+      "Id": "04246b48d43c475c9be8e9d4af05a024"
+    },
+    {
+      "Start": "4a4e2ff266564e9f827b98714930b587",
+      "End": "928187769e9a458db4a176196808a5e3",
+      "Id": "1c5692e1b54b4c86aceba9bbe1d400c3"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "31994f2ae55546bba4515dcb9f2ac749",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 150.584361784673,
+        "Y": -13.7652422144299
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "2a295bc6212a4165a2c9a13774c6c0c1",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "2f2c5db91427456d8a29c40509025c02",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 550.937823024631,
+        "Y": -35.0872905751938
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "e239ef8b998346d6b2077ddaed2aaebb",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 364.063165561796,
+        "Y": -13.6100454399299
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "6c86baffffd84236818fbd76b59f28e6",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 563.361916422513,
+        "Y": 42.1376270711532
+      }
+    ],
+    "Annotations": [],
+    "X": 89.808124903472361,
+    "Y": -8.9356663721366658,
+    "Zoom": 3.178442175853907
+  }
+}

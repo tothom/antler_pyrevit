@@ -1,0 +1,214 @@
+{
+  "Uuid": "00a775bd-6be9-4c4f-a8b5-5a7279577ac6",
+  "IsCustomNode": true,
+  "Category": "tholth.UI",
+  "Description": "Displays a simple Message Box",
+  "Name": "MessageBox",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\n\r\nclr.AddReference('System.Windows.Forms')\r\nfrom System.Windows.Forms import MessageBox\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nmessage = IN[0]\r\ncaption = IN[1]\r\n\r\n# Place your code below this line\r\nassert message\r\nassert isinstance(message, str)\r\n#assert len(message) <= 2048, \"String to long\"\r\nmax_message_len = 4096\r\nmessage = message[:max_message_len]\r\n\r\nassert len(caption) <= 64, \"Caption to long\"\r\ncaption = caption or \"Message\"\r\n\r\nresult = MessageBox.Show(message, caption)\r\n\r\n# Assign your output to the OUT variable.\r\nOUT = result",
+      "VariableInputPorts": true,
+      "Id": "f27a21ee6fe54fce9e61d08c5a0ff0bf",
+      "Inputs": [
+        {
+          "Id": "e24929027d854f898a756d8a1f2bba89",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "5bd3061ca34845ef887ad34b961e6f71",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "edc7bb04079f47bb9c615d1df199122f",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "message",
+        "TypeName": "string",
+        "TypeRank": 0,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "8c952b68f8674c65935d7035fd87cb9f",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "70432e99de38426d9d0ad2f6317b1933",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "result",
+      "Id": "df74a459d22b45cc9f3e9cffbb4d52db",
+      "Inputs": [
+        {
+          "Id": "1d1632a8bf3f4f8d9f443523f3f2b64c",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "caption",
+        "TypeName": "string",
+        "TypeRank": 0,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "a0a161b194854860be26bb368edac795",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "92d0de51f6144a60a40a92d89631e7e3",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "edc7bb04079f47bb9c615d1df199122f",
+      "End": "1d1632a8bf3f4f8d9f443523f3f2b64c",
+      "Id": "8d9ca495c0604b5fb821ac92e265e3fc"
+    },
+    {
+      "Start": "70432e99de38426d9d0ad2f6317b1933",
+      "End": "e24929027d854f898a756d8a1f2bba89",
+      "Id": "72ada4c80f024c2c9797c44f706da58e"
+    },
+    {
+      "Start": "92d0de51f6144a60a40a92d89631e7e3",
+      "End": "5bd3061ca34845ef887ad34b961e6f71",
+      "Id": "eb014b3837ae4921a464fd3a40c28dad"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.2.6826",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "f27a21ee6fe54fce9e61d08c5a0ff0bf",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 257.55555555555566,
+        "Y": 16.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "8c952b68f8674c65935d7035fd87cb9f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -56.872909107956076,
+        "Y": -15.200651399705961
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "df74a459d22b45cc9f3e9cffbb4d52db",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 460.8075253961141,
+        "Y": 5.5120927669867541
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "a0a161b194854860be26bb368edac795",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -89.848818882079,
+        "Y": 91.300742615475457
+      }
+    ],
+    "Annotations": [],
+    "X": -227.91458800177168,
+    "Y": 152.84712532354058,
+    "Zoom": 2.4940063596020785
+  }
+}

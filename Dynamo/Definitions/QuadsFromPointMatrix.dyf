@@ -1,0 +1,193 @@
+{
+  "Uuid": "7d383835-3dd3-481a-8821-553663422ee8",
+  "IsCustomNode": true,
+  "Category": "antler.Points",
+  "Description": "Returns point quads from 2-dimensional point matrix.",
+  "Name": "QuadsFromPointMatrix",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "List": {
+        "Key": "List",
+        "Value": "BuiltIn.ds"
+      },
+      "Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      },
+      "Geometry": {
+        "Key": "Autodesk.DesignScript.Geometry.Geometry",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Vector": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Math": {
+        "Key": "DSCore.Math",
+        "Value": "DSCoreNodes.dll"
+      },
+      "PolyCurve": {
+        "Key": "Autodesk.DesignScript.Geometry.PolyCurve",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Line": {
+        "Key": "Autodesk.DesignScript.Geometry.Line",
+        "Value": "ProtoGeometry.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\n# For working with DesignScript abstract geometry\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n#The inputs to this node will be stored as a list in the IN variable.\r\ngrid = IN[0]\r\n\r\nquad_tree = []\r\n\r\nfor i in range(len(grid)-1):\r\n\tquads = []\r\n\t\r\n\tfor j in range(len(grid[i])-1):\r\n\r\n\t\tquads.append((\r\n\t\t\tgrid[i][j], \r\n\t\t\tgrid[i+1][j], \r\n\t\t\tgrid[i+1][j+1], \r\n\t\t\tgrid[i][j+1]\r\n\t\t\t))\r\n\t\r\n\tquad_tree.append(quads)\r\n\r\n#Assign your output to the OUT variable.\r\nOUT = quad_tree",
+      "VariableInputPorts": true,
+      "Id": "15f0b5e04f364c748c3dcae9ae5e5531",
+      "Inputs": [
+        {
+          "Id": "aa4479b418ba4c9fa3d5b49185692db7",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "be50d053d5e64d83b601373d5240714a",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "point_matrix",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "17d16ddab8e84d14a0f4c617f3c68d09",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "01dff2780f6b4f85b8863ff1d5eb52df",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "quads",
+      "Id": "8d579735da2f4cebb90bb242d8408590",
+      "Inputs": [
+        {
+          "Id": "3a361b63363748d29ec4040eed9016cc",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "be50d053d5e64d83b601373d5240714a",
+      "End": "3a361b63363748d29ec4040eed9016cc",
+      "Id": "11242d0bd7664363806e7a6dbc535e29"
+    },
+    {
+      "Start": "01dff2780f6b4f85b8863ff1d5eb52df",
+      "End": "aa4479b418ba4c9fa3d5b49185692db7",
+      "Id": "33b24a39854a423f8efd9cef07fc8b20"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.3.8810",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 13245.168036633388,
+      "EyeY": 36640.375454685956,
+      "EyeZ": 15327.289093427153,
+      "LookX": 4017.254077965461,
+      "LookY": -85352.055602174587,
+      "LookZ": -17485.034650021673,
+      "UpX": 0.20416161352256071,
+      "UpY": 0.4107188526134935,
+      "UpZ": -0.88861018431693
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "15f0b5e04f364c748c3dcae9ae5e5531",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "17d16ddab8e84d14a0f4c617f3c68d09",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "8d579735da2f4cebb90bb242d8408590",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.5,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": -897.55231068002843,
+    "Y": -69.462922602287989,
+    "Zoom": 4.0
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "Uuid": "998e943a-e68a-46b3-975a-fca5f431dabd",
+  "IsCustomNode": true,
+  "Category": "tholth.Workset.Query",
+  "Description": "Counts elements on workset.",
+  "Name": "WorksetElementCount",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\n\n# Import RevitAPI\nclr.AddReference(\"RevitAPI\")\nimport Autodesk\nfrom Autodesk.Revit.DB import *\n\n# Import DocumentManager and TransactionManager\nclr.AddReference(\"RevitServices\")\nimport RevitServices\nfrom RevitServices.Persistence import DocumentManager\nfrom RevitServices.Transactions import TransactionManager\n\n# Import ToDSType(bool) extension method\nclr.AddReference(\"RevitNodes\")\nimport Revit\nclr.ImportExtensions(Revit.Elements)\nclr.ImportExtensions(Revit.GeometryConversion)\n\n#The input to this node will be stored in the IN[0] variable.\nworkset = IN[0]\n\ndoc =  DocumentManager.Instance.CurrentDBDocument\n\n# Collects all elements on given workset\nelementCollector = FilteredElementCollector(doc)\n\nelementWorksetFilter = ElementWorksetFilter(workset.Id)\nworksetElemsfounds = elementCollector.WherePasses(elementWorksetFilter).ToElements()\n\n# Counts the elements in collector\nelementsCount = worksetElemsfounds.Count\n\n\n#Assign your output to the OUT variable\nOUT = elementsCount",
+      "VariableInputPorts": true,
+      "Id": "61ba5248bad5416a9b2e50a714d44059",
+      "Inputs": [
+        {
+          "Id": "671cef52f1d04aae9e621d7b5c848253",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "790e4b95a8944ba49807f2310ecaaf4f",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "workset",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "eee4fe4f4cf940e7a6ea2e07ce5c8d38",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "dd2ad159f6f44fe7ae849e023577ce49",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "count",
+      "Id": "f24ed3ed8caf40be9bce54dd41f153d1",
+      "Inputs": [
+        {
+          "Id": "52d1e6a09e2c4039923c63f9bebe9709",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "790e4b95a8944ba49807f2310ecaaf4f",
+      "End": "52d1e6a09e2c4039923c63f9bebe9709",
+      "Id": "6fcc5a6c236a439591fd1339949cec70"
+    },
+    {
+      "Start": "dd2ad159f6f44fe7ae849e023577ce49",
+      "End": "671cef52f1d04aae9e621d7b5c848253",
+      "Id": "33faf042a2ee4f9daf9d00c1f38840c9"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.2.6826",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "61ba5248bad5416a9b2e50a714d44059",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "eee4fe4f4cf940e7a6ea2e07ce5c8d38",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "f24ed3ed8caf40be9bce54dd41f153d1",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 508.0,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": 205.2143493908755,
+    "Y": 290.90333464656192,
+    "Zoom": 1.4425890929331342
+  }
+}

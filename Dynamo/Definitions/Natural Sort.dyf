@@ -1,0 +1,267 @@
+{
+  "Uuid": "a5cc3f7f-6125-4905-b25b-0fbe4785e6d1",
+  "IsCustomNode": true,
+  "Category": "tholth",
+  "Description": "Sort list of strings by in \"human order\", i.e. [\"item1\", \"item2, \"item12\", \"item25\"].",
+  "Name": "Natural Sort",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "DesignScript.Builtin.Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      },
+      "Math": {
+        "Key": "DSCore.Math",
+        "Value": "DSCoreNodes.dll"
+      },
+      "List": {
+        "Key": "List",
+        "Value": "BuiltIn.ds"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "t[0];\nt[1];",
+      "Id": "59a97251390a402ca998ba9ead6f72c4",
+      "Inputs": [
+        {
+          "Id": "057b8fe87228429cbc6b08299cb8504b",
+          "Name": "t",
+          "Description": "t",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "712797e0d1464a36bde1b5cc4a1c446f",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "f47ba7622e094d73b8e6c195dcab2833",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "text",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "9b541fa74a9e4e149f0dcb69a721a0ed",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "50067e75b43146f587a36971954c16b9",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "indices",
+      "Id": "28e129ff5aef4234971e16aa1db0499c",
+      "Inputs": [
+        {
+          "Id": "76c581ede80d4dc1a77468df7f9f7fd5",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "items",
+      "Id": "b726aadda6e342e59fb0f09b7dcd88fe",
+      "Inputs": [
+        {
+          "Id": "6575767544a64dd0afa4f5b76278633e",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "\"\"\"\r\nSOURCES:\r\nhttps://stackoverflow.com/questions/7851077/how-to-return-index-of-a-sorted-list\r\nhttps://stackoverflow.com/questions/5967500/how-to-correctly-sort-a-string-with-a-number-inside\r\n\"\"\"\r\n\r\nimport re\r\nfrom operator import itemgetter\r\n\r\ndef atoi(text):\r\n    return int(text) if text.isdigit() else text\r\n\r\ndef natural_keys(text):\r\n    \"\"\"\r\n    alist.sort(key=natural_keys) sorts in human order\r\n    http://nedbatchelder.com/blog/200712/human_sorting.html\r\n    (See Toothy's implementation in the comments)\r\n    \"\"\"\r\n    try:\r\n    \tresult = [atoi(c) for c in re.split(r'(\\d+)', text[1])] \r\n    except:\r\n    \tresult = None\r\n    return result\r\n    \r\ntext_list = IN[0]\r\n\r\ntemp = [(i, value) for i, value in enumerate(text_list)]\r\n\r\ntemp.sort(key=natural_keys)\r\n\r\nOUT = zip(*temp)",
+      "VariableInputPorts": true,
+      "Id": "5da8e676b6f44d749b967bdd07ac8c82",
+      "Inputs": [
+        {
+          "Id": "41bf7702216a454dbe599095105bc9cf",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "f346fa8505184d2da20163c5785ff812",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "712797e0d1464a36bde1b5cc4a1c446f",
+      "End": "76c581ede80d4dc1a77468df7f9f7fd5",
+      "Id": "bf86156b09044b4baa720634eea4fcb1"
+    },
+    {
+      "Start": "f47ba7622e094d73b8e6c195dcab2833",
+      "End": "6575767544a64dd0afa4f5b76278633e",
+      "Id": "1b3fb80d82ac408795c425474e7e88bd"
+    },
+    {
+      "Start": "50067e75b43146f587a36971954c16b9",
+      "End": "41bf7702216a454dbe599095105bc9cf",
+      "Id": "b51a4e7b1dcc43a4b6e794276e6b4d1a"
+    },
+    {
+      "Start": "f346fa8505184d2da20163c5785ff812",
+      "End": "057b8fe87228429cbc6b08299cb8504b",
+      "Id": "5a30f5410d7248778715af88314cc57e"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.3.8810",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -21.745300894825029,
+      "EyeY": 17.936385347291012,
+      "EyeZ": 100.66642354114958,
+      "LookX": 21.745300894825029,
+      "LookY": -17.936385347291012,
+      "LookZ": -100.66642354114958,
+      "UpX": -0.0092099475098424612,
+      "UpY": 0.9990482215818578,
+      "UpZ": 0.042635992084073523
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "59a97251390a402ca998ba9ead6f72c4",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 442.14977695532207,
+        "Y": 3.0718515651651614
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "9b541fa74a9e4e149f0dcb69a721a0ed",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "28e129ff5aef4234971e16aa1db0499c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 607.14977695532207,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "b726aadda6e342e59fb0f09b7dcd88fe",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 607.14977695532207,
+        "Y": 150.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "5da8e676b6f44d749b967bdd07ac8c82",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 274.02950974265008,
+        "Y": 105.56310475491446
+      }
+    ],
+    "Annotations": [],
+    "X": -96.923492075058846,
+    "Y": 188.12924975583991,
+    "Zoom": 1.703916824554996
+  }
+}

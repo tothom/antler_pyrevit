@@ -1,0 +1,164 @@
+{
+  "Uuid": "619d26aa-54fc-4baf-a076-a7d9aec97bc5",
+  "IsCustomNode": true,
+  "Category": "tholth.Collector",
+  "Description": "Collects elements on given Level",
+  "Name": "Collector.ElementsOnLevel",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\nclr.AddReference('ProtoGeometry')\nfrom Autodesk.DesignScript.Geometry import *\n\n# Import RevitAPI\nclr.AddReference(\"RevitAPI\")\nimport Autodesk\nfrom Autodesk.Revit.DB import *\n\n# Import DocumentManager and TransactionManager\nclr.AddReference(\"RevitServices\")\nimport RevitServices\nfrom RevitServices.Persistence import DocumentManager\n\n#The inputs to this node will be stored as a list in the IN variable.\nlevel = UnwrapElement(IN[0])\n\ndoc = DocumentManager.Instance.CurrentDBDocument\n\nlevel_filter = ElementLevelFilter(level.Id)\n\ncollector = FilteredElementCollector(doc)\nelements = collector.WherePasses(level_filter).ToElements()\n\n#Assign your output to the OUT variable\nOUT = elements",
+      "VariableInputPorts": true,
+      "Id": "132347b73ecf4850ad8ae6267d81aeed",
+      "Inputs": [
+        {
+          "Id": "9bbe3ea8b50e4f7d9da50ca3b87f03ad",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "748b4f34803f49c4aae5d43664cf66bc",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "OUT",
+      "Id": "83e0d5d5e362421e9c7805f041086e29",
+      "Inputs": [
+        {
+          "Id": "0cc8b2c3dfae4cde9c8c41e6029af884",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "level",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "678226a160314a43b2e9d9dcb9f17c53",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "7f90f21d846a4e63bf36d39b2f3b7ff2",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "748b4f34803f49c4aae5d43664cf66bc",
+      "End": "0cc8b2c3dfae4cde9c8c41e6029af884",
+      "Id": "32e9f56d47714aec8b47ca8072e9e57b"
+    },
+    {
+      "Start": "7f90f21d846a4e63bf36d39b2f3b7ff2",
+      "End": "9bbe3ea8b50e4f7d9da50ca3b87f03ad",
+      "Id": "c3a526d47f254877990dc2ac3ba02073"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.3.8104",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 29360.534533058926,
+      "EyeY": 3574.5562647728339,
+      "EyeZ": -20129.088556412513,
+      "LookX": -11433.334932400237,
+      "LookY": 806.46990372232449,
+      "LookZ": 14419.284747074373,
+      "UpX": 0.15964177791619311,
+      "UpY": 0.96642593172365676,
+      "UpZ": -0.2013341209520918
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Collector.Levels",
+        "Id": "132347b73ecf4850ad8ae6267d81aeed",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 292.70130087228426,
+        "Y": 29.114523322011991
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "83e0d5d5e362421e9c7805f041086e29",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 487.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "678226a160314a43b2e9d9dcb9f17c53",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 52.533537448007166,
+        "Y": 39.707554152585615
+      }
+    ],
+    "Annotations": [],
+    "X": -871.75665187954041,
+    "Y": -66.70211950908606,
+    "Zoom": 3.6157212987495506
+  }
+}

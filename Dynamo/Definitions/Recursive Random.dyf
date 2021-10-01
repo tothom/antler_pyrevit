@@ -1,0 +1,214 @@
+{
+  "Uuid": "aeb10aca-f39d-4b3b-8bd1-28d20742fe51",
+  "IsCustomNode": true,
+  "Category": "antler.Math",
+  "Description": "Turns all values in list of list (of list etc) to random values between 0 and 1. Randomize boolean adds extra time based randomness.",
+  "Name": "Recursive Random",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "from System import Random\r\nimport time\r\n\r\nseed = IN[0]\r\nrandomize = IN[1]\r\n\r\n\r\ndef recursive_random(hashable, randomize=False):\r\n    if isinstance(hashable, (list, tuple)):\r\n        return [recursive_random(a, randomize) for a in hashable]\r\n        \r\n    else:\r\n    \tif randomize:\r\n    \t\trand = Random(int(hash((hashable, time.time()))))\r\n    \telse:\r\n    \t\trand = Random(int(hash(hashable)))\r\n    \t\t\r\n        return rand.NextDouble()\r\n\r\nOUT = recursive_random(seed, bool(randomize))",
+      "VariableInputPorts": true,
+      "Id": "ef03c2b2d4dd4e41aad7716056c39db5",
+      "Inputs": [
+        {
+          "Id": "b5a8b3e983034cc0b8d6db2ad2c0a8b1",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3f86ec0de041403197b5bfe49455940b",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "63776fcd893b403caf56427dbaa5b050",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "list",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "fb161fa759cc48baa568b6fbb6db150a",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "8f8aa56b32094eb79c54561c4eb094f2",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "randomize",
+        "TypeName": "bool",
+        "TypeRank": 0,
+        "DefaultValue": "false",
+        "Description": ""
+      },
+      "Id": "9c1c5d26e13842e68b9247627e068d1c",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "45feb522aaab4b809297c09aa97379ba",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "numbers",
+      "Id": "115cec3c25a04ada8086ecb09f94c9a0",
+      "Inputs": [
+        {
+          "Id": "caa4f2650b9e4c038e7ee14cb0248ca1",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "63776fcd893b403caf56427dbaa5b050",
+      "End": "caa4f2650b9e4c038e7ee14cb0248ca1",
+      "Id": "399bc617ed6a4eb6b9ebaf12044c9ba5"
+    },
+    {
+      "Start": "8f8aa56b32094eb79c54561c4eb094f2",
+      "End": "b5a8b3e983034cc0b8d6db2ad2c0a8b1",
+      "Id": "35ebf64916844a9bbcda17164659aff1"
+    },
+    {
+      "Start": "45feb522aaab4b809297c09aa97379ba",
+      "End": "3f86ec0de041403197b5bfe49455940b",
+      "Id": "8a2bbb4ae4334eaeb5bb46b957056a25"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.3.8810",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 120041.30488816349,
+      "EyeY": 33133.764039434245,
+      "EyeZ": 93404.736314710171,
+      "LookX": -41909.28926316349,
+      "LookY": -28589.41955701237,
+      "LookZ": -43306.535142835171,
+      "UpX": -0.15643528048746103,
+      "UpY": 0.97437006478523813,
+      "UpZ": -0.16165079606740523
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "ef03c2b2d4dd4e41aad7716056c39db5",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "fb161fa759cc48baa568b6fbb6db150a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "9c1c5d26e13842e68b9247627e068d1c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -72.462813601452126,
+        "Y": 142.23612711413014
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "115cec3c25a04ada8086ecb09f94c9a0",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.5,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": 152.03558861718753,
+    "Y": -34.943414390624923,
+    "Zoom": 1.545620359375
+  }
+}

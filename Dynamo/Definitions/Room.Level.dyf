@@ -1,0 +1,189 @@
+{
+  "Uuid": "a8399566-013a-426f-b313-c30a82858f3d",
+  "IsCustomNode": true,
+  "Category": "tholth.Room",
+  "Description": "Get Room Level",
+  "Name": "Room.Level",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "PolyCurve": {
+        "Key": "Autodesk.DesignScript.Geometry.PolyCurve",
+        "Value": "ProtoGeometry.dll"
+      },
+      "PolyCurve.m": {
+        "Key": "Autodesk.DesignScript.Geometry.PolyCurve",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Autodesk.Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Autodesk.DesignScript.Geometry.Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      },
+      "String": {
+        "Key": "DSCore.String",
+        "Value": "DSCoreNodes.dll"
+      },
+      "DesignScript.Builtin.Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit.DB import *\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n#The inputs to this node will be stored as a list in the IN variables.\r\ninput = IN[0]\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuiapp = DocumentManager.Instance.CurrentUIApplication\r\napp = uiapp.Application\r\n\r\ndef function(item):\r\n\t# Do something with item and get a result\r\n\tresult = item.Level\t\r\n\r\n\treturn result\r\n\r\noutput = None\r\n\r\n# To handle single items or lists..\r\nif isinstance(input, list):\r\n\toutput = [function(a) for a in UnwrapElement(input)]\r\nelse:\r\n\toutput = function(UnwrapElement(input))\r\n\r\n#Assign your output to the OUT variable.\r\nOUT = output",
+      "VariableInputPorts": true,
+      "Id": "d6caa54d124b4cb49fdf15ddf55706e3",
+      "Inputs": [
+        {
+          "Id": "c645811ccc064d149874abf005b8f16b",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "3db65f68a1074df39d88ed9aa3bf6a23",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "room",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "7da6bddaaf15461db83a8994d4b34971",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "9491e1f2b54640319f03638495d76d60",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "level",
+      "Id": "2d6e2ebc2d4a4b23b5febd2a842d3245",
+      "Inputs": [
+        {
+          "Id": "8cf62c6c00cb4e0da1a830d4a7e598aa",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "3db65f68a1074df39d88ed9aa3bf6a23",
+      "End": "8cf62c6c00cb4e0da1a830d4a7e598aa",
+      "Id": "2e9139b340c74ba29a10960b192b6a49"
+    },
+    {
+      "Start": "9491e1f2b54640319f03638495d76d60",
+      "End": "c645811ccc064d149874abf005b8f16b",
+      "Id": "6785be5a42d14ecc9a88bbfa2898ebdc"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.2.6826",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 49001.630391550483,
+      "EyeY": 58736.366144487583,
+      "EyeZ": -79076.202945631652,
+      "LookX": 22584.172493428588,
+      "LookY": -53180.597075201928,
+      "LookZ": 23314.49436120929,
+      "UpX": 0.50236404911300425,
+      "UpY": 0.69186318643182509,
+      "UpZ": 0.51860938423702152
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": false,
+        "Name": "Python Script",
+        "Id": "d6caa54d124b4cb49fdf15ddf55706e3",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "7da6bddaaf15461db83a8994d4b34971",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "2d6e2ebc2d4a4b23b5febd2a842d3245",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.44444444444525,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": 349.88565109027803,
+    "Y": 184.70114092424112,
+    "Zoom": 1.545620359375
+  }
+}

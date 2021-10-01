@@ -1,0 +1,185 @@
+{
+  "Uuid": "6554cc83-3989-4cbb-b076-074e46dc4b45",
+  "IsCustomNode": true,
+  "Category": "tholth.View",
+  "Description": "All Elements in View, including Elements from Links.",
+  "Name": "View.Elements",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "Category.ByName": {
+        "Key": "Revit.Elements.Category",
+        "Value": "RevitNodes.dll"
+      },
+      "Category": {
+        "Key": "Revit.Elements.Category",
+        "Value": "RevitNodes.dll"
+      },
+      "List": {
+        "Key": "List",
+        "Value": "BuiltIn.ds"
+      },
+      "DesignScript.Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      },
+      "DesignScript.Builtin.Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit.DB import *\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n#The inputs to this node will be stored as a list in the IN variables.\r\nitem = IN[0]\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuiapp = DocumentManager.Instance.CurrentUIApplication\r\napp = uiapp.Application\r\n\r\ndef function(schedule):\r\n\t# Source: https://stackoverflow.com/questions/51620590/get-linked-elements-that-appear-on-schedule-revit-api\r\n\r\n\tscheduledElements = list(FilteredElementCollector(doc, schedule.Id))\r\n\t\r\n\t\r\n\t# Extra function to get linked elements as well\r\n\tallElements = []\r\n\t\r\n\tfor element in scheduledElements:\r\n\t    if element.Category.Name == 'RVT Links':\r\n\t        linkedElements = list(FilteredElementCollector(element.GetLinkDocument(), schedule.Id))\r\n\t        for linkedElement in linkedElements:\r\n\t            allElements.Add(linkedElement)\r\n\t    else:\r\n\t        allElements.Add(element)\r\n\t\r\n\r\n\treturn allElements\r\n\r\noutput = function(UnwrapElement(item))\r\n\r\n#Assign your output to the OUT variable.\r\nOUT = output",
+      "VariableInputPorts": true,
+      "Id": "ca2e54b44a6f415898ceb9db36ba0c49",
+      "Inputs": [
+        {
+          "Id": "d31227b70d90449aa60c25282ec8cdf9",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "e2f09f5671774463a6c86c4027169e07",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "view",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "8a5a4f274542427c92a59b3b8e586bed",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "a57b1b5004ab4a88be45894621af5ac4",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "elements",
+      "Id": "922539c8e7a04edd8fcac2cbcc342a1e",
+      "Inputs": [
+        {
+          "Id": "b985325bf03d44baa02064e8c1fadde0",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "e2f09f5671774463a6c86c4027169e07",
+      "End": "b985325bf03d44baa02064e8c1fadde0",
+      "Id": "8aa8db8617c84788b25131ebef97bfb6"
+    },
+    {
+      "Start": "a57b1b5004ab4a88be45894621af5ac4",
+      "End": "d31227b70d90449aa60c25282ec8cdf9",
+      "Id": "e33113ba6d6b46f392566f33e8a229c4"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.3.8104",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -2.6400471784975181,
+      "EyeY": 28.496908685064284,
+      "EyeZ": 51.963096912968886,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "ca2e54b44a6f415898ceb9db36ba0c49",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "8a5a4f274542427c92a59b3b8e586bed",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "922539c8e7a04edd8fcac2cbcc342a1e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.44444444444446,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": -869.9960418799717,
+    "Y": -1.7462690162564627,
+    "Zoom": 3.6157212987495506
+  }
+}

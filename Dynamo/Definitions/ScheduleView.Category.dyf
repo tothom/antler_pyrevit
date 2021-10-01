@@ -1,0 +1,237 @@
+{
+  "Uuid": "252f9dfc-16d1-4189-bae9-4f5f0c335cfa",
+  "IsCustomNode": true,
+  "Category": "tholth.ScheduleView",
+  "Description": "Category of Schedule View",
+  "Name": "ScheduleView.Category",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "Category.ByName": {
+        "Key": "Revit.Elements.Category",
+        "Value": "RevitNodes.dll"
+      },
+      "Category": {
+        "Key": "Revit.Elements.Category",
+        "Value": "RevitNodes.dll"
+      },
+      "List": {
+        "Key": "List",
+        "Value": "BuiltIn.ds"
+      },
+      "DesignScript.Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      },
+      "DesignScript.Builtin.Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      },
+      "View": {
+        "Key": "Revit.Elements.Views.View",
+        "Value": "RevitNodes.dll"
+      },
+      "ScheduleView": {
+        "Key": "Revit.Elements.Views.ScheduleView",
+        "Value": "RevitNodes.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit.DB import *\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n#The inputs to this node will be stored as a list in the IN variables.\r\nitem = IN[0]\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuiapp = DocumentManager.Instance.CurrentUIApplication\r\napp = uiapp.Application\r\n\r\ndef function(item):\r\n\t# Do something with item and get a result\r\n\tdefinition = item.Definition\r\n\t\r\n\tcategory_id = definition.CategoryId.IntegerValue\r\n\tcategory = Revit.Elements.Category.ById(category_id)\r\n\t\r\n\treturn category\r\n\r\noutput = function(UnwrapElement(item))\r\n\r\n#Assign your output to the OUT variable.\r\nOUT = output",
+      "VariableInputPorts": true,
+      "Id": "4d16e1faa712496c8e0f277ff60eb121",
+      "Inputs": [
+        {
+          "Id": "a606ce5f9f2c4cb59116ae24c90becd9",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "fa04b648112e4d2ab6b2242397b66134",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "view_schedule",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "3a15a379957c4d9d8b77507ed906672f",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "539bd7b199a44cc4b585cb3c4702087c",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "category",
+      "Id": "d1f1cc839d50496e954283fd5372f26c",
+      "Inputs": [
+        {
+          "Id": "02c1638a59df4968ad355b0a6e071a25",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "6600deab082f4f2cbeb5d23ed013f576",
+      "Inputs": [
+        {
+          "Id": "8b66ce46928747b0a682d7099f0a52a9",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "121a4a1ea5944750bb091231fab1a324",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "fa04b648112e4d2ab6b2242397b66134",
+      "End": "02c1638a59df4968ad355b0a6e071a25",
+      "Id": "bbfc1a9c17074566a5d15275ed179b62"
+    },
+    {
+      "Start": "fa04b648112e4d2ab6b2242397b66134",
+      "End": "8b66ce46928747b0a682d7099f0a52a9",
+      "Id": "c583c6911ae7416d8042005a07a9c47c"
+    },
+    {
+      "Start": "539bd7b199a44cc4b585cb3c4702087c",
+      "End": "a606ce5f9f2c4cb59116ae24c90becd9",
+      "Id": "3334de8171624dd994e0ce3eff876cf8"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.3.8810",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -15.56,
+      "EyeY": 22.439999999999998,
+      "EyeZ": 43.04,
+      "LookX": 10.56,
+      "LookY": -11.439999999999998,
+      "LookZ": -51.04,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "4d16e1faa712496c8e0f277ff60eb121",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 139.02570607241034,
+        "Y": -4.7424911934867282
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "3a15a379957c4d9d8b77507ed906672f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -179.95210619599095,
+        "Y": 4.9791367607565178
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "d1f1cc839d50496e954283fd5372f26c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.44444444444446,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Watch",
+        "Id": "6600deab082f4f2cbeb5d23ed013f576",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 467.02241417585793,
+        "Y": 187.89461961947052
+      }
+    ],
+    "Annotations": [],
+    "X": 189.36503181060016,
+    "Y": 167.13606714988322,
+    "Zoom": 1.0542982150113263
+  }
+}

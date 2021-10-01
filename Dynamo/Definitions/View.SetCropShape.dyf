@@ -1,0 +1,263 @@
+{
+  "Uuid": "ccafc2ad-4835-4e12-93d0-617d2a74f4df",
+  "IsCustomNode": true,
+  "Category": "tholth.Views",
+  "Description": "",
+  "Name": "View.SetCropShape",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "Math": {
+        "Key": "DSCore.Math",
+        "Value": "DSCoreNodes.dll"
+      },
+      "Vector": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      },
+      "DSCore.List": {
+        "Key": "DSCore.List",
+        "Value": "DSCoreNodes.dll"
+      },
+      "Points": {
+        "Key": "Geometry.Points",
+        "Value": "LunchBox.dll"
+      },
+      "Autodesk.Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Autodesk.DesignScript.Geometry.Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Rectangle": {
+        "Key": "Autodesk.DesignScript.Geometry.Rectangle",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Curves.cu": {
+        "Key": "Geometry.Curves",
+        "Value": "LunchBox.dll"
+      },
+      "Revit.Elements.FamilyInstance": {
+        "Key": "Revit.Elements.FamilyInstance",
+        "Value": "RevitNodes.dll"
+      },
+      "View": {
+        "Key": "Revit.Elements.Views.View",
+        "Value": "RevitNodes.dll"
+      },
+      "Curves": {
+        "Key": "Geometry.Curves",
+        "Value": "LunchBox.dll"
+      },
+      "Revit.Geometry": {
+        "Key": "Revit.Geometry",
+        "Value": "LunchBox.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "view",
+        "TypeName": "Revit.Elements.Views.View",
+        "TypeRank": 0,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "fe39b8c3b61f4019b3b07c38a8bd6655",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "0bd3f2e880e6475199ceba7311489565",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "curves",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "c4a9348cf6b345269853c626a971c942",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "53f8a382bc8848f58d3f0b1cda1ca0d8",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "View",
+      "Id": "9191ed900194495aa2fb820599e8a10c",
+      "Inputs": [
+        {
+          "Id": "a088a662bd734cbbb43fd7e5534f1b7a",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit.DB import *\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\nclr.AddReference('RevitNodes')\r\nimport Revit\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\nclr.ImportExtensions(Revit.Elements)\r\n\r\n#The inputs to this node will be stored as a list in the IN variables.\r\nviews = IN[0]\r\ncrvs = IN[1]\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuiapp = DocumentManager.Instance.CurrentUIApplication\r\napp = uiapp.Application\r\n\r\ndef crvs_to_crvloop(crvs):\r\n\tcrv_loop = CurveLoop()\r\n\t\r\n\t[crv_loop.Append(crv.ToRevitType()) for crv in crvs]\r\n\r\n\treturn crv_loop\r\n\r\ndef set_crop_shape(view, crv_loop):\r\n\t# Do something with item and get a result\t\r\n\t\r\n\tif view and crv_loop:\r\n\t\tcrop_manager = view.GetCropRegionShapeManager()\r\n\t\tcrop_manager.SetCropShape(crv_loop)\r\n\t\r\n\t\treturn view\r\n\r\noutput = None\r\n\r\nif isinstance(crvs, list) :\r\n\tcrv_loop = crvs_to_crvloop(UnwrapElement(crvs))\r\nelse:\r\n\tcrv_loop = crvs_to_crvloop(UnwrapElement([crvs]))\r\n\r\n# Start Transaction\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\n\r\n# Transaction\r\n# To handle single items or lists..\r\n\r\nif isinstance(views, list):\r\n\toutput = [set_crop_shape(view, crv_loop) for view in UnwrapElement(views)]\r\nelse:\r\n\toutput = set_crop_shape(UnwrapElement(views), crv_loop)\r\n\r\n# End Transaction\r\nTransactionManager.Instance.TransactionTaskDone()\r\n\r\n#Assign your output to the OUT variable.\r\nOUT = views",
+      "VariableInputPorts": true,
+      "Id": "2c880464657746489769c69ff5ece6fe",
+      "Inputs": [
+        {
+          "Id": "4a86e13482a8406b90f1cfa23d00cffa",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "539035f57b574478883339e05f21a6ef",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "54dbdce87d464f06955fd4c0a1eea52c",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "0bd3f2e880e6475199ceba7311489565",
+      "End": "4a86e13482a8406b90f1cfa23d00cffa",
+      "Id": "32665ac34e014869a2c19c0f41aed35f"
+    },
+    {
+      "Start": "53f8a382bc8848f58d3f0b1cda1ca0d8",
+      "End": "539035f57b574478883339e05f21a6ef",
+      "Id": "28c1b0622eba43cb80f880bbc1cd50e2"
+    },
+    {
+      "Start": "54dbdce87d464f06955fd4c0a1eea52c",
+      "End": "a088a662bd734cbbb43fd7e5534f1b7a",
+      "Id": "3c329ffc760a4fd59f5766a2c0ee13c0"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.2.6826",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -5198.3429544380306,
+      "EyeY": 8952.2681856803865,
+      "EyeZ": -60454.50449950288,
+      "LookX": 1913.5848503957966,
+      "LookY": -15689.728132897824,
+      "LookZ": 11.891164913366083,
+      "UpX": 0.9435902883124524,
+      "UpY": 0.33106341788493659,
+      "UpZ": 0.005863543352536073
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "fe39b8c3b61f4019b3b07c38a8bd6655",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -140.85915148793657,
+        "Y": 38.017569364214665
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "c4a9348cf6b345269853c626a971c942",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -150.34379642177822,
+        "Y": 149.67737382742104
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "9191ed900194495aa2fb820599e8a10c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.44444444444434,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": false,
+        "Name": "Python Script",
+        "Id": "2c880464657746489769c69ff5ece6fe",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 213.65313680601867,
+        "Y": 70.149900250561814
+      }
+    ],
+    "Annotations": [],
+    "X": 242.89548055066922,
+    "Y": 208.91166990756994,
+    "Zoom": 1.3775833525586674
+  }
+}

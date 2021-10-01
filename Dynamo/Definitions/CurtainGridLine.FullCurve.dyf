@@ -1,0 +1,164 @@
+{
+  "Uuid": "c528b697-2464-472b-af67-353808b4c085",
+  "IsCustomNode": true,
+  "Category": "antler.CurtainWall",
+  "Description": "Retrieve the geometry curve of the curtain grid line. ",
+  "Name": "CurtainGridLine.FullCurve",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n#The inputs to this node will be stored as a list in the IN variable.\r\nelements = IN[0]\r\n\r\ndef function(element):\r\n\tif isinstance(element, (list, tuple)):\r\n\t\treturn [function(e) for e in element]\r\n\telse:\r\n\t\t# Code follows here:\r\n\t\telement = UnwrapElement(element)\r\n\t\t\r\n\t\treturn element.FullCurve.ToProtoType()\r\n\r\nOUT = function(elements)",
+      "VariableInputPorts": true,
+      "Id": "8c1b345d5f7c4cf8a23f3e12a582fbad",
+      "Inputs": [
+        {
+          "Id": "d3f60815d33d4abcbe353c6455d30259",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "c3a563eff8834f83bfee7c3589618b1a",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "curtain_grid_line",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "a428e14916d347ca80fdf1046fd6164b",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "eca3b3713cf947188e76aa5e1d066c08",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "lines",
+      "Id": "92fb983d4acb48ab89228f31668d8ac3",
+      "Inputs": [
+        {
+          "Id": "d41bd40e10594527a286069aa9a2d03b",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "c3a563eff8834f83bfee7c3589618b1a",
+      "End": "d41bd40e10594527a286069aa9a2d03b",
+      "Id": "21db02187d75485e973bc90f85784dc1"
+    },
+    {
+      "Start": "eca3b3713cf947188e76aa5e1d066c08",
+      "End": "d3f60815d33d4abcbe353c6455d30259",
+      "Id": "c16c6cfe202d4e42912e3097f63d663f"
+    }
+  ],
+  "Dependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.0.3.8810",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 31601.342559316094,
+      "EyeY": -67324.540904141963,
+      "EyeZ": -38365.1527601802,
+      "LookX": -41955.172637441094,
+      "LookY": -22535.802845858037,
+      "LookZ": 4084.6371351802009,
+      "UpX": -0.27016310983862746,
+      "UpY": 0.96245523645364772,
+      "UpZ": 0.026302317488686385
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": false,
+        "Name": "Python Script",
+        "Id": "8c1b345d5f7c4cf8a23f3e12a582fbad",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "a428e14916d347ca80fdf1046fd6164b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "92fb983d4acb48ab89228f31668d8ac3",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.5,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": 230.5,
+    "Y": 30.0,
+    "Zoom": 1.0
+  }
+}
