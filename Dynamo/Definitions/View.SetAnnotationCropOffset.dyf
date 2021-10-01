@@ -1,7 +1,7 @@
 {
   "Uuid": "44454478-ded6-422f-aefb-900a7c10162b",
   "IsCustomNode": true,
-  "Category": "Antler.Views",
+  "Category": "Antler.View",
   "Description": "Sets annotation crop offset for given view. Offset in model space units.",
   "Name": "View.SetAnnotationCropOffset",
   "ElementResolver": {

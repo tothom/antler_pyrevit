@@ -1,7 +1,7 @@
 {
   "Uuid": "fb258c51-7d5e-48bd-a5ff-4e1d10aed7cd",
   "IsCustomNode": true,
-  "Category": "Antler.Walls",
+  "Category": "Antler.Wall",
   "Description": "Represents a specific type of wall, such as 'Generic -8\" '. ",
   "Name": "WallType",
   "ElementResolver": {

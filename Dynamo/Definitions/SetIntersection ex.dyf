@@ -1,7 +1,7 @@
 {
   "Uuid": "23cf362a-5885-40ca-b2fd-ab4f069feee7",
   "IsCustomNode": true,
-  "Category": "Antler",
+  "Category": "Antler.Util",
   "Description": "Same as List.SetIntersection, but returns two lists. One for each incoming list. Good for comparing Elements.",
   "Name": "SetIntersection ex",
   "ElementResolver": {
