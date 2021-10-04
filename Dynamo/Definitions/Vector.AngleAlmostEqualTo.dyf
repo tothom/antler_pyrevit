@@ -1,7 +1,7 @@
 {
   "Uuid": "e557d71b-2d66-472b-87f6-84c148dc8cc4",
   "IsCustomNode": true,
-  "Category": "Antler.Vector",
+  "Category": "Antler.Geometry.Vector.Query",
   "Description": "",
   "Name": "AngleAlmostEqualTo",
   "ElementResolver": {

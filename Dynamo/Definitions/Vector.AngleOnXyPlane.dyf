@@ -1,7 +1,7 @@
 {
   "Uuid": "fd126ad3-46e6-42cc-a034-2af35309351c",
   "IsCustomNode": true,
-  "Category": "Antler.Vector",
+  "Category": "Antler.Geometry.Vector.Query",
   "Description": "Angle between two vectors on the XY-plane",
   "Name": "AngleOnXyPlane",
   "ElementResolver": {

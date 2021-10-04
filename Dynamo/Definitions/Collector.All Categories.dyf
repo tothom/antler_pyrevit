@@ -1,7 +1,7 @@
 {
   "Uuid": "7c55f144-41a3-4f75-9af2-48cacd2cfa74",
   "IsCustomNode": true,
-  "Category": "Antler.Selection",
+  "Category": "Antler.Collector",
   "Description": "Collects all categories in project",
   "Name": "All Categories",
   "ElementResolver": {

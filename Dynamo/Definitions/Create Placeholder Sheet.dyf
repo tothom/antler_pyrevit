@@ -1,7 +1,7 @@
 {
   "Uuid": "a8b7e2a9-ed79-49f9-8817-201acecc0feb",
   "IsCustomNode": true,
-  "Category": "Antler.Sheet",
+  "Category": "Antler.Sheets",
   "Description": "Creates placeholder sheet from number and optional name. Returns newly created sheets.",
   "Name": "Create Placeholder Sheet",
   "ElementResolver": {

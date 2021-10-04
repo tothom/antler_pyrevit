@@ -1,7 +1,7 @@
 {
   "Uuid": "2cdb5f5c-1ed9-4b01-9350-5bfd537c7712",
   "IsCustomNode": true,
-  "Category": "Antler.Document",
+  "Category": "Antler.Document.Query",
   "Description": "",
   "Name": "Central Model Path",
   "ElementResolver": {

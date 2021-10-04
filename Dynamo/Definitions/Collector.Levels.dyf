@@ -1,7 +1,7 @@
 {
   "Uuid": "619d26aa-54fc-4baf-a076-a7d9aec97bc5",
   "IsCustomNode": true,
-  "Category": "Antler.Collectors",
+  "Category": "Antler.Collector",
   "Description": "Collects elements on given Level",
   "Name": "Collector.ElementsOnLevel",
   "ElementResolver": {

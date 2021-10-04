@@ -1,7 +1,7 @@
 {
   "Uuid": "02ffbc04-336c-4d73-aa70-2357ccbddd22",
   "IsCustomNode": true,
-  "Category": "Antler.View",
+  "Category": "Antler.Document",
   "Description": "Returns current view",
   "Name": "Current View",
   "ElementResolver": {

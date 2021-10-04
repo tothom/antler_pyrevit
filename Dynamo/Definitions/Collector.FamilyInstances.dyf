@@ -1,7 +1,7 @@
 {
   "Uuid": "714e17a2-1ed6-4e7e-b0b5-b8ae1b292e66",
   "IsCustomNode": true,
-  "Category": "Antler.Collectors",
+  "Category": "Antler.Collector",
   "Description": "",
   "Name": "Collect family instances",
   "ElementResolver": {

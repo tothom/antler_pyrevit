@@ -1,7 +1,7 @@
 {
   "Uuid": "5078dcb0-8317-4c8e-8418-117b69016da2",
   "IsCustomNode": true,
-  "Category": "Antler.Collectors",
+  "Category": "Antler.Collector",
   "Description": "Collects all elements of multiple categories. Provide category names as strings.",
   "Name": "Multicategory",
   "ElementResolver": {

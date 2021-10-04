@@ -1,7 +1,7 @@
 {
   "Uuid": "11501d88-c62e-454b-b192-3633c4593d5e",
   "IsCustomNode": true,
-  "Category": "Antler.Points",
+  "Category": "Antler.Geometry.Points",
   "Description": "Average point from list of points.",
   "Name": "AveragePoint",
   "ElementResolver": {

@@ -1,7 +1,7 @@
 {
   "Uuid": "62054786-5aa1-4f9f-9dc3-d883ddbf6aaa",
   "IsCustomNode": true,
-  "Category": "Antler.Collectors",
+  "Category": "Antler.Collector",
   "Description": "Gets all worksets in current project",
   "Name": "Collector.Worksets",
   "ElementResolver": {
