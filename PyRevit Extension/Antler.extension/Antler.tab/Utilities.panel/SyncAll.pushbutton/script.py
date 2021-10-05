@@ -69,11 +69,15 @@ for i, doc in enumerate(docs_to_sync):
         logger.warning("Document NOT synchronized!")
         logger.debug(type(e), e)
     else:
-        try:
-            if EXEC_PARAMS.config_mode:
+        if EXEC_PARAMS.config_mode:
+            try:
                 doc.Close()
-        except InvalidOperationException as e:
-            logger.warning(e.Message)
+            except InvalidOperationException as e:
+                close_doc = UI.RevitCommandId.LookupPostableCommandId(
+                    UI.PostableCommand.Close)
+                revit.uiapp.PostCommand(close_doc)
+
+        #     logger.warning(e.Message)
 
     output.indeterminate_progress(False)
     output.update_progress(i + 1, len(docs_to_sync))
