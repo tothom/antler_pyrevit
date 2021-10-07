@@ -7,7 +7,6 @@ from collections import OrderedDict
 
 import util
 
-import System.Drawing
 
 logger = script.get_logger()
 
@@ -94,6 +93,7 @@ def select_of_class(revit_class, key_function, select_types=True, doc=revit.doc,
     else:
         return []
 
+
 def collect_families(doc=revit.doc):
     collector = DB.FilteredElementCollector(doc)
     collector.WhereElementIsNotElementType()
@@ -102,7 +102,7 @@ def collect_families(doc=revit.doc):
     return collector.ToElements()
 
 
-def select_families(doc=revit.doc):#, multiselect=True):
+def select_families(doc=revit.doc):  # , multiselect=True):
     families = collect_families()
 
     selection_dict = OrderedDict()
@@ -118,6 +118,7 @@ def select_families(doc=revit.doc):#, multiselect=True):
     )
 
     return [selection_dict[key] for key in selected]
+
 
 def select_family_types(**kwargs):
     return select_of_class(
@@ -183,13 +184,7 @@ def print_dict_list(dict_list, title=""):
     )
 
 
-def quick_color_element(element, color):
-    """"""
-    line_color = color
-    fill_color = lighten_color(color)
-
-
-def lighten_color(color, factor=0.5):
-    r, g, b = color.R, color.G, color.B
-    # Do something
-    return System.Drawing.Color.FromArgb(r, g, b)
+# def quick_color_element(element, color):
+#     """"""
+#     line_color = color
+#     fill_color = lighten_color(color)
