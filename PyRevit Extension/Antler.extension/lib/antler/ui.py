@@ -184,7 +184,18 @@ def print_dict_list(dict_list, title=""):
     )
 
 
-# def quick_color_element(element, color):
-#     """"""
-#     line_color = color
-#     fill_color = lighten_color(color)
+def select_docs(**kwargs):
+    doc_dict = {doc.Title: doc for doc in revit.docs}
+
+    selected = forms.SelectFromList.show(
+        sorted(doc_dict.keys()),
+        multiselect=True,
+        ** kwargs
+    )
+
+    docs = []
+
+    for key in selected:
+        docs.append(doc_dict[key])
+
+    return docs
