@@ -10,10 +10,6 @@ from collections import OrderedDict
 
 from Autodesk.Revit.Exceptions import InvalidOperationException
 
-__doc__ = "Sync All"
-__title__ = "Sync All\nOpen Docs"
-__author__ = "Thomas Holth"
-
 logger = script.get_logger()
 output = script.get_output()
 
