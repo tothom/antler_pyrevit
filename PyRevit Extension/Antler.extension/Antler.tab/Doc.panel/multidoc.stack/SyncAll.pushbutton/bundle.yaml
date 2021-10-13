@@ -1,5 +1,5 @@
-title:      "Open Multiple\nDocs"
+title:      "Sync All\nOpen Docs"
 
-tooltip:    ""
+tooltip:    "Sync all open workshared docs with central model.
 
-context: zero-doc
+            Shift+Click to close models after sync."
