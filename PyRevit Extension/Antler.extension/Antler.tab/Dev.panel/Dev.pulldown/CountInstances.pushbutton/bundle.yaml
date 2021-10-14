@@ -1,7 +1,0 @@
-title:      Count Instances
-
-tooltip:    "Counts instances based on instance parameter selection. Works
-            similarly as the schedules in Revit. All instances with same value
-            in selected parameters will be counted as a group
-
-            \n\nShift+Click for settings"
