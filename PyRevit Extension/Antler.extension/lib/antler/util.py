@@ -76,9 +76,11 @@ def string_from_template(element, template_string):
         value = parameter.AsString() or parameter.AsValueString() or ""
 
         if not value:
-            logger.warning("Parameter '{}' has empty value".format(parameter_name))
+            logger.warning(
+                "Parameter '{}' has empty value".format(parameter_name))
 
-        logger.info("{parameter}: {value}".format(parameter=parameter_name, value=value))
+        logger.info("{parameter}: {value}".format(
+            parameter=parameter_name, value=value))
 
         new_string = new_string.replace(match_substring, value)
 
@@ -97,3 +99,15 @@ def preselect(revit_class=()):
             filtered_elements.append(element)
 
     return filtered_elements
+
+
+def random_numbers(seed, count=1):
+	"""
+	Returns a list of random numbers from given seed. The seed can be anything: numbers, strings, class instances and so on.
+	"""
+	from System import Random
+
+	rand = Random(int(hash(seed)))
+	numbers = [rand.NextDouble() for _ in range(count)]
+
+	return numbers

@@ -8,10 +8,6 @@ from System.Collections.Generic import List
 
 import antler
 
-__doc__ = "Color Elements in View by Selected Parameter"
-__title__ = "Color by Parameter"
-__author__ = "Thomas Holth"
-
 logger = script.get_logger()
 
 
