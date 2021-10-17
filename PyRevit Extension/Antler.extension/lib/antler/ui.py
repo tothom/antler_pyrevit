@@ -46,20 +46,23 @@ def select_instance_parameters_of_category(category, doc=revit.doc):
     return [parameters_dict[a] for a in parameters_selected]
 
 
-def select_category(doc=revit.doc):
+def select_category(doc=revit.doc, multiselect=False):
     """
     """
     categories_dict = {c.Name: c for c in doc.Settings.Categories}
 
-    categories_selected = forms.SelectFromList.show(
+    selected = forms.SelectFromList.show(
         sorted(categories_dict.keys()),
         button_name='Select Categories',
-        multiselect=True
+        multiselect=multiselect
     )
 
-    logger.debug(categories_selected)
+    logger.debug(selected)
 
-    return [categories_dict[a] for a in categories_selected]
+    if multiselect:
+        return [categories_dict[a] for a in selected]
+    else:
+        return categories_dict[selected]
 
     # category_found = Revit.Elements.Category.ByName(str(category))
 

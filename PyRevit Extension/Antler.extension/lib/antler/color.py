@@ -1,9 +1,15 @@
 import random
 import math
+# import hash
+
+from pyrevit import script
+
 import clr
 clr.AddReference("System.Drawing")
 
 from System.Drawing import Color  # noqa: E402
+
+logger = script.get_logger()
 
 
 def hsv_to_rgb(h, s, v):
@@ -47,6 +53,8 @@ def rgb_to_hsv(r, g, b):
     """
     Source: colorsys
     """
+    logger.debug((r, g, b))
+
     maxc = max(r, g, b)
     minc = min(r, g, b)
     v = maxc
@@ -68,11 +76,14 @@ def rgb_to_hsv(r, g, b):
 
     h = (h / 6.0) % 1.0
 
+    logger.debug((h, s, v))
+
     return h, s, v
 
 
 def relative_color_hsv(color, dh=0.0, ds=0.0, dv=0.0):
-    h, s, v = rgb_to_hsv(color.R/255, color.G/255, color.B/255)
+
+    h, s, v = rgb_to_hsv(color.R/255.0, color.G/255.0, color.B/255.0)
 
     h += dh
     s += ds
@@ -83,7 +94,65 @@ def relative_color_hsv(color, dh=0.0, ds=0.0, dv=0.0):
     return Color.FromArgb(int(r*255), int(g*255), int(b*255))
 
 
-def random_color(seed, h=None, s=None, v=None):
+def random_color(seed=None, r=None, g=None, b=None):
+    if seed is not None:
+        random.seed(hash(seed))
+
+    if r is None:
+        r = random.random()
+    if g is None:
+        b = random.random()
+    if b is None:
+        b = random.random()
+
+    return Color.FromArgb(
+        int(r/255),
+        int(g/255),
+        int(b/255),
+        )
+
+
+def random_hsv_color(seed=None, h=None, s=None, v=None):
+    # if seed:
+    random.seed(seed)
+
     if h is None:
         h = random.random()
-    pass
+    if s is None:
+        s = random.random()
+    if v is None:
+        v = random.random()
+
+    logger.debug("HSV: {} {} {}".format(h, s, v))
+
+    r, g, b = hsv_to_rgb(h, s, v)
+
+    logger.debug("RGB: {} {} {}".format(r, g, b))
+
+    return Color.FromArgb(
+        int(r*255),
+        int(g*255),
+        int(b*255),
+        )
+
+
+def brighter_color(color):
+    """
+    Brighter fill pattern colour
+    """
+    r = color.Red + (255-color.Red) / 2
+    g = color.Green + (255-color.Green) / 2
+    b = color.Blue + (255-color.Blue) / 2
+
+    return Color(r, g, b)
+
+
+def darker_color(color):
+    """
+
+    """
+    r = color.Red / 2
+    g = color.Green / 2
+    b = color.Blue / 2
+
+    return Color(r, g, b)

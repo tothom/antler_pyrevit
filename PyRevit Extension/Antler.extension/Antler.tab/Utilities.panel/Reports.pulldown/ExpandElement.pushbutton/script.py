@@ -23,7 +23,7 @@ elements = [doc.GetElement(id) for id in selection]
 for element in elements:
     print("Element: {}".format(element))
 
-    print("\n\t Instance Parameters")
+    print("\n\t Parameters")
     parameter_dicts = {parameter.Definition.Name: parameter.AsString(
     ) or parameter.AsValueString() for parameter in element.Parameters}
 

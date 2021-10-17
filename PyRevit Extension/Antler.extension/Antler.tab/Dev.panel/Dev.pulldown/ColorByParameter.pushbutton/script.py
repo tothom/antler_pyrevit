@@ -1,95 +1,76 @@
 from System.Collections.Generic import *
 from rpw import revit, DB, UI
 
-from pyrevit import forms
+from pyrevit import forms, script
 
 from collections import OrderedDict
 from System.Collections.Generic import List
+
+import antler
 
 __doc__ = "Color Elements in View by Selected Parameter"
 __title__ = "Color by Parameter"
 __author__ = "Thomas Holth"
 
-uidoc = revit.uidoc
-doc = revit.doc
-
-def random_numbers(seed, count=1):
-	"""
-	Returns a list of random numbers from given seed. The seed can be anything: numbers, strings, class instances and so on.
-	"""
-	from System import Random
-
-	rand = Random(int(hash(seed)))
-	numbers = [rand.NextDouble() for _ in range(count)]
-
-	return numbers
-
-def brighter_color(color):
-	"""
-	Brighter fill pattern colour
-	"""
-	r = color.Red   + (255-color.Red)   / 2
-	g = color.Green + (255-color.Green) / 2
-	b = color.Blue  + (255-color.Blue)  / 2
-
-	return Color(r, g, b)
-
-def darker_color(color):
-	"""
-
-	"""
-	r = color.Red   / 2
-	g = color.Green / 2
-	b = color.Blue  / 2
-
-	return Color(r, g, b)
+logger = script.get_logger()
 
 
-def override_element_color(element, color, view, fill_color=None, line_color=None):
+def override_color_by_parameter(view, element, parameter):
+	element_parameter = element.get_Parameter(parameter)
 
-	# Get solid fill pattern
-	solid_fill =  FillPatternElement.GetFillPatternElementByName(doc, FillPatternTarget.Drafting, "<Solid fill>")
+	parameter_value = element_parameter.AsString() or element_parameter.AsValueString()
 
-	#create graphic overrides properties
-	graphic_settings = OverrideGraphicSettings()
+	logger.debug(parameter_value)
 
-	if fill_color is not None:
-		fill_color = dscolor_to_rcolor(ds_fill_colors[i])
+	if parameter_value is not None:
+		line_color = antler.color.random_hsv_color(
+			seed=parameter_value, s=0.7, v=0.7)
+		fill_color = antler.color.relative_color_hsv(line_color, dv=+0.2)
 
-		# Sets projection overrides
-		graphic_settings.SetSurfaceBackgroundPatternId(solid_fill.Id)
-		graphic_settings.SetSurfaceBackgroundPatternColor(fill_color)
+		logger.debug(line_color)
+		logger.debug(fill_color)
 
-		# Sets cut overrides
-		graphic_settings.SetCutBackgroundPatternId(solid_fill.Id)
-		graphic_settings.SetCutBackgroundPatternColor(fill_color)
-
-	if line_color is not None:
-		line_color = dscolor_to_rcolor(ds_line_colors[i])
-		# Sets projection overrides
-		graphic_settings.SetProjectionLineColor(line_color)
-
-		# Sets cut overrides
-		graphic_settings.SetCutLineColor(line_color)
-
-	view.SetElementOverrides(element.Id, graphic_settings)
+		antler.view.override_element_color(
+				element, view, fill_color=fill_color, line_color=line_color)
+	else:
+		antler.view.override_element_color(
+				element, view)
 
 
-# Select Levels
-levels = DB.FilteredElementCollector(doc).OfCategory(DB.BuiltInCategory.OST_Levels).WhereElementIsNotElementType().ToElements()
-levels_dict = {"{} ({})".format(level.Name, level.Elevation): level for level in levels}
+category = antler.ui.select_category()
 
-levels_dict = OrderedDict(sorted(levels_dict.items(), key=lambda (key, value): value.Elevation, reverse=True))
-level_key = forms.SelectFromList.show(levels_dict.keys(), button_name='Select Level', multiple=False, message='Select level to change to.')
-level = levels_dict.get(level_key) # Using get() to avoid error message when cancelling dialog.
-# levels = forms.select_levels()
+collector = DB.FilteredElementCollector(revit.doc, revit.uidoc.ActiveView.Id)
+collector.OfCategory(antler.util.builtin_category_from_category(category))
 
-elements = []
+elements = collector.WhereElementIsNotElementType().ToElements()
 
-if level:
-	# for level in levels:
-	elements.extend(get_elements_on_level(level))
+definitions = set()
 
-element_id_collection = List[DB.ElementId]([element.Id for element in elements])
+for element in elements:
+	element_definitions = [a.Definition for a in element.Parameters]
 
-uidoc.Selection.SetElementIds(element_id_collection)
+	definitions = definitions.intersection(
+		set(element_definitions)) or set(element_definitions)
+
+# Select definition
+definitions_dict = {a.Name: a for a in definitions}
+
+definition_key = forms.SelectFromList.show(
+	sorted(definitions_dict.keys()),
+	title="Select Instance parameter"
+)
+
+definition = definitions_dict[definition_key]
+
+with DB.Transaction(revit.doc, __commandname__) as t:
+	t.Start()
+
+	for element in elements:
+		override_color_by_parameter(revit.uidoc.ActiveView, element, definition)
+
+	t.Commit()
+#
+# element_id_collection = List[DB.ElementId](
+# 	[element.Id for element in elements])
+
+# uidoc.Selection.SetElementIds(element_id_collection)
