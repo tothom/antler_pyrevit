@@ -72,6 +72,7 @@ for i, doc in enumerate(docs_to_sync):
                 close_doc = UI.RevitCommandId.LookupPostableCommandId(
                     UI.PostableCommand.Close)
                 revit.uiapp.PostCommand(close_doc)
+            # print(len(revit.docs))
 
         #     logger.warning(e.Message)
 

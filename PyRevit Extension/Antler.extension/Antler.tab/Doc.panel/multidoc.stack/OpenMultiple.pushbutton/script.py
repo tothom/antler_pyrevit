@@ -24,7 +24,18 @@ def rvt_file_dialog():
 filenames = rvt_file_dialog()
 
 for filename in filenames:
-    try:
-        revit.uiapp.OpenAndActivateDocument(filename)
-    except Exception as e:
-        logger.warning(e)
+    file_info = DB.BasicfileInfo.Extract(filename)
+
+    if file_info.IsWorkshared:
+        if file_info.IsLocal:
+            try:
+                revit.uiapp.OpenAndActivateDocument(filename)
+            except Exception as e:
+                logger.warning(e)
+        elif file_info.IsCentral:
+            logger.warning("Script does not open yet Central Models.")
+    else:
+        try:
+            revit.uiapp.OpenAndActivateDocument(filename)
+        except Exception as e:
+            logger.warning(e)
