@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from System.Collections.Generic import *
+
 from rpw import revit, DB, UI
 
 from pyrevit import forms, script
@@ -12,6 +13,7 @@ from Autodesk.Revit.Exceptions import InvalidOperationException
 
 logger = script.get_logger()
 output = script.get_output()
+
 
 relinquish_options = DB.RelinquishOptions(False)
 
