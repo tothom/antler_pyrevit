@@ -12,7 +12,7 @@ def mesh_from_floor(floor, **mesh_settings):
     floor_curve_loops = None
 
 
-def analysis_mesh_from_curveloop(curveloops, height_offset **mesh_settings):
+def analysis_mesh_from_curveloop(curve_loops, height_offset, **mesh_settings):
     material = None
     operation_result = DB.TessellatedShapeBuilder.CreateMeshByExtrusion(
-        curve_loops, DB.XYZ(0,0,1), height_offset, material)
+        curve_loops, DB.XYZ(0, 0, 1), height_offset, material)
