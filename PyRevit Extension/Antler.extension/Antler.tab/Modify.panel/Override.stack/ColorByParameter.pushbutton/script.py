@@ -1,10 +1,9 @@
-from System.Collections.Generic import *
 from rpw import revit, DB, UI
 
 from pyrevit import forms, script
 
-from collections import OrderedDict
-from System.Collections.Generic import List
+# from collections import OrderedDict
+# from System.Collections.Generic import List
 
 import antler
 
@@ -33,12 +32,17 @@ def override_color_by_parameter(view, element, parameter):
 				element, view)
 
 
-category = antler.ui.select_category()
+# category = antler.ui.select_category()
+#
+# collector = DB.FilteredElementCollector(revit.doc, revit.uidoc.ActiveView.Id)
+# collector.OfCategory(antler.util.builtin_category_from_category(category))
+#
+# elements = collector.WhereElementIsNotElementType().ToElements()
 
-collector = DB.FilteredElementCollector(revit.doc, revit.uidoc.ActiveView.Id)
-collector.OfCategory(antler.util.builtin_category_from_category(category))
+elements = antler.util.preselect()
 
-elements = collector.WhereElementIsNotElementType().ToElements()
+if not elements:
+	script.exit()
 
 definitions = set()
 
@@ -56,6 +60,9 @@ definition_key = forms.SelectFromList.show(
 	title="Select Instance parameter"
 )
 
+if not definition_key:
+	script.exit()
+
 definition = definitions_dict[definition_key]
 
 with DB.Transaction(revit.doc, __commandname__) as t:
@@ -65,8 +72,3 @@ with DB.Transaction(revit.doc, __commandname__) as t:
 		override_color_by_parameter(revit.uidoc.ActiveView, element, definition)
 
 	t.Commit()
-#
-# element_id_collection = List[DB.ElementId](
-# 	[element.Id for element in elements])
-
-# uidoc.Selection.SetElementIds(element_id_collection)
