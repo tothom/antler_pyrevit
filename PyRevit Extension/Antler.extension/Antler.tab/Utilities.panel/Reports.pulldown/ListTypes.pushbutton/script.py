@@ -16,7 +16,8 @@ __title__ = "List Types"
 __author__ = "Thomas Holth"
 
 
-elements = [revit.doc.GetElement(id) for id in revit.uidoc.Selection.GetElementIds()]
+elements = [revit.doc.GetElement(id)
+            for id in revit.uidoc.Selection.GetElementIds()]
 element = elements[0]  # TODO: Modify script for multiple elements.
 
 selected_definitions = antler.ui.select_element_parameters(element.Symbol)
