@@ -1,8 +1,12 @@
+# -*- coding: utf-8 -*-
 from System.Collections.Generic import *
 from rpw import revit, DB, UI
 
-from pyrevit import forms
+from pyrevit import forms, script
 from collections import OrderedDict
+
+import sys
+
 
 __doc__ = "Execute performance adviser rules"
 __title__ = "Performance Adviser"
@@ -11,6 +15,7 @@ __author__ = "Thomas Holth"
 uidoc = revit.uidoc
 doc = revit.doc
 
+logger = script.get_logger()
 
 adviser = DB.PerformanceAdviser.GetPerformanceAdviser()
 
@@ -35,10 +40,13 @@ rules_to_execute = List[DB.PerformanceAdviserRuleId](
 
 failures = adviser.ExecuteRules(doc, rules_to_execute)
 
-# print(failures)
+logger.debug(failures)
 
-with DB.Transaction(doc, __title__) as t:
-    t.Start()
-    for failure in failures:
-        doc.PostFailure(failure)
-    t.Commit()
+if not failures:
+    print("No problems found! 👌")
+else:
+    with DB.Transaction(doc, __title__) as t:
+        t.Start()
+        for failure in failures:
+            doc.PostFailure(failure)
+        t.Commit()
