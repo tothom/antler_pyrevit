@@ -3,14 +3,9 @@ from rpw import revit, DB, UI
 
 from pyrevit import forms
 
-__doc__ = "Duplicates selected Sheets"
-__title__ = "Duplicate Sheets"
-__author__ = "Thomas Holth"
 
-uidoc = revit.uidoc
-doc = revit.doc
 
-def titleblocks_on_sheet(sheet):
+def titleblocks_on_sheet(sheet, doc=revit.doc):
     """
     Returns all Titleblocks on Sheet
     """
@@ -29,7 +24,7 @@ def titleblocks_on_sheet(sheet):
 
     return titleblocks
 
-def duplicate_sheet(sheet, number=None, name=None, duplicate_option=DB.ViewDuplicateOption.WithDetailing):
+def duplicate_sheet(sheet, number=None, name=None, duplicate_option=DB.ViewDuplicateOption.WithDetailing, doc=revit.doc):
     """
     Duplicates sheet with all Views
     """
@@ -71,32 +66,3 @@ def duplicate_sheet(sheet, number=None, name=None, duplicate_option=DB.ViewDupli
         t.Commit()
 
     return sheet_duplicate
-
-# Select Sheets
-sheets = forms.select_sheets(use_selection=True)
-
-options = {
- 	"Duplicate view": DB.ViewDuplicateOption.Duplicate,
- 	"Duplicate as Dependent": DB.ViewDuplicateOption.AsDependent,
- 	"Duplicate with Detailing" : DB.ViewDuplicateOption.WithDetailing
-}
-
-selected_option = forms.CommandSwitchWindow.show(
-    options.keys(),
-    message='Duplicate option'
-)
-
-option = options[selected_option]
-
-
-if sheets:
-    tg = DB.TransactionGroup(doc, __title__)
-    tg.Start()
-
-    sheets_new = []
-
-    for sheet in sheets:
-        sheet_new = duplicate_sheet(sheet, duplicate_option=option)
-        uidoc.ActiveView = sheet_new
-
-    tg.Assimilate()

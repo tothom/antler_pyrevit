@@ -192,9 +192,11 @@ def select_docs(**kwargs):
 
     selected = forms.SelectFromList.show(
         sorted(doc_dict.keys()),
-        multiselect=True,
+        multiselect=kwargs['multiselect'],
         ** kwargs
     )
+
+
 
     docs = []
 
