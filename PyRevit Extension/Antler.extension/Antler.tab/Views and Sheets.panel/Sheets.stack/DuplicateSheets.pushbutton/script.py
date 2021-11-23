@@ -3,16 +3,7 @@ from rpw import revit, DB, UI
 
 from pyrevit import forms
 
-import sheets
-
-__doc__ = "Duplicates selected Sheets"
-__title__ = "Duplicate Sheets"
-__author__ = "Thomas Holth"
-
-uidoc = revit.uidoc
-doc = revit.doc
-
-
+import sheets_util
 
 # Select Sheets
 sheets = forms.select_sheets(use_selection=True)
@@ -32,13 +23,13 @@ option = options[selected_option]
 
 
 if sheets:
-    tg = DB.TransactionGroup(doc, __title__)
+    tg = DB.TransactionGroup(revit.doc, __commandname__)
     tg.Start()
 
     sheets_new = []
 
     for sheet in sheets:
-        sheet_new = sheets.duplicate_sheet(sheet, duplicate_option=option)
-        uidoc.ActiveView = sheet_new
+        sheet_new = sheets_util.duplicate_sheet(sheet, duplicate_option=option)
+        revit.uidoc.ActiveView = sheet_new
 
     tg.Assimilate()

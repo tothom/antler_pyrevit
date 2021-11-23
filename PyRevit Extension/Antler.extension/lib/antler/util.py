@@ -55,18 +55,18 @@ def string_from_template(element, template_string):
     pattern_compiled = re.compile(pattern)
 
     matches = re.finditer(pattern_compiled, template_string)
-    logger.info(matches)
+    logger.debug(matches)
 
     new_string = template_string
 
     for match in matches:
-        logger.info(match)
+        logger.debug(match)
         # parameter_name = match.string[1:-1] # Python 3
 
         match_substring = match.string[match.start():match.end()]
         parameter_name = match_substring[1:-1]
 
-        logger.info(parameter_name)
+        logger.debug(parameter_name)
 
         parameter = element.LookupParameter(parameter_name)
 
@@ -79,7 +79,7 @@ def string_from_template(element, template_string):
             logger.warning(
                 "Parameter '{}' has empty value".format(parameter_name))
 
-        logger.info("{parameter}: {value}".format(
+        logger.debug("{parameter}: {value}".format(
             parameter=parameter_name, value=value))
 
         new_string = new_string.replace(match_substring, value)
