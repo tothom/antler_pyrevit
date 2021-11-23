@@ -36,7 +36,7 @@ def rename_elements(elements, template_string):
             try:
                 new_name = antler.util.string_from_template(
                     element, template_string)
-                logger.info(new_name)
+                logger.debug(new_name)
 
                 element.Name = new_name  # 'View Name'
             except Exception as e:
