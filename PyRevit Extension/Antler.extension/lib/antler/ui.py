@@ -210,18 +210,42 @@ def print_dict_list(dict_list, title=""):
     )
 
 
-def select_docs(**kwargs):
-    doc_dict = {doc.Title: doc for doc in revit.docs}
+def select_docs(multiselect=True, selection_filter=lambda x: True, **kwargs):
+    docs = filter(selection_filter, revit.docs)
+
+    doc_dict = {doc.Title: doc for doc in docs}
 
     selected = forms.SelectFromList.show(
         sorted(doc_dict.keys()),
-        multiselect=kwargs['multiselect'],
-        ** kwargs
+        multiselect=multiselect,
+        **kwargs
     )
 
-    docs = []
+    if multiselect:
+        return [doc_dict[selected] for key in selected]
+    else:
+        return doc_dict[selected]
 
-    for key in selected:
-        docs.append(doc_dict[key])
 
-    return docs
+def select_filled_region(doc=revit.doc):
+    """
+
+    """
+    collector = DB.FilteredElementCollector(doc)
+    # collector.WhereElementIsElementType()
+    collector.OfClass(DB.FilledRegionType)
+    elements = collector.ToElements()
+
+    selection_dict = OrderedDict()
+
+    for element in elements:
+        key = "{}".format(
+            DB.Element.Name.GetValue(element)
+            )
+        selection_dict[key] = element
+
+    selected = forms.SelectFromList.show(
+        sorted(selection_dict.keys()),
+    )
+
+    return selection_dict[selected]
