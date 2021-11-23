@@ -158,6 +158,29 @@ def select_family_types(**kwargs):
     #         return []
 
 
+def select_detail_family_symbol(doc=revit.doc):
+    collector = DB.FilteredElementCollector(doc)
+    collector.WhereElementIsElementType()
+    collector.OfClass(DB.FamilySymbol)
+    elements = collector.ToElements()
+
+    selection_dict = OrderedDict()
+
+    for element in elements:
+        key = "[{}] {}".format(
+            element.Family.Name,
+            element.get_Parameter(
+                DB.BuiltInParameter.SYMBOL_NAME_PARAM).AsString()
+            )
+        selection_dict[key] = element
+
+    selected = forms.SelectFromList.show(
+        sorted(selection_dict.keys()),
+    )
+
+    return selection_dict[key]
+
+
 def print_dict_list(dict_list, title=""):
     """Prints a list of dictionaries as a table with keys as column names.
     """
@@ -195,8 +218,6 @@ def select_docs(**kwargs):
         multiselect=kwargs['multiselect'],
         ** kwargs
     )
-
-
 
     docs = []
 
