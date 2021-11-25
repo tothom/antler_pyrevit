@@ -18,78 +18,85 @@ view_schedule = revit.uidoc.ActiveView
 elements = DB.FilteredElementCollector(
 	revit.doc, view_schedule.Id).WhereElementIsNotElementType().ToElements()
 
-logger.info(elements)
+logger.debug(elements)
 
 schedule_definition = view_schedule.Definition
 
-parameter_ids = []
+field_parameter_ids = []
 
-for field_index in range(schedule_definition.GetFieldCount()-1):
+for field_index in range(schedule_definition.GetFieldCount()):
 	schedule_field = schedule_definition.GetField(field_index)
 
 	parameter_id = schedule_field.ParameterId  # .ToString()
-	logger.info(parameter_id)
 
 	if parameter_id:
-		parameter_ids.append(parameter_id)
+		field_parameter_ids.append(parameter_id)
 
 # table_data = view_schedule.GetTableData()
 #
 # for section_index in table_data.NumberOfSections:
-# 	logger.info(section_index)
+# 	logger.debug(section_index)
 # 	section_data = table_data.GetSectionData(section_index)
-# 	logger.info(section_data)
+# 	logger.debug(section_data)
 # 	param_id = section_data.Get
 
 # result = table_data.GetSectionData(sectiontype)
+
+logger.debug(field_parameter_ids)
 
 export_list = []
 
 for element in elements:
 	element_dict = {}
+
 	element_dict['ElementId'] = element.Id.ToString()
 
-	for parameter_id in parameter_ids:
-		logger.info(parameter_id)
-		# parameter = element.get_Parameter(parameter_id)
-		parameter = revit.doc.GetElement(parameter_id)
-		logger.info(parameter)
+
+
+	for parameter in element.Parameters:
+		# logger.debug(parameter.Definition.Name)
+		# logger.debug(parameter.Id)
+		if parameter.Id in field_parameter_ids:
+			logger.debug(parameter.Id)
+			# logger.debug(parameter.AsValueString())
+			element_dict['<Instance> '+parameter.Definition.Name] = parameter.AsString() or parameter.AsValueString()
+			#logger.debug(parameter.Id in field_parameter_ids)
+
+	element_type = revit.doc.GetElement(element.GetTypeId())
+
+	logger.debug(element_type)
+
+	if element_type:
+		for parameter in element_type.Parameters:
+			if parameter.Id in field_parameter_ids:
+				logger.debug(parameter.Id)
+				# logger.debug(parameter.AsValueString())
+				element_dict['<Type> '+parameter.Definition.Name] = parameter.AsString() or parameter.AsValueString()
+
+	# for parameter_id in field_parameter_ids:
+	# 	logger.debug(parameter_id)
+	# 	# parameter = element.get_Parameter(parameter_id)
+	# 	parameter = revit.doc.GetElement(parameter_id)
+	# 	logger.debug(parameter)
 		# element_dict[parameter.Definition.Name] = parameter.AsValueString()
 
 	export_list.append(element_dict)
 
-logger.info(export_list)
+logger.debug(export_list)
 
-
-def write_csv(data, file):
-	# print('CSV')
-	writer = csv.writer(f, delimiter=';', quotechar='"',
-	                    quoting=csv.QUOTE_MINIMAL)
-
-	writer.writerow(export_dict['types'][0].keys())
-	# ['id', 'category', 'family', 'type', 'count'])
-
-	for element in export_dict['types']:
-		writer.writerow(element.values())
-
-# 		sequence = [key] + list(value)
-# 		print(sequence)
-# 		writer.writerow(sequence)
-
-
-def write_json(data, file):
-	# print('JSON')
-	json.dump(data, file, ensure_ascii=False)
-
-
-write_format_mapper = {
-    '.csv': write_csv,
-    '.json': write_json
-}
 
 # Write File
-# file = forms.save_file()
-#
-# with open(file, mode='wb') as f:
-# 	name, ext = os.path.splitext(file)
-# 	write_format_mapper.get(ext)(export_dict, f)
+filename = "{view_name}".format(view_name=view_schedule.Title).replace(':', '')
+
+file = forms.save_file(file_ext='csv', default_name=filename)
+
+if not file:
+	script.exit()
+
+keys = set().union(*(d.keys() for d in export_list))
+
+with open(file, mode='wb') as f:
+    w = csv.DictWriter(f, keys, delimiter=';', quotechar='"',
+						quoting=csv.QUOTE_MINIMAL)
+    w.writeheader()
+    w.writerows(export_list)
