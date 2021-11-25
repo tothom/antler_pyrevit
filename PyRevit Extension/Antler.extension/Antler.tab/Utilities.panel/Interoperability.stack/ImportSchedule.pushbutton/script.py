@@ -14,15 +14,20 @@ logger = script.get_logger()
 # schedule = forms.select_view.show()
 
 PARAMETER_SET_MAPPING = {
-	DB.StorageType.Integer: int, # The internal data is stored in the form of a signed 32 bit integer.
-	DB.StorageType.Double: None,#float, # The data will be stored internally in the form of an 8 byte floating point number.
-	DB.StorageType.String: str, # The internal data will be stored in the form of a string of characters.
-	DB.StorageType.ElementId: None, # The data type represents an element and is stored as the id of the element.
+	# The internal data is stored in the form of a signed 32 bit integer.
+	DB.StorageType.Integer: int,
+	# float, # The data will be stored internally in the form of an 8 byte floating point number.
+	DB.StorageType.Double: None,
+	# The internal data will be stored in the form of a string of characters.
+	DB.StorageType.String: str,
+	# The data type represents an element and is stored as the id of the element.
+	DB.StorageType.ElementId: None,
 }
 
 PARAMETER_UNIT_CONVERSION = {
 	DB.ParameterType.Length: 304.8,
 }
+
 
 def set_parameter(element, parameter_name, value):
 	parameters = element.GetParameters(parameter_name)
@@ -37,7 +42,7 @@ def set_parameter(element, parameter_name, value):
 
 	if parameters.Count == 1:
 		parameter = parameters[0]
-		if not parameter.IsReadOnly: #parameter.UserModifiable
+		if not parameter.IsReadOnly:  # parameter.UserModifiable
 			convert = PARAMETER_SET_MAPPING.get(parameter.StorageType)
 
 			if convert:
@@ -47,7 +52,8 @@ def set_parameter(element, parameter_name, value):
 				except Exception as e:
 					logger.warning("{} {}".format(type(e), e))
 	else:
-		logger.warning("Parameter name {} is ambigous and is skipped".format(parameter_name))
+		logger.warning(
+			"Parameter name {} is ambigous and is skipped".format(parameter_name))
 
 
 file = forms.pick_file(file_ext='csv')
@@ -55,9 +61,16 @@ file = forms.pick_file(file_ext='csv')
 if not file:
 	script.exit()
 
+delimiter = forms.CommandSwitchWindow.show(
+    [',', ';'],
+    message='Select CSV delimiter'
+)
+
+delimiter = delimiter or ';'
+
 with open(file, mode='r') as f:
-	reader = csv.DictReader(f, delimiter=';') #, quotechar='"',
-						#quoting=csv.QUOTE_MINIMAL)
+	reader = csv.DictReader(f, delimiter=delimiter)  # , quotechar='"',
+	#quoting=csv.QUOTE_MINIMAL)
 	import_list = []
 
 	for row in reader:
@@ -79,7 +92,7 @@ with DB.Transaction(revit.doc, __commandname__) as tg:
 		for key, value in item.items():
 			logger.debug(value)
 
-			if key ==  'ElementId':
+			if key == 'ElementId':
 				continue
 
 			if not value:
@@ -99,7 +112,7 @@ with DB.Transaction(revit.doc, __commandname__) as tg:
 			if parameter_type == '<Instance>':
 				result = set_parameter(element, parameter_name, value)
 
-			elif parameter_type =='<Type>':
+			elif parameter_type == '<Type>':
 				result = set_parameter(element_type, parameter_name, value)
 
 	tg.Commit()
