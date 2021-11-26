@@ -45,13 +45,12 @@ def set_parameter_by_name(element, parameter_name, value):
 
 		if not parameter.IsReadOnly:  # parameter.UserModifiable
 			convert = PARAMETER_SET_MAPPING.get(parameter.StorageType)
-
-			if convert:
-				converted_value = convert(value)
-				try:
-					result = parameter.Set(converted_value)
-				except Exception as e:
-					logger.warning("{} {}".format(type(e), e))
+			# if convert is not None:
+			converted_value = convert(value)
+			try:
+				result = parameter.Set(converted_value)
+			except Exception as e:
+				logger.warning("{} {}".format(type(e), e))
 	elif parameters.Count == 0:
 		logger.warning(
 			"No parameters with name {} found".format(parameter_name))
@@ -94,12 +93,10 @@ with DB.Transaction(revit.doc, __commandname__) as tg:
 		logger.debug(element)
 
 		for key, value in item.items():
-			logger.debug(value)
-
 			if key == 'ElementId':
 				continue
 
-			if not value:
+			if value is None:
 				continue
 
 			pattern = '(\<.*>\s)(.*)'
@@ -110,6 +107,7 @@ with DB.Transaction(revit.doc, __commandname__) as tg:
 
 			logger.debug(parameter_type)
 			logger.debug(parameter_name)
+			logger.debug(value)
 
 			assert parameter_type and parameter_name
 

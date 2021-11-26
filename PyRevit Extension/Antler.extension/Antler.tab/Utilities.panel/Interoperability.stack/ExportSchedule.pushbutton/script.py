@@ -84,7 +84,10 @@ logger.debug(export_list)
 
 
 # Write File
-filename = "{view_name}".format(view_name=view_schedule.Title).replace(':', '')
+filename = "{doc_title} - {view_title}".format(
+	doc_title=revit.doc.Title,
+	view_title=view_schedule.Title
+	).replace(':', ' -')
 
 file = forms.save_file(file_ext='csv', default_name=filename)
 
