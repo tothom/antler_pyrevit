@@ -51,8 +51,6 @@ for element in elements:
 
 	element_dict['ElementId'] = element.Id.ToString()
 
-
-
 	for parameter in element.Parameters:
 		# logger.debug(parameter.Definition.Name)
 		# logger.debug(parameter.Id)

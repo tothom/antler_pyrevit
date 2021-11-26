@@ -16,8 +16,8 @@ logger = script.get_logger()
 PARAMETER_SET_MAPPING = {
 	# The internal data is stored in the form of a signed 32 bit integer.
 	DB.StorageType.Integer: int,
-	# float, # The data will be stored internally in the form of an 8 byte floating point number.
-	DB.StorageType.Double: None,
+	# The data will be stored internally in the form of an 8 byte floating point number.
+	DB.StorageType.Double: None, # float,
 	# The internal data will be stored in the form of a string of characters.
 	DB.StorageType.String: str,
 	# The data type represents an element and is stored as the id of the element.
@@ -29,12 +29,12 @@ PARAMETER_UNIT_CONVERSION = {
 }
 
 
-def set_parameter(element, parameter_name, value):
+def set_parameter_by_name(element, parameter_name, value):
 	parameters = element.GetParameters(parameter_name)
 	logger.debug(parameters)
 	logger.debug([a.Definition.Name for a in parameters])
 
-	# Workaround for because 'Sheet number' returns two parameters...
+	# Workaround because 'Sheet number' returns two parameters...
 	if parameter_name == 'Sheet Number':
 		parameters = [parameters[0]]
 
@@ -42,6 +42,7 @@ def set_parameter(element, parameter_name, value):
 
 	if parameters.Count == 1:
 		parameter = parameters[0]
+
 		if not parameter.IsReadOnly:  # parameter.UserModifiable
 			convert = PARAMETER_SET_MAPPING.get(parameter.StorageType)
 
@@ -51,11 +52,14 @@ def set_parameter(element, parameter_name, value):
 					result = parameter.Set(converted_value)
 				except Exception as e:
 					logger.warning("{} {}".format(type(e), e))
-	else:
+	elif parameters.Count == 0:
+		logger.warning(
+			"No parameters with name {} found".format(parameter_name))
+	elif parameters.Count > 1:
 		logger.warning(
 			"Parameter name {} is ambigous and is skipped".format(parameter_name))
 
-
+# Open and read CSV
 file = forms.pick_file(file_ext='csv')
 
 if not file:
@@ -78,7 +82,7 @@ with open(file, mode='r') as f:
 
 logger.debug(import_list)
 
-
+# Apply changes from CSV
 with DB.Transaction(revit.doc, __commandname__) as tg:
 	tg.Start()
 
@@ -110,9 +114,9 @@ with DB.Transaction(revit.doc, __commandname__) as tg:
 			assert parameter_type and parameter_name
 
 			if parameter_type == '<Instance>':
-				result = set_parameter(element, parameter_name, value)
+				result = set_parameter_by_name(element, parameter_name, value)
 
 			elif parameter_type == '<Type>':
-				result = set_parameter(element_type, parameter_name, value)
+				result = set_parameter_by_name(element_type, parameter_name, value)
 
 	tg.Commit()
