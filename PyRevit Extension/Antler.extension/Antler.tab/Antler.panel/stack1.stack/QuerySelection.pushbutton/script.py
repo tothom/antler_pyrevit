@@ -10,12 +10,14 @@ doc = revit.doc
 
 logger = script.get_logger()
 
-
 def get_properties(obj):
     pass
 
+current_selection = uidoc.Selection.GetElementIds()
 
-selection = uidoc.Selection.GetElementIds() or uidoc.Selection.PickObjects(
+print(current_selection)
+
+selection = current_selection or uidoc.Selection.PickObjects(
     UI.Selection.ObjectType.Element, "Select objects to expand.")
 
 elements = [doc.GetElement(id) for id in selection]
@@ -30,12 +32,12 @@ for element in elements:
     for k, v in parameter_dicts.items():
         print(k, v)
 
-    print("\n\t Parameters Map")
-    parameters_map = {parameter.Definition.Name: parameter.AsString(
-    ) or parameter.AsValueString() for parameter in element.ParametersMap}
-
-    for k, v in parameters_map.items():
-        print(k, v)
+    # print("\n\t Parameters Map")
+    # parameters_map = {parameter.Definition.Name: parameter.AsString(
+    # ) or parameter.AsValueString() for parameter in element.ParametersMap}
+    #
+    # for k, v in parameters_map.items():
+    #     print(k, v)
 
     # print("\n\t dir(element.Parameters)")
     # for attr in dir(element.Parameters):
