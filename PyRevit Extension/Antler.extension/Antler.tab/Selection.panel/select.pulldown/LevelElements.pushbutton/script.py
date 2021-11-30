@@ -31,8 +31,6 @@ def level_filter(element, level):
 
     element_parameter = element.get_Parameter(parameter)
 
-
-
 # Get selected
 levels = antler.util.preselect(revit_class=DB.Level)
 
@@ -63,6 +61,8 @@ if levels:
     for level in levels:
         elements.extend(get_elements_on_level(level))
 
+if not elements:
+    logger.warning("No Elements hosted on selected Levels.")
 
 selection = antler.util.preselect()
 
