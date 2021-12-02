@@ -17,7 +17,7 @@ PARAMETER_SET_MAPPING = {
 	# The internal data is stored in the form of a signed 32 bit integer.
 	DB.StorageType.Integer: int,
 	# The data will be stored internally in the form of an 8 byte floating point number.
-	DB.StorageType.Double: None, # float,
+	DB.StorageType.Double: None, # float, # TODO: Implement unit conversion before this type can be activated.
 	# The internal data will be stored in the form of a string of characters.
 	DB.StorageType.String: str,
 	# The data type represents an element and is stored as the id of the element.
