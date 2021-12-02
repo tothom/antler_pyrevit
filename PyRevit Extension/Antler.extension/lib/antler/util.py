@@ -111,3 +111,41 @@ def random_numbers(seed, count=1):
 	numbers = [rand.NextDouble() for _ in range(count)]
 
 	return numbers
+
+
+def print_dict_list_as_table(dict_list, title="", formats=[]):
+    output = script.get_output()
+
+    keys = set().union(*(d.keys() for d in dict_list))
+
+    if not formats:
+        formats = ['' for _ in keys]
+
+    output.print_table(
+        table_data=[[a.get(k) for k in keys] for a in dict_list],
+        title=title,
+        columns=keys,
+        formats=formats
+    )
+
+
+def print_dict_as_table(dictionary, title="", columns=(), formats=[]):
+    output = script.get_output()
+
+    data = []
+
+    for k, v in dictionary.items():
+        # print("{}: {}".format(k, v))
+
+        k = k.replace('\r\n', '')
+        v = str(v).replace('\r\n', '')
+
+        data.append((k, v))
+
+
+    output.print_table(
+        table_data=data,
+        title=title,
+        columns=columns or ('Key', 'Value'),
+        formats=formats or ('', '')
+    )

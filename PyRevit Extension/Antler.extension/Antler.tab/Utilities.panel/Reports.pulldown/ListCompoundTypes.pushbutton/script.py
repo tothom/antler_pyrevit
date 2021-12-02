@@ -25,17 +25,17 @@ logger = script.get_logger()
 # }
 
 
-def report_layer_structure(element):
+def report_layer_structure(element_type):
     """
     """
-    logger.info(type(element))
-
-    element_type_id = element.GetTypeId()
-
-    element_type = doc.GetElement(element_type_id)
-
-    if not element_type:
-        return None
+    # logger.info(type(element))
+    #
+    # element_type_id = element.GetTypeId()
+    #
+    # element_type = doc.GetElement(element_type_id)
+    #
+    # if not element_type:
+    #     return None
 
     # element_type = eval(
     #     'element.' + ELEMENT_TYPE_CONVERSION_DICT[type(element)])
@@ -71,21 +71,34 @@ def report_layer_structure(element):
     return build_list
 
 
-selection = uidoc.Selection.GetElementIds() or uidoc.Selection.PickObjects(
-    UI.Selection.ObjectType.Element, "Select objects to check.")
+# selection = uidoc.Selection.GetElementIds() or uidoc.Selection.PickObjects(
+#     UI.Selection.ObjectType.Element, "Select objects to check.")
 
-elements = [doc.GetElement(id) for id in selection]
+builtin_category = antler.ui.select_category()
 
-with DB.Transaction(revit.doc, __commandname__) as t:
-    t.Start()
+category = antler.util.builtin_category_from_category(builtin_category)
 
-    for element in elements:
-        build_list = report_layer_structure(element)
+elements = DB.FilteredElementCollector(revit.doc).OfCategory(category).WhereElementIsElementType().ToElements()
 
-        if EXEC_PARAMS.config_mode:
-            build_string = '\r\n'.join(build_list)
+# elements = [doc.GetElement(id) for id in selection]
 
-            parameter = element_type.LookupParameter('Oppbygning')
-            parameter.Set(build_string)
+print_list = []
 
-    t.Commit()
+for element in elements:
+    compound_structure = report_layer_structure(element)
+    print_list.append(compound_structure)
+
+print(print_list)
+#
+# with DB.Transaction(revit.doc, __commandname__) as t:
+#     t.Start()
+#
+
+#
+#         if EXEC_PARAMS.config_mode:
+#             build_string = '\r\n'.join(build_list)
+#
+#             parameter = element_type.LookupParameter('Oppbygning')
+#             parameter.Set(build_string)
+#
+#     t.Commit()

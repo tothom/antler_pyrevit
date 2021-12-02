@@ -38,19 +38,30 @@ for level in levels:
 
     # print("{}: {}".format(level.Name, count))
 
-def print_dict(d):
-    pass
+def print_dict_list_as_table(data, title="", formats=[]):
+    keys = set().union(*(d.keys() for d in data))
 
+    if not formats:
+        formats = ['' for _ in keys]
 
-keys = set().union(*(d.keys() for d in data))
+    output.print_table(
+        table_data=[[a.get(k) for k in keys] for a in data],
+        title=title,
+        columns=keys,
+        formats=formats
+    )
 
-# data = [[a.get(key) for a in level_data] for key in keys]
+antler.util.print_dict_list_as_table(data, title="Level Element Count")
 
-logger.debug(data)
-
-output.print_table(
-    table_data=[[a.get(k) for k in keys] for a in data],
-    title="Level Element Count",
-    columns=keys,
-    formats=['', '']
-)
+# keys = set().union(*(d.keys() for d in data))
+#
+# # data = [[a.get(key) for a in level_data] for key in keys]
+#
+# logger.debug(data)
+#
+# output.print_table(
+#     table_data=[[a.get(k) for k in keys] for a in data],
+#     title="Level Element Count",
+#     columns=keys,
+#     formats=['', '']
+# )
