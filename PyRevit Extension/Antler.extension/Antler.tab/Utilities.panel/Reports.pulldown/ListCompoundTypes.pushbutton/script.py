@@ -25,24 +25,24 @@ logger = script.get_logger()
 # }
 
 
-def report_layer_structure(element_type):
+def report_layer_structure(type_element):
     """
     """
-    # logger.info(type(element))
+    # logger.debug(type(element))
     #
-    # element_type_id = element.GetTypeId()
+    # type_element_id = element.GetTypeId()
     #
-    # element_type = doc.GetElement(element_type_id)
+    # type_element = doc.GetElement(type_element_id)
     #
-    # if not element_type:
+    # if not type_element:
     #     return None
 
-    # element_type = eval(
+    # type_element = eval(
     #     'element.' + ELEMENT_TYPE_CONVERSION_DICT[type(element)])
-    # logger.info(element_type)
+    # logger.debug(type_element)
 
     # Collect layer information
-    compound_structure = element_type.GetCompoundStructure()
+    compound_structure = type_element.GetCompoundStructure()
 
     layers_dict = antler.interop.compound_structure_to_dict(
         compound_structure)
@@ -65,7 +65,7 @@ def report_layer_structure(element_type):
             if description:
                 layer_string = description
 
-        logger.info(layer_string)
+        logger.debug(layer_string)
         build_list.append(layer_string)
 
     return build_list
