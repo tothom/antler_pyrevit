@@ -17,11 +17,12 @@ import antler
 logger = script.get_logger()
 output = script.get_output()
 
-other_doc = antler.ui.select_docs(multiselect=False, selection_filter=lambda x: not x.IsFamilyDocument)
+other_doc = antler.forms.select_docs(
+    multiselect=False, selection_filter=lambda x: not x.IsFamilyDocument)
 
 logger.debug(other_doc.Title)
 
-views =  forms.select_views(
+views = forms.select_views(
         title="Select Views to pull into current model",
         doc=other_doc
     )
