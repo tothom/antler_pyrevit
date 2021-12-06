@@ -8,7 +8,7 @@ from pyrevit import forms, script
 
 logger = script.get_logger()
 
-selected_element = antler.util.preselect()[0]
+selected_element = antler.ui.preselect()[0]
 
 if selected_element.ViewSpecific:
     host_view = revit.doc.GetElement(selected_element.OwnerViewId)

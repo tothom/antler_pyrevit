@@ -20,7 +20,7 @@ elements = [revit.doc.GetElement(id)
             for id in revit.uidoc.Selection.GetElementIds()]
 element = elements[0]  # TODO: Modify script for multiple elements.
 
-selected_definitions = antler.ui.select_element_parameters(element.Symbol)
+selected_definitions = antler.forms.select_element_parameters(element.Symbol)
 
 data = []
 

@@ -48,7 +48,7 @@ def report_layer_structure(element):
         compound_structure)
 
     # Print layer information
-    antler.ui.print_dict_list([a.get('Material')
+    antler.util.print_dict_list([a.get('Material')
                               for a in layers_dict.values()])
 
     # Write layer string to parameter

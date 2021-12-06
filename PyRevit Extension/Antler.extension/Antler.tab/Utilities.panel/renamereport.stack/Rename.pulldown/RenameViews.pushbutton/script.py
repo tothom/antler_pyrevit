@@ -12,7 +12,7 @@ logger = script.get_logger()
 config = script.get_config()
 
 # Select Views
-selected_views_or_sheets = antler.util.preselect((DB.View, DB.ViewSheet))
+selected_views_or_sheets = antler.ui.preselect((DB.View, DB.ViewSheet))
 
 # If Sheet is selected, get the views on the sheet.
 if selected_views_or_sheets:

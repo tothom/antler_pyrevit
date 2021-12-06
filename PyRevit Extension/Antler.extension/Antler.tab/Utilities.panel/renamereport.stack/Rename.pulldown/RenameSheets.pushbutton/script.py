@@ -12,7 +12,7 @@ logger = script.get_logger()
 config = script.get_config()
 
 # Select
-selected_sheets = antler.util.preselect(DB.ViewSheet)
+selected_sheets = antler.ui.preselect(DB.ViewSheet)
 
 if not selected_sheets:
     selected_sheets = forms.select_sheets(

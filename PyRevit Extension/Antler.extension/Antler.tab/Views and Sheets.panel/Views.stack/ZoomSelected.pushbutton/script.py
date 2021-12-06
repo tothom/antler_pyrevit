@@ -3,7 +3,7 @@ from rpw import revit, DB, UI
 
 import antler
 
-elements = antler.util.preselect()
+elements = antler.ui.preselect()
 
 element_set = DB.ElementSet()
 [element_set.Insert(element) for element in elements]

@@ -12,7 +12,7 @@ logger = script.get_logger()
 config = script.get_config()
 
 # Select
-families = antler.ui.select_families()
+families = antler.forms.select_families()
 
 # script.exit()
 
@@ -22,6 +22,7 @@ if families:
     family_symbols = []
 
     for family in families:
-        family_symbols.extend([doc.GetElement(id) for id in family.GetFamilySymbolIds()])
+        family_symbols.extend([doc.GetElement(id)
+                              for id in family.GetFamilySymbolIds()])
 
     rename_utils.rename_elements(family_symbols, input_string)

@@ -48,7 +48,7 @@ def report_layer_structure(type_element):
         compound_structure)
 
     # Print layer information
-    antler.ui.print_dict_list([a.get('Material')
+    antler.util.print_dict_list([a.get('Material')
                               for a in layers_dict.values()])
 
     # Write layer string to parameter
@@ -74,7 +74,7 @@ def report_layer_structure(type_element):
 # selection = uidoc.Selection.GetElementIds() or uidoc.Selection.PickObjects(
 #     UI.Selection.ObjectType.Element, "Select objects to check.")
 
-builtin_category = antler.ui.select_category()
+builtin_category = antler.forms.select_category()
 
 category = antler.util.builtin_category_from_category(builtin_category)
 

@@ -25,7 +25,8 @@ compound_classes = [
 #
 # element_types = DB.FilteredElementCollector(revit.doc).WhereElementIs
 
-element_types = DB.FilteredElementCollector(revit.doc).OfCategory(DB.BuiltInCategory.OST_Floors).WhereElementIsElementType().ToElements()
+element_types = DB.FilteredElementCollector(revit.doc).OfCategory(
+    DB.BuiltInCategory.OST_Floors).WhereElementIsElementType().ToElements()
 
 # logger.info(element_types)
 
@@ -77,7 +78,7 @@ for element_type in element_types:
 #     compound_structure)
 #
 # # Print layer information
-# antler.ui.print_dict_list([a.get('Material')
+# antler.util.print_dict_list([a.get('Material')
 #                           for a in layers_dict.values()])
 
 # Write layer string to parameter
