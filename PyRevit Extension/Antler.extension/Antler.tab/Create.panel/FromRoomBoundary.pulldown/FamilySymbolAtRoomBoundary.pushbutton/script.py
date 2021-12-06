@@ -24,6 +24,7 @@ class room_filter(UI.Selection.ISelectionFilter):
     def AllowReference(self, ref, pt):
         return True
 
+
 try:
     rooms = revit.uidoc.Selection.PickObjects(
         UI.Selection.ObjectType.Element, room_filter(), "Select rooms")
@@ -32,7 +33,7 @@ except RevitExceptions.OperationCanceledException:
 
 rooms = [revit.doc.GetElement(room) for room in rooms]
 
-family_symbol = antler.ui.select_detail_family_symbol()
+family_symbol = antler.forms.select_detail_family_symbol()
 
 with DB.Transaction(revit.doc, __commandname__) as t:
     t.Start()

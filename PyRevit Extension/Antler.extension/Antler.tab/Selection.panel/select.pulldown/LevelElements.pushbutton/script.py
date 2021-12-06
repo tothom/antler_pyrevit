@@ -6,33 +6,27 @@ from pyrevit import forms, script
 from collections import OrderedDict
 from System.Collections.Generic import List
 
-import antler.util
+import antler
 
 logger = script.get_logger()
 
 uidoc = revit.uidoc
 doc = revit.doc
 
-def get_elements_on_level(level):
-    """
-    """
-    level_filter = DB.ElementLevelFilter(level.Id)
-    collector = DB.FilteredElementCollector(doc)
-    elements = collector.WherePasses(level_filter).ToElements()
-
-    return elements
 
 def parameter_filter(elements, parameter, parameter_value):
     for element in elements:
         element_parameter = element.get_Parameter(parameter)
+
 
 def level_filter(element, level):
     element_level = None
 
     element_parameter = element.get_Parameter(parameter)
 
+
 # Get selected
-levels = antler.util.preselect(revit_class=DB.Level)
+levels = antler.ui.preselect(revit_class=DB.Level)
 
 logger.debug(levels)
 
@@ -59,12 +53,13 @@ elements = []
 
 if levels:
     for level in levels:
-        elements.extend(get_elements_on_level(level))
+        elements.extend(
+            antler.collectors.elements_on_level_collector(level).ToElements)
 
 if not elements:
     logger.warning("No Elements hosted on selected Levels.")
 
-selection = antler.util.preselect()
+selection = antler.ui.preselect()
 
 # print(elements, selection)
 

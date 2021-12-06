@@ -32,14 +32,14 @@ def override_color_by_parameter(view, element, parameter):
 				element, view)
 
 
-# category = antler.ui.select_category()
+# category = antler.forms.select_category()
 #
 # collector = DB.FilteredElementCollector(revit.doc, revit.uidoc.ActiveView.Id)
 # collector.OfCategory(antler.util.builtin_category_from_category(category))
 #
 # elements = collector.WhereElementIsNotElementType().ToElements()
 
-elements = antler.util.preselect()
+elements = antler.ui.preselect()
 
 if not elements:
 	script.exit()

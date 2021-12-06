@@ -10,7 +10,7 @@ from System.Drawing import Color  # noqa: E402
 
 logger = script.get_logger()
 
-elements = antler.util.preselect()
+elements = antler.ui.preselect()
 
 if not elements:
 	script.exit()

@@ -5,6 +5,11 @@ import System.Enum
 
 from pyrevit import script
 
+"""
+Contains helper functions for Antler. It could be converters, formatters,
+simple general functions etc...
+"""
+
 logger = script.get_logger()
 
 
@@ -87,20 +92,6 @@ def string_from_template(element, template_string):
     return new_string
 
 
-def preselect(revit_class=()):
-    selected_element_ids = revit.uidoc.Selection.GetElementIds()
-
-    filtered_elements = []
-
-    for element_id in selected_element_ids:
-        element = revit.doc.GetElement(element_id)
-
-        if isinstance(element, revit_class) or not revit_class:
-            filtered_elements.append(element)
-
-    return filtered_elements
-
-
 def random_numbers(seed, count=1):
 	"""
 	Returns a list of random numbers from given seed. The seed can be anything: numbers, strings, class instances and so on.
@@ -142,10 +133,38 @@ def print_dict_as_table(dictionary, title="", columns=(), formats=[]):
 
         data.append((k, v))
 
-
     output.print_table(
         table_data=data,
         title=title,
         columns=columns or ('Key', 'Value'),
         formats=formats or ('', '')
+    )
+
+
+def print_dict_list(dict_list, title=""):
+    """Prints a list of dictionaries as a table with keys as column names.
+    """
+    columns = []
+
+    for row in dict_list:
+        columns.extend(row.keys())
+
+    columns = sorted(list(set(columns)))
+
+    data = []
+
+    for item in dict_list:
+        data_row = []
+
+        for key in columns:
+            data_row.append(item.get(key, '-'))
+
+        data.append(data_row)
+
+    output = script.get_output()
+
+    output.print_table(
+        table_data=data,
+        title=title,
+        columns=columns
     )

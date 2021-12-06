@@ -11,12 +11,12 @@ logger = script.get_logger()
 
 
 # Select category
-category = antler.ui.select_category()
+category = antler.forms.select_category()
 
 collector = DB.FilteredElementCollector(revit.doc)
 collector.OfCategory(antler.util.builtin_category_from_category(category))
 
-collector.WhereElementIsNotElementType()#.ToElements()
+collector.WhereElementIsNotElementType()  # .ToElements()
 
 elements = collector.ToElements()
 

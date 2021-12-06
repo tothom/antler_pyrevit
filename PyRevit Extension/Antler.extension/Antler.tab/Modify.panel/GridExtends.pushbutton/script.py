@@ -28,7 +28,7 @@ destination_grid_refs = revit.uidoc.Selection.PickObjects(
     UI.Selection.ObjectType.Element,
     grid_filter(),
     "Select destination grids to match vertical extends")
-# grids = antler.util.preselect(DB.Grid)
+# grids = antler.ui.preselect(DB.Grid)
 
 source_grid = revit.doc.GetElement(source_grid_ref)
 
