@@ -102,6 +102,10 @@ with DB.Transaction(revit.doc, __commandname__) as tg:
 			pattern = '(\<.*>\s)(.*)'
 			match = re.match(pattern, key)
 
+			if not match:
+				logger.warning("No parameter with name {} found.".format(key))
+				continue
+
 			parameter_type = match.group(1).strip()
 			parameter_name = match.group(2)
 
