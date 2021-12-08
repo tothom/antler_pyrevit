@@ -106,28 +106,28 @@ elements = antler.ui.preselect(DB.Element)
 # class duplicate_names_handler(DB.IDuplicateTypeNamesHandler):
 #     pass
 
-    # class do_nothing(DB.ISaveSharedCoordinatesCallbackForUnloadLocally):
-    #     def GetSaveModifiedLinksOptionForUnloadLocally(self, link):
-    #         return None
+# class do_nothing(DB.ISaveSharedCoordinatesCallbackForUnloadLocally):
+#     def GetSaveModifiedLinksOptionForUnloadLocally(self, link):
+#         return None
 
-    #
-    # model_path = DB.ModelPathUtils.ConvertUserVisiblePathToModelPath(
-    #     selected_link["doc"].PathName)
-    #
-    # logger.info(link.PathName)
-    # logger.info(model_path)
+#
+# model_path = DB.ModelPathUtils.ConvertUserVisiblePathToModelPath(
+#     selected_link["doc"].PathName)
+#
+# logger.info(link.PathName)
+# logger.info(model_path)
 
-    # print(opened_doc)
+# print(opened_doc)
 
-    # try:
-    #     selected_link["type"].UnloadLocally(None)
-    # except:
-    #     selected_link["type"].Unload(None)
-    #
-    # # try:
-    # open_options = DB.OpenOptions()
-    #
-    # with revit.app.OpenDocumentFile(model_path, open_options) as opened_doc:
+# try:
+#     selected_link["type"].UnloadLocally(None)
+# except:
+#     selected_link["type"].Unload(None)
+#
+# # try:
+# open_options = DB.OpenOptions()
+#
+# with revit.app.OpenDocumentFile(model_path, open_options) as opened_doc:
 with DB.Transaction(other_doc, __commandname__) as t:
     t.Start()
 
