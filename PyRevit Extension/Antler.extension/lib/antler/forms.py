@@ -242,6 +242,8 @@ def select_docs(multiselect=True, selection_filter=lambda x: True, **kwargs):
     )
 
     if multiselect:
-        return [doc_dict[selected] for key in selected]
+        selected = selected or []
+        return [doc_dict[key] for key in selected]
     else:
-        return doc_dict[selected]
+        # selected
+        return doc_dict.get(key)

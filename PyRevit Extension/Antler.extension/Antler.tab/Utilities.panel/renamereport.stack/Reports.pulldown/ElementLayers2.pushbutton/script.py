@@ -5,43 +5,22 @@ from rpw import revit, DB, UI
 from pyrevit import forms, script, EXEC_PARAMS
 import re
 from System.Collections.Generic import List
+import clr
+
+from collections import OrderedDict
+from System.Linq import Enumerable
 
 uidoc = revit.uidoc
 doc = revit.doc
 
 logger = script.get_logger()
 
-# select_compound_classes
-compound_classes = [
-    DB.Floor,
-    DB.RoofBase,
-    DB.Wall,
-    DB.Ceiling
-]
-
-# compound_classes_list = List[object](compound_classes)
-#
-# element_multiclassfilter = DB.ElementMulticlassFilter(compound_classes_list)
-#
-# element_types = DB.FilteredElementCollector(revit.doc).WhereElementIs
-
-element_types = DB.FilteredElementCollector(revit.doc).OfCategory(
-    DB.BuiltInCategory.OST_Floors).WhereElementIsElementType().ToElements()
-
-# logger.info(element_types)
-
-# element_type = eval(
-#     'element.' + ELEMENT_TYPE_CONVERSION_DICT[type(element)])
-# logger.info(element_type)
-
-# Collect layer information
-
-for element_type in element_types:
-    logger.info(element_type.Name)
-    compound_structure = element_type.GetCompoundStructure()
-
-    # def compound_structure_to_dict(compound_structure):
-    layers_dict = {}
+def element_layer_report(element):
+    try:
+        compound_structure = element.GetCompoundStructure()
+    except Exception as e:
+        logger.warning(e)
+        return ""
 
     layer_string_list = []
 
@@ -53,69 +32,97 @@ for element_type in element_types:
 
         if material:
             material_dict = antler.interop.element_to_dict(material)
-        #
-        # layers_dict[layer.LayerId] = {
-        #     'Function': layer.Function,
-        #     'Width': layer.Width,
-        #     'Material Id': layer.MaterialId.IntegerValue,
-        #     'Material': material_dict,
-        #     }
 
-        layer_string = "{width} mm {material_name}".format(
-            width=layer.Width*304.8,
-            material_name=material_dict['Name']
-        )
+            layer_string = "{width} mm {material_name}".format(
+                width=layer.Width*304.8,
+                material_name=material_dict.get('Name')
+            )
 
-        layer_string_list.append(layer_string)
+            layer_string_list.append(layer_string)
 
-    compound_string = "\n".join(layer_string_list)
+    compound_string = "; ".join(layer_string_list)
 
-    logger.info(compound_string)
+    return compound_string
 
-# return layers_dict
+def instances_of_element_type_collector(element_type):
+    """
+    Get instances by element type
+    """
+    collector = DB.FilteredElementCollector(element_type.Document)
+    collector.WhereElementIsNotElementType()
+    collector.OfCategory(antler.util.builtin_category_from_category(element_type.Category))
 
-# layers_dict = antler.interop.compound_structure_to_dict(
-#     compound_structure)
-#
-# # Print layer information
-# antler.util.print_dict_list([a.get('Material')
-#                           for a in layers_dict.values()])
 
-# Write layer string to parameter
-# build_list = []
-#
-# for layer in layers_dict.values():
-#     layer_string = '-'
-#
-#     material = layer['Material']
-#
-#     if material:
-#         description = material['Description']
-#
-#         if description:
-#             layer_string = description
-#
-#     logger.info(layer_string)
-#     build_list.append(layer_string)
-#
-# return build_list
-#
-#
-# selection = uidoc.Selection.GetElementIds() or uidoc.Selection.PickObjects(
-#     UI.Selection.ObjectType.Element, "Select objects to check.")
-#
-# elements = [doc.GetElement(id) for id in selection]
-#
-# with DB.Transaction(revit.doc, __commandname__) as t:
-#     t.Start()
-#
-#     for element in elements:
-#         build_list = report_layer_structure(element)
-#
-#         if EXEC_PARAMS.config_mode:
-#             build_string = '\r\n'.join(build_list)
-#
-#             parameter = element_type.LookupParameter('Oppbygning')
-#             parameter.Set(build_string)
-#
-#     t.Commit()
+    # collector.Where(lambda e: e.GetTypeId().IntegerValue.Equals(
+    #       element_type.Id.IntegerValue ) )
+
+    return filter(lambda e: e.GetTypeId().IntegerValue.Equals(
+          element_type.Id.IntegerValue), collector.ToElements())
+
+
+docs = antler.forms.select_docs()
+
+logger.debug(docs)
+
+docs = docs or []
+
+# select_compound_classes
+compound_classes = [
+    DB.Floor,
+    DB.RoofBase,
+    DB.Wall,
+    DB.Ceiling
+]
+
+# select_compound_classes
+compound_categories_dict = {
+    'Floors': DB.BuiltInCategory.OST_Floors,
+    # 'RoofBase',
+    # 'Wall',
+    # 'Ceiling'
+}
+
+selected = forms.SelectFromList.show(
+    sorted(compound_categories_dict.keys()),
+    button_name='Select Categories',
+    multiselect=False
+)
+
+builtin_category = compound_categories_dict[selected]
+
+# compound_classes_list = List[None](compound_classes)
+# element_multiclass_filter = DB.ElementMulticlassFilter(compound_classes_list)
+# collector = DB.FilteredElementCollector(revit.doc).WhereElementIsElementType().WherePasses(element_multiclass_filter)
+# type_elements = collector.ToElements()
+# print(type_elements)
+
+for doc in docs:
+    type_elements = DB.FilteredElementCollector(doc).OfCategory(
+        builtin_category).WhereElementIsElementType().ToElements()
+
+    # logger.info(type_elements)
+
+    # report_dict = OrderedDict()
+    report = []
+
+    for type_element in type_elements:
+
+        instance_elements = instances_of_element_type_collector(type_element)
+        count = len(instance_elements)
+
+        logger.debug(type_element)
+
+        name = type_element.get_Parameter(DB.BuiltInParameter.ALL_MODEL_TYPE_NAME).AsString()
+        logger.debug(name)
+
+        report.append({
+            'Name': name,
+            'Layers': element_layer_report(type_element),
+            'Count': count
+            })
+
+
+    # report_dict = OrderedDict(sorted(report_dict.items()))
+
+    # antler.util.print_dict_as_table(report_dict, title=doc.Title)
+    antler.util.print_dict_list(report, title=doc.Title)

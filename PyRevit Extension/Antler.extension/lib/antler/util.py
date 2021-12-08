@@ -104,7 +104,7 @@ def random_numbers(seed, count=1):
 	return numbers
 
 
-def print_dict_list_as_table(dict_list, title="", formats=[]):
+def print_dict_list_as_table(dict_list, title="", formats=[], sort_key=None):
     output = script.get_output()
 
     keys = set().union(*(d.keys() for d in dict_list))
