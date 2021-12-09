@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import antler
+
 from rpw import revit, DB, UI
 from pyrevit import forms, script, EXEC_PARAMS
 import re
@@ -8,14 +8,15 @@ from System.Collections.Generic import List
 import clr
 
 from collections import OrderedDict
-from System.Linq import Enumerable
+
+import antler
 
 uidoc = revit.uidoc
 doc = revit.doc
 
 logger = script.get_logger()
 
-def element_layer_report(element):
+def element_layer_report(element, sep='; '):
     try:
         compound_structure = element.GetCompoundStructure()
     except Exception as e:
@@ -30,34 +31,24 @@ def element_layer_report(element):
 
         material_dict = {}
 
+        # material = material or
+
         if material:
             material_dict = antler.interop.element_to_dict(material)
+        else:
+            material_dict = {}
 
-            layer_string = "{width} mm {material_name}".format(
-                width=layer.Width*304.8,
-                material_name=material_dict.get('Name')
-            )
+        layer_string = "{width} mm {material_name} ({function})".format(
+            function=layer.Function,
+            width=layer.Width*304.8,
+            material_name=material_dict.get('Name')
+        )
 
-            layer_string_list.append(layer_string)
+        layer_string_list.append(layer_string)
 
-    compound_string = "; ".join(layer_string_list)
+    compound_string = sep.join(layer_string_list)
 
     return compound_string
-
-def instances_of_element_type_collector(element_type):
-    """
-    Get instances by element type
-    """
-    collector = DB.FilteredElementCollector(element_type.Document)
-    collector.WhereElementIsNotElementType()
-    collector.OfCategory(antler.util.builtin_category_from_category(element_type.Category))
-
-
-    # collector.Where(lambda e: e.GetTypeId().IntegerValue.Equals(
-    #       element_type.Id.IntegerValue ) )
-
-    return filter(lambda e: e.GetTypeId().IntegerValue.Equals(
-          element_type.Id.IntegerValue), collector.ToElements())
 
 
 docs = antler.forms.select_docs()
@@ -103,26 +94,27 @@ for doc in docs:
     # logger.info(type_elements)
 
     # report_dict = OrderedDict()
+
     report = []
 
     for type_element in type_elements:
 
-        instance_elements = instances_of_element_type_collector(type_element)
-        count = len(instance_elements)
+        instance_elements = antler.collectors.collect_instances_of_element_type(type_element)
+        count = len(instance_elements)#.GetElementCount()
 
         logger.debug(type_element)
 
         name = type_element.get_Parameter(DB.BuiltInParameter.ALL_MODEL_TYPE_NAME).AsString()
         logger.debug(name)
 
-        report.append({
+        report.append(OrderedDict({
             'Name': name,
-            'Layers': element_layer_report(type_element),
-            'Count': count
+            'Count': count,
+            'Layers': element_layer_report(type_element, sep='\n'),
             })
-
+        )
 
     # report_dict = OrderedDict(sorted(report_dict.items()))
 
     # antler.util.print_dict_as_table(report_dict, title=doc.Title)
-    antler.util.print_dict_list(report, title=doc.Title)
+    antler.util.print_dict_list(report, title=doc.Title, sort_key="Name")

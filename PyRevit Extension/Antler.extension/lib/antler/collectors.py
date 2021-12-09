@@ -1,8 +1,13 @@
 from rpw import revit, DB
 from pyrevit import script
 import clr
+
+clr.AddReference("System.Core")
+import System
+clr.ImportExtensions(System.Linq)
+
 # from collections import OrderedDict
-# import util
+import util
 
 logger = script.get_logger()
 
@@ -43,3 +48,16 @@ def revit_link_instances_collector(doc=revit.doc):
     collector.OfClass(clr.GetClrType(DB.RevitLinkInstance))
 
     return collector
+
+
+def collect_instances_of_element_type(element_type):
+    """
+    Get instances by element type. Returns instances as elements, and not a collector.
+    """
+    collector = DB.FilteredElementCollector(element_type.Document)
+    collector.WhereElementIsNotElementType()
+    collector.OfCategory(util.builtin_category_from_category(element_type.Category))
+
+    enumerable = collector.Where(lambda e: e.GetTypeId().IntegerValue.Equals(element_type.Id.IntegerValue))
+
+    return enumerable.ToList()
