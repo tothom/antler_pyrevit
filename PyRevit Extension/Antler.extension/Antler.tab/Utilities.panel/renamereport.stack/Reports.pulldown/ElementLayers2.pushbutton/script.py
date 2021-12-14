@@ -110,7 +110,7 @@ for doc in docs:
         report.append(OrderedDict({
             'Name': name,
             'Count': count,
-            'Layers': element_layer_report(type_element, sep='\n'),
+            'Layers': element_layer_report(type_element, sep=';'),
             })
         )
 
