@@ -1,4 +1,3 @@
-from System.Collections.Generic import *
 from rpw import revit, DB, UI
 
 from pyrevit import forms, script
@@ -10,21 +9,6 @@ import antler
 
 logger = script.get_logger()
 
-uidoc = revit.uidoc
-doc = revit.doc
-
-
-def parameter_filter(elements, parameter, parameter_value):
-    for element in elements:
-        element_parameter = element.get_Parameter(parameter)
-
-
-def level_filter(element, level):
-    element_level = None
-
-    element_parameter = element.get_Parameter(parameter)
-
-
 # Get selected
 levels = antler.ui.preselect(revit_class=DB.Level)
 
@@ -32,7 +16,7 @@ logger.debug(levels)
 
 # Select Levels
 if not levels:
-    levels = DB.FilteredElementCollector(doc).OfCategory(
+    levels = DB.FilteredElementCollector(revit.doc).OfCategory(
         DB.BuiltInCategory.OST_Levels).WhereElementIsNotElementType().ToElements()
     levels_dict = {"{} ({})".format(
         level.Name, level.Elevation): level for level in levels}
@@ -69,9 +53,9 @@ if selection:
 
     element_ids = list(set(selection_ids).intersection(set(element_ids)))
 
-    elements = [doc.GetElement(id) for id in element_ids]
+    elements = [revit.doc.GetElement(id) for id in element_ids]
 
 element_id_collection = List[DB.ElementId](
     [element.Id for element in elements])
 
-uidoc.Selection.SetElementIds(element_id_collection)
+revit.uidoc.Selection.SetElementIds(element_id_collection)

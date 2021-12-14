@@ -8,6 +8,7 @@ clr.ImportExtensions(System.Linq)
 
 # from collections import OrderedDict
 import util
+import filters
 
 logger = script.get_logger()
 
@@ -46,6 +47,14 @@ def elements_on_level_collector(level, doc=revit.doc):
 def revit_link_instances_collector(doc=revit.doc):
     collector = DB.FilteredElementCollector(doc)
     collector.OfClass(clr.GetClrType(DB.RevitLinkInstance))
+
+    return collector
+
+
+def hosted_by_collector(host_element, doc=revit.doc):
+    collector = DB.FilteredElementCollector(doc)
+    collector.OfClass(DB.FamilyInstance)
+    collector.WherePasses(filters.hosted_by_filter(host_element))
 
     return collector
 
