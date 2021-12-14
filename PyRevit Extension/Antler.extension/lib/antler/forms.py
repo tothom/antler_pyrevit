@@ -99,7 +99,7 @@ def select_of_class(revit_class, naming_function, *args, **kwargs):
     selected_elements = select_elements(
         elements, naming_function, *args, **kwargs)
 
-    return select_elements
+    return selected_elements
 
     # selection_dict = OrderedDict()
     #

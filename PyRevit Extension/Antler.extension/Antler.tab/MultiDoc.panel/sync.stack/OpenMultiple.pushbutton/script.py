@@ -23,8 +23,19 @@ def rvt_file_dialog():
 
 filenames = rvt_file_dialog()
 
-for filename in filenames:
+if filenames:
+    print("Trying to open {0} files...".format(len(filenames)))
+    output.indeterminate_progress(True)
+
+for i, filename in enumerate(filenames):
+    print("Trying to open {0}...".format(filename))
+
     try:
         revit.uiapp.OpenAndActivateDocument(filename)
     except Exception as e:
         logger.warning(e)
+    else:
+        print("{0} succesfully opened...".format(filename))
+
+    output.indeterminate_progress(False)
+    output.update_progress(i + 1, len(filenames))
