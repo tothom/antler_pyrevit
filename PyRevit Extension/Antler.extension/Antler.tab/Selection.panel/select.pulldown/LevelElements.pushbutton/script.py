@@ -38,7 +38,7 @@ elements = []
 if levels:
     for level in levels:
         elements.extend(
-            antler.collectors.elements_on_level_collector(level).ToElements)
+            antler.collectors.elements_on_level_collector(level).ToElements())
 
 if not elements:
     logger.warning("No Elements hosted on selected Levels.")
