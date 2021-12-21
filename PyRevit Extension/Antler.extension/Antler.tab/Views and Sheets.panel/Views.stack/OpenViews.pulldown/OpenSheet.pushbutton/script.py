@@ -21,7 +21,7 @@ try:
 
     sheet_number = sheet_number_parameter.AsString()
 
-    logger.info("Sheet Number: {}".format(sheet_number))
+    logger.debug("Sheet Number: {}".format(sheet_number))
 
 except Exception as e:
     logger.warning("View is not on a Sheet")

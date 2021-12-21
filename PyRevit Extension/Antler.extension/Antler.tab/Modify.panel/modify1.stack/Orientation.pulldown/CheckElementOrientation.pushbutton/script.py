@@ -9,6 +9,8 @@ import math
 uidoc = revit.uidoc
 doc = revit.doc
 
+TOLERANCE = 1e-14
+
 logger = script.get_logger()
 config = script.get_config()
 output = script.get_output()
@@ -21,6 +23,7 @@ elements = [doc.GetElement(id) for id in selection]
 
 for element in elements:
     element_link = output.linkify(element.Id)
+
     print("Checking element {element}".format(element=element_link))
 
     direction = antler.transform.element_direction(element)
@@ -32,7 +35,7 @@ for element in elements:
     print("Element is oriented {angle} degrees in relation to right directon of current view".format(
         element=element_link, angle=angle_to_right / math.pi * 180.0))
 
-    if abs(math.tan(angle_to_right)) < 1e-14:
+    if abs(math.tan(angle_to_right)) < TOLERANCE:
         print("Element is parallel to right directon of view")
     else:
         print("Element is NOT parallel to right directon of view")
@@ -44,10 +47,13 @@ for element in elements:
     print("Element is oriented {angle} degrees in relation to up directon of current view".format(
         element=element_link, angle=angle_to_up / math.pi * 180.0))
 
-    if abs(math.tan(angle_to_up)) < 1e-14:
+    if abs(math.tan(angle_to_up)) < TOLERANCE:
         print("Element is parallel to up directon of view")
     else:
         print("Element is NOT parallel to up directon of view")
+
+    if EXEC_PARAMS.config_mode:
+        
 
     # print(math.tan(angle_to_right))
     # print(math.tan(angle_to_up))
