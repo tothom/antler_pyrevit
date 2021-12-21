@@ -3,6 +3,7 @@ from pyrevit import forms, script
 
 import clr
 from collections import OrderedDict
+from System.Collections.Generic import List
 
 import util
 import collectors
@@ -246,4 +247,53 @@ def select_docs(multiselect=True, selection_filter=lambda x: True, **kwargs):
         return [doc_dict[key] for key in selected]
     else:
         # selected
-        return doc_dict.get(key)
+        return doc_dict.get(selected)
+
+
+def select_types(categories=[], doc=revit.doc):
+    collector = DB.FilteredElementCollector(doc).WhereElementIsElementType()
+
+    if categories:
+        category_list = List[DB.ElementId](c.Id for c in categories)
+        multi_category_filter = DB.ElementMulticategoryFilter(category_list)
+
+        collector.WherePasses(multi_category_filter)
+
+    type_elements = collector.ToElements()
+
+    logger.info(type_elements)
+
+    selection_dict = {}
+
+    for element in type_elements:
+        try:
+            category_name = DB.Category.Name
+        except Exception as e:
+            logger.info(e)
+            category_name = "No Category"
+
+        try:
+            family_name = element.Family.Name
+        except Exception as e:
+            logger.info(e)
+            family_name = "No Family"
+
+        type_name = DB.Element.Name.GetValue(element)
+
+        selection_dict[
+            "{category_name} - {family_name} - {type_name}".format(
+                category_name=category_name,
+                family_name=family_name,
+                type_name=type_name,
+                )
+            ] = element
+
+    selected = forms.SelectFromList.show(
+        sorted(selection_dict.keys()),
+        multiselect=True
+    )
+
+    if not selected:
+        return []
+
+    return [selection_dict[key] for key in selected]
