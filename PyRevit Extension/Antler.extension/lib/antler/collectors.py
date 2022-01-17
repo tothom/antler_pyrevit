@@ -50,6 +50,12 @@ def revit_link_instances_collector(doc=revit.doc):
 
     return collector
 
+def revit_link_types_collector(doc=revit.doc):
+    collector = DB.FilteredElementCollector(doc)
+    collector.OfClass(clr.GetClrType(DB.RevitLinkType))
+
+    return collector
+
 
 def hosted_by_collector(host_element, doc=revit.doc):
     collector = DB.FilteredElementCollector(doc)

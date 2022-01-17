@@ -81,16 +81,19 @@ def select_elements(elements, naming_function=lambda x: x.Name, multiselect=True
         key = naming_function(element)
         selection_dict[key] = element
 
-    selected = forms.SelectFromList.show(
+    keys = forms.SelectFromList.show(
         sorted(selection_dict.keys()),
         multiselect=multiselect,
         **kwargs
     )
 
+    logger.debug(dict(selection_dict))
+    logger.debug(keys)
+
     if multiselect:
-        [selection_dict[key] for key in selected]
+        return [selection_dict[key] for key in keys]
     else:
-        return selection_dict[selected]
+        return selection_dict[keys]
 
 
 def select_of_class(revit_class, naming_function, *args, **kwargs):
@@ -297,3 +300,9 @@ def select_types(categories=[], doc=revit.doc):
         return []
 
     return [selection_dict[key] for key in selected]
+
+
+def select_worksets(doc=revit.doc, kind=DB.WorksetKind.UserWorkset, **kwargs):
+    worksets = DB.FilteredWorksetCollector(doc).OfKind(kind).ToWorksets()
+
+    return select_elements(worksets, **kwargs)
