@@ -91,9 +91,15 @@ def select_elements(elements, naming_function=lambda x: x.Name, multiselect=True
     logger.debug(keys)
 
     if multiselect:
-        return [selection_dict[key] for key in keys]
+        if keys:
+            return [selection_dict[key] for key in keys]
+        else:
+            return []
     else:
-        return selection_dict[keys]
+        if keys:
+            return selection_dict[keys]
+        else:
+            return None
 
 
 def select_of_class(revit_class, naming_function, *args, **kwargs):
