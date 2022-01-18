@@ -34,6 +34,7 @@ while iterator.MoveNext():
 
     record['Name'] = definition.Name
     record['Parameter Type'] = definition.ParameterType
+    record['Group'] = definition.ParameterGroup
 
     record['Is Shared Parameter'] = isinstance(parameter, DB.SharedParameterElement)
 
