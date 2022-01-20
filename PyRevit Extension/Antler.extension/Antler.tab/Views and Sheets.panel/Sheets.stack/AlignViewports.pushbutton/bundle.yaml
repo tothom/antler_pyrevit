@@ -1,0 +1,7 @@
+title:      "Align Viewports"
+
+tooltip:    "Aligns viewports on selected sheets. It only works on sheets with only one viewport, and only with plan views.
+
+            Please open the view you want to use as template sheet. Then you will be asked which other sheets you want to align with the current opened sheet."
+
+context:    active-sheet
