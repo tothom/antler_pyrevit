@@ -10,6 +10,8 @@ from collections import OrderedDict
 
 from Autodesk.Revit.Exceptions import InvalidOperationException
 
+import time
+
 logger = script.get_logger()
 output = script.get_output()
 
@@ -58,6 +60,8 @@ output.indeterminate_progress(True)
 for i, doc in enumerate(docs_to_sync):
     print("Trying to synchronize {0}...".format(doc.Title))
 
+    t0 = time.time()
+
     try:
         doc.SynchronizeWithCentral(transact_options, sync_options)
         print("Document synchronized!")
@@ -74,6 +78,10 @@ for i, doc in enumerate(docs_to_sync):
                 revit.uiapp.PostCommand(close_doc)
 
         #     logger.warning(e.Message)
+
+    t1 = time.time()
+
+    print("Sync took {:.3g}s.".format(t1-t0))
 
     output.indeterminate_progress(False)
     output.update_progress(i + 1, len(docs_to_sync))
