@@ -111,25 +111,21 @@ def select_of_class(revit_class, naming_function, *args, **kwargs):
 
     return selected_elements
 
-    # selection_dict = OrderedDict()
-    #
-    # if not naming_function:
-    #     def naming_function(x): return "{0}".format(x.Name)
-    #
-    # for element in elements:
-    #     key = naming_function(element)
-    #     selection_dict[key] = element
-    #
-    # selected = forms.SelectFromList.show(
-    #     sorted(selection_dict.keys()),
-    #     multiselect=multiselect,
-    #     **kwargs
-    # )
-    #
-    # if selected:
-    #     return [selection_dict[key] for key in selected]
-    # else:
-    #     return []
+
+def select_of_category(category, naming_function, doc=revit.doc, *args, **kwargs):
+    builtin_category = util.builtin_category_from_category(category)
+
+    collector = DB.FilteredElementCollector(doc).OfCategory(builtin_category)
+    collector.WhereElementIsElementType()
+
+    elements = collector.ToElements()
+
+    selected_elements = select_elements(
+        elements, naming_function, *args, **kwargs)
+
+    return selected_elements
+
+
 
 
 def select_families(doc=revit.doc):  # , multiselect=True):
