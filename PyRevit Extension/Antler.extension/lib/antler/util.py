@@ -45,6 +45,9 @@ def builtin_category_from_category(category):
             return builtin_category
     return None
 
+# def assure_builtin_category(category):
+#     if isinstance(category, DB.)
+
 
 def string_from_template(element, template_string):
     import re
@@ -167,7 +170,6 @@ def print_dict_list(dict_list, title="", sort_key=None):
         data.append(data_row)
 
 
-
     output = script.get_output()
 
     output.print_table(
@@ -175,3 +177,20 @@ def print_dict_list(dict_list, title="", sort_key=None):
         title=title,
         columns=columns
     )
+
+
+def close_revit():
+    """
+
+    """
+    import System.Diagnostics
+    import ctypes
+
+    processes = System.Diagnostics.Process.GetCurrentProcess()
+
+    if processes.Length > 0:
+        revit_handle = processes[0].MainWindowHandle
+    # else:
+    #     return
+
+    WM_CLOSE = 0x10
