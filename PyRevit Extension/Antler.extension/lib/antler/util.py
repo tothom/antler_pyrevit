@@ -181,7 +181,7 @@ def print_dict_list(dict_list, title="", sort_key=None):
 
 def close_revit():
     """
-
+    BTW: Doesn't work.
     """
     import System.Diagnostics
     import ctypes
