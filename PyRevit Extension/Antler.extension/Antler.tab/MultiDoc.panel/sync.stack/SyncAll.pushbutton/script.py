@@ -54,6 +54,8 @@ sync_options.SetRelinquishOptions(relinquish_options)
 docs_to_sync = [
     doc for doc in revit.docs if doc.IsWorkshared and not doc.IsLinked]
 
+t_start = time.time()
+
 print("Synchronising {0} docs...".format(len(docs_to_sync)))
 output.indeterminate_progress(True)
 
@@ -86,4 +88,6 @@ for i, doc in enumerate(docs_to_sync):
     output.indeterminate_progress(False)
     output.update_progress(i + 1, len(docs_to_sync))
 
-print("Done! 👍")
+t_end = time.time()
+
+print("Done in {:.3g} s! 👍".format(t_end - t_start))
