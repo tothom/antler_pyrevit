@@ -18,6 +18,6 @@ element = revit.doc.GetElement(ref)
 
 other_doc = antler.forms.select_docs(multiselect=False)
 
-matcher = antler.compare.ElementMatcher(element, other_doc)
+matcher = antler.compare.find_similar_by_parameter(element, other_doc)
 
 logger.info(matcher.match)

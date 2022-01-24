@@ -47,47 +47,36 @@ def diff_elements(source_element, destination_element):
     return diff_parameters
 
 
-class ElementMatcher():
+def find_similar_by_parameter(
+        element, doc, parameter=DB.BuiltInParameter.ALL_MODEL_TYPE_NAME):
     """
-    Class to attempt find matching elements in other docs. It will find
-    elements of matching class and category.
+    Searches for similar element in input doc. The doc should be other doc than
+    the doc where the element resides. By default the functions uses Type Name
+    parameter as comparison parameter, by this can be changed. Only string
+    parameters are supported as of now.
     """
+    search_value = element.get_Parameter(
+        parameter).AsString()
 
-    def __init__(self, element, other_doc):
-        self.element = element
-        self.other_doc = other_doc
+    builtin_category = antler.util.builtin_category_from_category(
+        self.element.Category)
 
-        logger.info(self.element.Name)
-        logger.info(self.element.Category.Name)
+    collector = DB.FilteredElementCollector(
+        self.other_doc).OfCategory(builtin_category).WhereElementIsElementType()
 
-        self.match = self.match_by_name()
+    logger.debug("Collector element count: {}".format(
+        collector.GetElementCount()))
 
-    def match_by_parameter(self):
-        pass
+    iterator = collector.GetElementIterator()
+    iterator.Reset()
 
-    def match_by_name(self):
-        logger.debug(self.element)
-        name = self.element.Name
+    while iterator.MoveNext():
+        logger.debug(iterator.Current)
 
-        builtin_category = antler.util.builtin_category_from_category(
-            self.element.Category)
+        other_value = iterator.Current.get_Parameter(
+            parameter).AsString()
 
-        collector = DB.FilteredElementCollector(
-            self.other_doc).OfCategory(builtin_category).WhereElementIsElementType()
+        logger.debug(search_value, other_value)
 
-        logger.debug("Collector element count: {}".format(
-            collector.GetElementCount()))
-
-        iterator = collector.GetElementIterator()
-        iterator.Reset()
-
-        while iterator.MoveNext():
-            logger.debug(iterator.Current)
-
-            other_name = iterator.Current.get_Parameter(
-                DB.BuiltInParameter.ALL_MODEL_TYPE_NAME).AsString()
-
-            logger.info(other_name)
-
-            if name == other_name:
-                return iterator.Current
+        if search_value == other_value:
+            return iterator.Current
