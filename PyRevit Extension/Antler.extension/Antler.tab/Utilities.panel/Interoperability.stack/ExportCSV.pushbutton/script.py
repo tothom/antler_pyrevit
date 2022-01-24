@@ -19,7 +19,7 @@ def build_csv_file_header():
 def element_to_dict():
 	pass
 
-def build_csv_data(elements, include_parameter_ids):
+def build_csv_data(elements, parameter_ids):
 	export_list = []
 
 	for element in elements:
@@ -30,11 +30,11 @@ def build_csv_data(elements, include_parameter_ids):
 		for parameter in element.Parameters:
 			# logger.debug(parameter.Definition.Name)
 			# logger.debug(parameter.Id)
-			if parameter.Id in field_parameter_ids:
+			if parameter.Id in parameter_ids:
 				logger.debug(parameter.Id)
 				# logger.debug(parameter.AsValueString())
-				element_dict['<Instance> '+parameter.Definition.Name] = parameter.AsString() or parameter.AsValueString()
-				#logger.debug(parameter.Id in field_parameter_ids)
+				element_dict[parameter.Definition.Name + ' <Instance>'] = parameter.AsString() or parameter.AsValueString()
+				#logger.debug(parameter.Id in parameter_ids)
 
 		element_type = revit.doc.GetElement(element.GetTypeId())
 
@@ -42,10 +42,10 @@ def build_csv_data(elements, include_parameter_ids):
 
 		if element_type:
 			for parameter in element_type.Parameters:
-				if parameter.Id in field_parameter_ids:
+				if parameter.Id in parameter_ids:
 					logger.debug(parameter.Id)
 					# logger.debug(parameter.AsValueString())
-					element_dict['<Type> '+parameter.Definition.Name] = parameter.AsString() or parameter.AsValueString()
+					element_dict[parameter.Definition.Name + ' <Type>'] = parameter.AsString() or parameter.AsValueString()
 
 		# for parameter_id in field_parameter_ids:
 		# 	logger.debug(parameter_id)
@@ -55,6 +55,8 @@ def build_csv_data(elements, include_parameter_ids):
 			# element_dict[parameter.Definition.Name] = parameter.AsValueString()
 
 		export_list.append(element_dict)
+
+	return export_list
 
 
 view_schedule = revit.uidoc.ActiveView
@@ -88,44 +90,9 @@ for field_index in range(schedule_definition.GetFieldCount()):
 
 logger.debug(field_parameter_ids)
 
-export_list = []
-
-for element in elements:
-	element_dict = {}
-
-	element_dict['ElementId'] = element.Id.ToString()
-
-	for parameter in element.Parameters:
-		# logger.debug(parameter.Definition.Name)
-		# logger.debug(parameter.Id)
-		if parameter.Id in field_parameter_ids:
-			logger.debug(parameter.Id)
-			# logger.debug(parameter.AsValueString())
-			element_dict['<Instance> '+parameter.Definition.Name] = parameter.AsString() or parameter.AsValueString()
-			#logger.debug(parameter.Id in field_parameter_ids)
-
-	element_type = revit.doc.GetElement(element.GetTypeId())
-
-	logger.debug(element_type)
-
-	if element_type:
-		for parameter in element_type.Parameters:
-			if parameter.Id in field_parameter_ids:
-				logger.debug(parameter.Id)
-				# logger.debug(parameter.AsValueString())
-				element_dict['<Type> '+parameter.Definition.Name] = parameter.AsString() or parameter.AsValueString()
-
-	# for parameter_id in field_parameter_ids:
-	# 	logger.debug(parameter_id)
-	# 	# parameter = element.get_Parameter(parameter_id)
-	# 	parameter = revit.doc.GetElement(parameter_id)
-	# 	logger.debug(parameter)
-		# element_dict[parameter.Definition.Name] = parameter.AsValueString()
-
-	export_list.append(element_dict)
+export_list = build_csv_data(elements, field_parameter_ids)
 
 logger.debug(export_list)
-
 
 # Write File
 filename = "{doc_title} - {view_title}".format(

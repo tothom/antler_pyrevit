@@ -10,23 +10,10 @@ import os
 import csv
 import re
 
+import antler
+
 logger = script.get_logger()
 # schedule = forms.select_view.show()
-
-PARAMETER_SET_MAPPING = {
-	# The internal data is stored in the form of a signed 32 bit integer.
-	DB.StorageType.Integer: int,
-	# The data will be stored internally in the form of an 8 byte floating point number.
-	DB.StorageType.Double: None, # float, # TODO: Implement unit conversion before this type can be activated.
-	# The internal data will be stored in the form of a string of characters.
-	DB.StorageType.String: str,
-	# The data type represents an element and is stored as the id of the element.
-	DB.StorageType.ElementId: None,
-}
-
-PARAMETER_UNIT_CONVERSION = {
-	DB.ParameterType.Length: 304.8,
-}
 
 
 def set_parameter_by_name(element, parameter_name, value):
@@ -34,9 +21,9 @@ def set_parameter_by_name(element, parameter_name, value):
 	logger.debug(parameters)
 	logger.debug([a.Definition.Name for a in parameters])
 
-	# Workaround because 'Sheet number' returns two parameters...
+	# Workaround because 'Sheet Number' returns two parameters...
 	if parameter_name == 'Sheet Number':
-		parameters = [parameters[0]]
+		parameters = parameters[:1]
 
 	# logger.debug(parameters.Count)
 
@@ -44,11 +31,11 @@ def set_parameter_by_name(element, parameter_name, value):
 		parameter = parameters[0]
 
 		if not parameter.IsReadOnly:  # parameter.UserModifiable
-			convert = PARAMETER_SET_MAPPING.get(parameter.StorageType)
-			# if convert is not None:
-			converted_value = convert(value)
+			# convert = PARAMETER_SET_MAPPING.get(parameter.StorageType)
+			# # if convert is not None:
+			# converted_value = convert(value)
 			try:
-				result = parameter.Set(converted_value)
+				antler.parameters.set_parameter_value(parameter, value)
 			except Exception as e:
 				logger.warning("{} {}".format(type(e), e))
 	elif parameters.Count == 0:
@@ -99,15 +86,15 @@ with DB.Transaction(revit.doc, __commandname__) as tg:
 			if value is None:
 				continue
 
-			pattern = '(\<.*>\s)(.*)'
+			pattern = '(.*)(\<.*>)'
 			match = re.match(pattern, key)
 
 			if not match:
 				logger.warning("No parameter with name {} found.".format(key))
 				continue
 
-			parameter_type = match.group(1).strip()
-			parameter_name = match.group(2)
+			parameter_name = match.group(1).strip()
+			parameter_type = match.group(2).strip()
 
 			logger.debug(parameter_type)
 			logger.debug(parameter_name)
