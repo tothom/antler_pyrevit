@@ -47,6 +47,40 @@ def diff_elements(source_element, destination_element):
     return diff_parameters
 
 
+class Finder():
+    """
+    Usage:
+
+    Provide a minimum set of hints. At least an element or a parameter value
+    must be provided.
+
+    parameter_value_hints is a dict with parameters as keys and parameter
+    values as values:
+        {
+            DB.BuiltInParameter.ALL_MODEL_TYPE_NAME: "Element Name",
+            DB.Parameter: 50.0,
+            "Height": 2400.0
+        }
+    """
+    def __init__(
+        self,
+        doc,
+        value_hint=None,
+        element_hint=None,
+        category_hint=None,
+        class_hint=None,
+        parameter_value_hints={}
+        ):
+
+
+        pass
+
+
+
+def find_by_category():
+    pass
+
+
 def find_similar_by_parameter(
         element, doc, parameter=DB.BuiltInParameter.ALL_MODEL_TYPE_NAME):
     """
