@@ -144,15 +144,15 @@ def print_dict_as_table(dictionary, title="", columns=(), formats=[]):
     )
 
 
-def print_dict_list(dict_list, title="", sort_key=None):
+def print_dict_list(dict_list, title="", sort_key=None, columns=[]):
     """Prints a list of dictionaries as a table with keys as column names.
     """
-    columns = []
 
-    for row in dict_list:
-        for key in row.keys():
-            if not key in columns:
-                columns.append(key)
+    if not columns:
+        for row in dict_list:
+            for key in row.keys():
+                if not key in columns:
+                    columns.append(key)
         # columns.extend(row.keys())
 
     # columns = sorted(list(set(columns)))
