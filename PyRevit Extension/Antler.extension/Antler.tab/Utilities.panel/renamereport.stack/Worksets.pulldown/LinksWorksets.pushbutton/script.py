@@ -18,7 +18,8 @@ selected_link_instances = antler.forms.select_elements(revit_link_instances,
 	naming_function=lambda x:"{name} ({workset})".format(
 		name=x.Name, workset=workset_table.GetWorkset(x.WorksetId).Name
 		)
-	)
+	) or script.exit()
+
 
 # revit_link_types = antler.collectors.revit_link_types_collector().ToElements()
 #
