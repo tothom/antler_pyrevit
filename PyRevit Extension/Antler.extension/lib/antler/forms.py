@@ -5,7 +5,7 @@ import clr
 from collections import OrderedDict
 from System.Collections.Generic import List
 
-import util
+import util, parameters
 import collectors
 
 """
@@ -308,3 +308,15 @@ def select_worksets(doc=revit.doc, kind=DB.WorksetKind.UserWorkset, **kwargs):
     worksets = DB.FilteredWorksetCollector(doc).OfKind(kind).ToWorksets()
 
     return select_elements(worksets, **kwargs)
+
+def select_levels(doc=revit.doc, *args, **kwargs):
+    levels = DB.FilteredElementCollector(doc).OfCategory(
+        DB.BuiltInCategory.OST_Levels).WhereElementIsNotElementType().ToElements()
+
+    selected_elements = select_elements(levels, lambda level: "{} ({})".format(
+        level.Name, parameters.get_parameter_value(level.get_Parameter(DB.BuiltInParameter.LEVEL_ELEV))
+            ),
+        *args, **kwargs
+        )
+
+    return selected_elements

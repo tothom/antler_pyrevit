@@ -4,6 +4,8 @@ from rpw import revit, DB, UI
 from pyrevit import forms, script
 from collections import OrderedDict
 
+import antler
+
 __doc__ = "Changes Level of selected Elements without moving them."
 __title__ = "Change Level"
 __author__ = "Thomas Holth"
@@ -34,7 +36,7 @@ def element_change_level(element, level_new, level_builtin, offset_builtin):
     return element
 
 
-builtin_parameter_mapping = {
+BUILTIN_PARAMETER_MAPPING = {
     DB.Floor:                   (DB.BuiltInParameter.LEVEL_PARAM, DB.BuiltInParameter.FLOOR_HEIGHTABOVELEVEL_PARAM),
     DB.ExtrusionRoof:           (DB.BuiltInParameter.ROOF_CONSTRAINT_LEVEL_PARAM, DB.BuiltInParameter.ROOF_CONSTRAINT_OFFSET_PARAM),
     DB.FootPrintRoof:           (DB.BuiltInParameter.ROOF_BASE_LEVEL_PARAM, DB.BuiltInParameter.ROOF_LEVEL_OFFSET_PARAM),
@@ -65,21 +67,8 @@ selection = uidoc.Selection.GetElementIds() or uidoc.Selection.PickObjects(
     UI.Selection.ObjectType.Element)
 elements = [doc.GetElement(id) for id in selection]
 
-# Select level
-levels = DB.FilteredElementCollector(doc).OfCategory(
-    DB.BuiltInCategory.OST_Levels).WhereElementIsNotElementType().ToElements()
-levels_dict = {"{} ({})".format(level.Name, level.Elevation)               : level for level in levels}
-#
-levels_dict = OrderedDict(sorted(levels_dict.items(), key=lambda (key, value): value.Elevation, reverse=True))
-level_key = forms.SelectFromList.show(levels_dict.keys(
-), button_name='Select Level', multiple=False, message='Select level to change to.')
-# Using get() to avoid error message when cancelling dialog.
-level = levels_dict.get(level_key)
+level = antler.forms.select_levels(multiselect=False)
 
-
-# print(level)
-#
-# levels_dict = {"{}".format(level.Name): level for level in levels}
 
 
 if elements:
@@ -88,7 +77,7 @@ if elements:
 
         for element in elements:
             # print(element)
-            builtin_parameters = builtin_parameter_mapping.get(type(element))
+            builtin_parameters = BUILTIN_PARAMETER_MAPPING.get(type(element))
 
             if not builtin_parameters:
                 logger.warning("{} not yet supported".format(type(element)))
