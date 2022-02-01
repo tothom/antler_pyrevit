@@ -16,8 +16,10 @@ ref = revit.uidoc.Selection.PickObject(
 
 element = revit.doc.GetElement(ref)
 
+element_type = revit.doc.GetElement(element.GetTypeId())
+
 other_doc = antler.forms.select_docs(multiselect=False)
 
-matcher = antler.compare.find_similar_by_parameter(element, other_doc)
+other_element = antler.compare.find_similar_element(element_type, other_doc)
 
-logger.info(matcher.match)
+logger.info(other_element)

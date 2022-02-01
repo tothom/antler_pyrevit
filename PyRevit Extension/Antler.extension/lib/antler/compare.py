@@ -103,10 +103,35 @@ class Finder():
 
 def find_by_category():
     pass
-    
 
-def find_similar_element(element, doc):
-    pass
+
+def find_similar_element(element_type, doc, parameter=DB.BuiltInParameter.ALL_MODEL_TYPE_NAME):
+    element_type = clr.Convert(element_type, DB.ElementType)
+
+    builtin_category = antler.util.builtin_category_from_category(element_type.Category)
+    category_filter = DB.ElementCategoryFilter(builtin_category)
+
+    parameter_value = element_type.get_Parameter(parameter).AsString()
+
+    logger.info(parameter_value)
+
+    provider = DB.ParameterValueProvider(DB.ElementId(DB.BuiltInParameter.ALL_MODEL_TYPE_NAME))
+    rule = DB.FilterStringRule(provider , DB.FilterStringEquals(), parameter_value, False)
+    name_parameter_filter = DB.ElementParameterFilter(rule)
+
+    logical_and_filter = DB.LogicalAndFilter(category_filter, name_parameter_filter)
+
+    collector = DB.FilteredElementCollector(doc).WhereElementIsElementType()
+    collector.WherePasses(logical_and_filter)
+
+    count = collector.GetElementCount()
+
+    if count==0:
+        return None
+    elif count==1:
+        return collector.FirstElement()
+    else:
+        raise KeyError
 
 
 def find_similar_by_parameter(
