@@ -42,6 +42,7 @@ BUILTIN_PARAMETER_MAPPING = {
     DB.FootPrintRoof:           (DB.BuiltInParameter.ROOF_BASE_LEVEL_PARAM, DB.BuiltInParameter.ROOF_LEVEL_OFFSET_PARAM),
     DB.FamilyInstance:          (DB.BuiltInParameter.FAMILY_LEVEL_PARAM, DB.BuiltInParameter.INSTANCE_SILL_HEIGHT_PARAM),
     DB.Ceiling:                 (DB.BuiltInParameter.LEVEL_PARAM, DB.BuiltInParameter.CEILING_HEIGHTABOVELEVEL_PARAM),
+#    DB.Room:                    (DB.BuiltInParameter.LEVEL_PARAM, DB.BuiltInParameter.ROOM_LOWER_OFFSET),
     DB.Group:                   (DB.BuiltInParameter.GROUP_LEVEL, DB.BuiltInParameter.GROUP_OFFSET_FROM_LEVEL),
     DB.Wall:                    [
         (DB.BuiltInParameter.WALL_BASE_CONSTRAINT,

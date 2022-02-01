@@ -103,6 +103,10 @@ class Finder():
 
 def find_by_category():
     pass
+    
+
+def find_similar_element(element, doc):
+    pass
 
 
 def find_similar_by_parameter(
