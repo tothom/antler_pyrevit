@@ -14,7 +14,9 @@ output = script.get_output()
 other_doc = antler.forms.select_docs(
     multiselect=False, selection_filter=lambda x: not x.IsFamilyDocument or not x.IsLinked)
 
-elements = antler.forms.select_types(doc=other_doc)
+categories = antler.forms.select_category(doc=other_doc, multiselect=True)
+
+elements = antler.forms.select_types(doc=other_doc, categories=categories)
 
 if not elements:
     script.exit()

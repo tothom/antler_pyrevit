@@ -21,8 +21,12 @@ if selected_views_or_sheets:
         if isinstance(element, DB.ViewSheet):
             view_ids = element.GetAllPlacedViews()
             selected_views.extend([doc.GetElement(id) for id in view_ids])
-        else:
-            selected_views.append(element)
+
+        # else:
+        #     if element.ViewType == ViewType.Legend:
+        #         pass
+        #     else:
+        selected_views.append(element)
 
 # Select Views by menu if not views were already selected.
 else:

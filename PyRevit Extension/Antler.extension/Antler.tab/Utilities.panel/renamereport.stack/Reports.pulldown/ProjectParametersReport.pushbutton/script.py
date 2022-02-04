@@ -25,6 +25,7 @@ while iterator.MoveNext():
     record = {}
 
     record['Binding Type'] = 'Instance' if isinstance(binding, DB.InstanceBinding) else 'Type'
+
     try:
         categories = [category.Name for category in binding.Categories]
     except Exception as e:
@@ -45,4 +46,4 @@ while iterator.MoveNext():
 
     report.append(record)
 
-antler.util.print_dict_list(report)
+antler.util.print_dict_list(report, sort_key='Name')
