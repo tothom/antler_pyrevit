@@ -47,57 +47,9 @@ def diff_elements(source_element, destination_element):
     return diff_parameters
 
 
-class Finder():
-    """
-    Usage:
 
-    Provide a minimum set of hints. At least an element or a parameter value
-    must be provided.
 
-    Necessary hints:
-        A string or an element or an element and a parameter
 
-    Other hints:
-        Parameters as {paramater: value} dict.
-        category
-        class
-    """
-    def __init__(
-            self,
-            doc,
-            hints=[],
-            ):
-
-        self.doc = doc
-        self.filters = []
-
-        for hint in hints:
-            if isinstance(hint, str):
-                # Assumes the user is asking for element name
-                self.add_type_name_parameter_filter(hint)
-
-            if isinstance(hint, DB.ElementType):
-
-                pass
-
-            if isinstance(hint, (DB.BuiltInCategory, DB.Category)):
-                self.add_category_filter(hint)
-
-            if isinstance(hint, (DB.Parameter, DB.Definition)):
-                pass
-
-    def add_category_filter(self, category):
-        builtin_category = antler.util.builtin_category_from_category(category)
-        category_filter = DB.ElementCategoryFilter(builtin_category)
-
-        self.filters.append(category_filter)
-
-    def add_type_name_parameter_filter(self, name):
-        provider = DB.ParameterValueProvider(DB.BuiltInParameter.ALL_MODEL_TYPE_NAME)
-        rule = DB.FilterStringRule(provider , DB.FilterStringContains(), hint, False)
-        name_parameter_filter = DB.ElementParameterFilter(rule)
-
-        self.filters.append(name_parameter_filter)
 
 
 
@@ -167,3 +119,56 @@ def find_similar_by_parameter(
 
         if search_value == other_value:
             return iterator.Current
+
+
+class Finder():
+    """
+    Usage:
+
+    Provide a minimum set of hints. At least an element or a parameter value
+    must be provided.
+
+    Necessary hints:
+        A string or an element or an element and a parameter
+
+    Other hints:
+        Parameters as {paramater: value} dict.
+        category
+        class
+    """
+    def __init__(
+            self,
+            doc,
+            hints=[],
+            ):
+
+        self.doc = doc
+        self.filters = []
+
+        for hint in hints:
+            if isinstance(hint, str):
+                # Assumes the user is asking for element name
+                self.add_type_name_parameter_filter(hint)
+
+            if isinstance(hint, DB.ElementType):
+
+                pass
+
+            if isinstance(hint, (DB.BuiltInCategory, DB.Category)):
+                self.add_category_filter(hint)
+
+            if isinstance(hint, (DB.Parameter, DB.Definition)):
+                pass
+
+    def add_category_filter(self, category):
+        builtin_category = antler.util.builtin_category_from_category(category)
+        category_filter = DB.ElementCategoryFilter(builtin_category)
+
+        self.filters.append(category_filter)
+
+    def add_type_name_parameter_filter(self, name):
+        provider = DB.ParameterValueProvider(DB.ElementId(DB.BuiltInParameter.ALL_MODEL_TYPE_NAME))
+        rule = DB.FilterStringRule(provider , DB.FilterStringContains(), hint, False)
+        name_parameter_filter = DB.ElementParameterFilter(rule)
+
+        self.filters.append(name_parameter_filter)

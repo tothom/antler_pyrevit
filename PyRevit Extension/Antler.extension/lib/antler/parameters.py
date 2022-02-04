@@ -44,3 +44,8 @@ def set_parameter_value(parameter, value):
 
     # if not parameter.IsReadOnly:
     parameter.Set(internal_value)
+
+
+def get_common_parameters(elements):
+    common_parameters = []
+    pass

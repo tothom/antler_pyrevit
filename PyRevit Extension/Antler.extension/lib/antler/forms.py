@@ -266,32 +266,41 @@ def select_types(categories=[], doc=revit.doc):
 
     type_elements = collector.ToElements()
 
-    logger.info(type_elements)
+    # logger.info(type_elements)
 
     selection_dict = {}
 
     for element in type_elements:
-        try:
-            category_name = DB.Category.Name
-        except Exception as e:
-            logger.info(e)
-            category_name = "No Category"
+        logger.debug(element)
+
+        key_parts = []
 
         try:
-            family_name = element.Family.Name
+            key_parts.append(element.Category.Name)
         except Exception as e:
-            logger.info(e)
-            family_name = "No Family"
+            logger.debug(e)
+            # category_name = "No Category"
 
-        type_name = DB.Element.Name.GetValue(element)
+        try:
+            key_parts.append(element.Family.Name)
+        except Exception as e:
+            logger.debug(e)
+            # family_name = "No Family"
 
-        selection_dict[
-            "{category_name} - {family_name} - {type_name}".format(
-                category_name=category_name,
-                family_name=family_name,
-                type_name=type_name,
-                )
-            ] = element
+        key_parts.append(DB.Element.Name.GetValue(element))
+
+        key = ' - '.join(key_parts)
+
+        # "{category_name} - {family_name} - {type_name}".format(
+        #     category_name=category_name,
+        #     family_name=family_name,
+        #     type_name=type_name,
+        #     )
+
+        if key in selection_dict:
+            logger.warning("Key {} already in dict.".format(key))
+
+        selection_dict[key] = element
 
     selected = forms.SelectFromList.show(
         sorted(selection_dict.keys()),
