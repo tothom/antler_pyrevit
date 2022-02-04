@@ -76,3 +76,22 @@ def collect_instances_of_element_type(element_type):
     enumerable = collector.Where(lambda e: e.GetTypeId().IntegerValue.Equals(element_type.Id.IntegerValue))
 
     return enumerable.ToList()
+
+def get_view_by_name(name, doc=revit.doc):
+    collector = DB.FilteredElementCollector(doc)
+    collector.OfClass(DB.View)
+    collector.WhereElementIsNotElementType()
+
+    provider = DB.ParameterValueProvider(DB.ElementId(DB.BuiltInParameter.VIEW_NAME))
+    rule = DB.FilterStringRule(provider , DB.FilterStringEquals(), name, False)
+    view_name_parameter_filter = DB.ElementParameterFilter(rule)
+
+    collector.WherePasses(view_name_parameter_filter)
+
+    count = collector.GetElementCount()
+
+    if count==1:
+        return collector.FirstElement()
+    else:
+        logger.warning("More than one view found.")
+        raise KeyError
