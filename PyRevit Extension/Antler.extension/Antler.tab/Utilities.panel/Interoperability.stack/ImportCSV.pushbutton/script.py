@@ -37,7 +37,7 @@ def set_parameter_by_name(element, parameter_name, value):
 			try:
 				antler.parameters.set_parameter_value(parameter, value)
 			except Exception as e:
-				logger.warning("{} {}".format(type(e), e))
+				logger.debug("{} {}".format(type(e), e))
 	elif parameters.Count == 0:
 		logger.warning(
 			"No parameters with name {} found".format(parameter_name))
