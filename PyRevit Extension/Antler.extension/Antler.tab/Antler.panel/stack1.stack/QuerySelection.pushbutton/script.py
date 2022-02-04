@@ -29,7 +29,7 @@ for element in elements:
     parameter_dict = {parameter.Definition.Name: parameter.AsString(
     ) or parameter.AsValueString() for parameter in element.Parameters}
 
-    antler.util.print_dict_as_table(parameter_dict, title="Parameters")
+    antler.util.print_dict_as_table(parameter_dict, title="Parameters", sort=True)
 
     # for k, v in parameter_dict.items():
     #     print(k, v)
@@ -63,7 +63,7 @@ for element in elements:
         except Exception as e:
             print(e)
 
-    antler.util.print_dict_as_table(element_property_dict, title="dir() -> Element Properties")
+    antler.util.print_dict_as_table(element_property_dict, title="dir() -> Element Properties", sort=True)
 
     try:
         element_type = doc.GetElement(element.GetTypeId())
@@ -73,7 +73,7 @@ for element in elements:
         type_parameter_dict = {parameter.Definition.Name: parameter.AsString(
         ) or parameter.AsValueString() for parameter in element_type.Parameters}
 
-        antler.util.print_dict_as_table(type_parameter_dict, title="Type Parameters")
+        antler.util.print_dict_as_table(type_parameter_dict, title="Type Parameters", sort=True)
 
         # print("\n".join(["{}: {}".format(k, v)
         #       for k, v in type_parameter_dict.items()]))
@@ -93,7 +93,7 @@ for element in elements:
             except Exception as e:
                 print(e)
 
-        antler.util.print_dict_as_table(type_property_dict, title="dir() -> Type Properties")
+        antler.util.print_dict_as_table(type_property_dict, title="dir() -> Type Properties", sort=True)
 
 
     except:
