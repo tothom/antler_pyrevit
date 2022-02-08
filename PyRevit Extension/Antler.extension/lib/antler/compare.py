@@ -24,33 +24,38 @@ def diff_elements(source_element, destination_element):
     diff_parameters = {}
 
     for source_parameter in source_element.ParametersMap:
+        logger.debug(source_parameter)
+
         definition = source_parameter.Definition
-        output.print_md("**{}**".format(definition.Name))
+
+        source_value = antler.parameters.get_parameter_value(source_parameter)
+        logger.debug(source_value)
 
         destination_parameter = destination_element.get_Parameter(definition)
 
-        source_value = antler.parameters.get_parameter_value(source_parameter)
-        destination_value = antler.parameters.get_parameter_value(
-            destination_parameter)
+        if not destination_parameter:
+            destination_value = None
+        else:
+            destination_value = antler.parameters.get_parameter_value(
+                destination_parameter)
 
         equal = source_value == destination_value
-
-        output.print_md("{source}\t{equal}\t{dest}".format(
-            source=source_value,
-            equal='==' if equal else '!=',
-            dest=destination_value)
-        )
 
         if not equal:
             diff_parameters[destination_parameter] = source_value
 
     return diff_parameters
 
+def print_diff(diff_parameters):
+
+    output.print_md("**{}**".format(definition.Name))
 
 
-
-
-
+    output.print_md("{source}\t**{equal}**\t{dest}".format(
+        source=source_value,
+        equal='==' if equal else '!=',
+        dest=destination_value)
+    )
 
 
 def find_by_category():
@@ -58,67 +63,56 @@ def find_by_category():
 
 
 def find_similar_element(element_type, doc, parameter=DB.BuiltInParameter.ALL_MODEL_TYPE_NAME):
+    # Assures that input element is of class ElementType
     element_type = clr.Convert(element_type, DB.ElementType)
 
-    builtin_category = antler.util.builtin_category_from_category(element_type.Category)
+    # category_filter
+    builtin_category = antler.util.builtin_category_from_category(
+        element_type.Category)
     category_filter = DB.ElementCategoryFilter(builtin_category)
 
+    # parameter_filter
     parameter_value = element_type.get_Parameter(parameter).AsString()
 
     logger.info(parameter_value)
 
-    provider = DB.ParameterValueProvider(DB.ElementId(DB.BuiltInParameter.ALL_MODEL_TYPE_NAME))
-    rule = DB.FilterStringRule(provider , DB.FilterStringEquals(), parameter_value, False)
+    provider = DB.ParameterValueProvider(DB.ElementId(parameter))
+    rule = DB.FilterStringRule(
+        provider, DB.FilterStringEquals(), parameter_value, False)
     name_parameter_filter = DB.ElementParameterFilter(rule)
 
-    logical_and_filter = DB.LogicalAndFilter(category_filter, name_parameter_filter)
+    # combine_two_filters
+    logical_and_filter = DB.LogicalAndFilter(
+        category_filter, name_parameter_filter)
 
+    # get_collector
     collector = DB.FilteredElementCollector(doc).WhereElementIsElementType()
     collector.WherePasses(logical_and_filter)
 
     count = collector.GetElementCount()
 
-    if count==0:
+    logger.debug("Collector element count: {}".format(count))
+
+    if count == 0:
         return None
-    elif count==1:
+    elif count == 1:
         return collector.FirstElement()
     else:
         raise KeyError
 
-
-def find_similar_by_parameter(
-        element, doc, parameter=DB.BuiltInParameter.ALL_MODEL_TYPE_NAME):
-    """
-    Searches for similar element in input doc. The doc should be other doc than
-    the doc where the element resides. By default the functions uses Type Name
-    parameter as comparison parameter, by this can be changed. Only string
-    parameters are supported as of now.
-    """
-    search_value = element.get_Parameter(
-        parameter).AsString()
-
-    builtin_category = antler.util.builtin_category_from_category(
-        self.element.Category)
-
-    collector = DB.FilteredElementCollector(
-        self.other_doc).OfCategory(builtin_category).WhereElementIsElementType()
-
-    logger.debug("Collector element count: {}".format(
-        collector.GetElementCount()))
-
-    iterator = collector.GetElementIterator()
-    iterator.Reset()
-
-    while iterator.MoveNext():
-        logger.debug(iterator.Current)
-
-        other_value = iterator.Current.get_Parameter(
-            parameter).AsString()
-
-        logger.debug(search_value, other_value)
-
-        if search_value == other_value:
-            return iterator.Current
+    # iterator = collector.GetElementIterator()
+    # iterator.Reset()
+    #
+    # while iterator.MoveNext():
+    #     logger.debug(iterator.Current)
+    #
+    #     other_value = iterator.Current.get_Parameter(
+    #         parameter).AsString()
+    #
+    #     logger.debug(search_value, other_value)
+    #
+    #     if search_value == other_value:
+    #         return iterator.Current
 
 
 class Finder():
@@ -136,11 +130,12 @@ class Finder():
         category
         class
     """
+
     def __init__(
             self,
             doc,
             hints=[],
-            ):
+    ):
 
         self.doc = doc
         self.filters = []
@@ -167,8 +162,10 @@ class Finder():
         self.filters.append(category_filter)
 
     def add_type_name_parameter_filter(self, name):
-        provider = DB.ParameterValueProvider(DB.ElementId(DB.BuiltInParameter.ALL_MODEL_TYPE_NAME))
-        rule = DB.FilterStringRule(provider , DB.FilterStringContains(), hint, False)
+        provider = DB.ParameterValueProvider(
+            DB.ElementId(DB.BuiltInParameter.ALL_MODEL_TYPE_NAME))
+        rule = DB.FilterStringRule(
+            provider, DB.FilterStringContains(), hint, False)
         name_parameter_filter = DB.ElementParameterFilter(rule)
 
         self.filters.append(name_parameter_filter)

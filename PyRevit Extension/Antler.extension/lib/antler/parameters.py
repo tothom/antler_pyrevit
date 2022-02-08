@@ -13,7 +13,14 @@ def get_parameter_value(parameter):
         DB.StorageType.ElementId: DB.Parameter.AsElementId,
     }
 
-    internal_value = PARAMETER_GET_MAPPING[parameter.StorageType](parameter)
+    logger.debug(parameter.Definition.Name)
+    logger.debug(parameter.StorageType)
+
+    internal_value = PARAMETER_GET_MAPPING.get(
+        parameter.StorageType, DB.Parameter.AsValueString)(parameter)
+    # internal_value = PARAMETER_GET_MAPPING[parameter.StorageType](parameter)
+
+    logger.debug("Internal value: {}".format(internal_value))
 
     try:
         value = DB.UnitUtils.ConvertFromInternalUnits(
