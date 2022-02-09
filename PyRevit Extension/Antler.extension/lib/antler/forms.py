@@ -66,7 +66,7 @@ def select_category(doc=revit.doc, multiselect=False):
     if multiselect:
         return [categories_dict[a] for a in selected]
     else:
-        return categories_dict[selected]
+        return categories_dict.get(selected)
 
     # category_found = Revit.Elements.Category.ByName(str(category))
 
