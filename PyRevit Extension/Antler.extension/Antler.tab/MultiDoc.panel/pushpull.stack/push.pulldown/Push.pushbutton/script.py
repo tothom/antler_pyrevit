@@ -10,15 +10,19 @@ from collections import OrderedDict
 logger = script.get_logger()
 output = script.get_output()
 
+selection = antler.ui.preselect()
 
-# select_elements_to_push
-category = antler.forms.select_category(multiselect=False)
-
-elements = antler.forms.select_types(categories=[category])
+if selection:
+    elements = [revit.doc.GetElement(element.GetTypeId()) for element in selection]
+    elements = list(set(elements))
+else:
+    # select_elements_to_push
+    category = antler.forms.select_category(multiselect=False) or script.exit()
+    elements = antler.forms.select_types(categories=[category]) or script.exit()
 
 # select_docs_to_push_to
 docs = antler.forms.select_docs(
-    selection_filter=lambda x:not x.IsFamilyDocument and x != revit.doc)
+    selection_filter=lambda x: not x.IsFamilyDocument and x != revit.doc) or script.exit()
 
 logger.debug(docs)
 
@@ -42,6 +46,7 @@ with DB.TransactionGroup(revit.doc, __commandname__) as tg:
             with DB.Transaction(doc, "Push element") as t:
                 t.Start()
 
+                # find_match
                 match = antler.compare.find_similar_element(element, doc)
 
                 logger.debug(match)
@@ -50,22 +55,35 @@ with DB.TransactionGroup(revit.doc, __commandname__) as tg:
                     diff = antler.compare.diff_elements(element, match)
 
                     logger.debug(diff)
+                    # override element parameters
 
                     for parameter, value in diff.items():
-                        logger.info("Parameter {param} set from {old} to {new}".format(
-                            param=parameter.Definition.Name,
-                            old=antler.parameters.get_parameter_value(parameter),
-                            new=value
-                        ))
-
                         antler.parameters.set_parameter_value(parameter, value)
 
-
-                    # override element parameters
+                        logger.info("Parameter {param} set from {old} to {new}".format(
+                            param=parameter.Definition.Name,
+                            old=antler.parameters.get_parameter_value(
+                                parameter),
+                            new=value
+                        ))
                 else:
-                    pass
-                    #copy element to doc
+                    # copy element to doc
+                    try:
+                        DB.ElementTransformUtils.CopyElements(
+                            revit.doc,
+                            List[DB.ElementId]([element.Id]),
+                            doc,
+                            DB.Transform.Identity,
+                            DB.CopyPasteOptions()
+                            )
+                    except Exception as e:
+                        logger.warning(e)
+                    else:
+                        logger.info("Element {element} copied to {doc}".format(
+                            element=element,
+                            doc=doc.Title
+                        ))
+
                 t.Commit()
-                # find_match
 
     tg.Assimilate()
