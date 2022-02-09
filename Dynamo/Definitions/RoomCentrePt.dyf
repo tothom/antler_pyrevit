@@ -1,7 +1,7 @@
 {
   "Uuid": "746f5df6-b5ed-49a8-9118-e27405c977e6",
   "IsCustomNode": true,
-  "Category": "Antler.Room",
+  "Category": "Antler.Room.Query",
   "Description": "Center point of Room",
   "Name": "RoomCentrePt",
   "ElementResolver": {

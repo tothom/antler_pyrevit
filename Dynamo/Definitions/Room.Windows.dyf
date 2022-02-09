@@ -1,7 +1,7 @@
 {
   "Uuid": "81767efb-8508-4970-8028-d84bc42608ff",
   "IsCustomNode": true,
-  "Category": "Antler.Rooms",
+  "Category": "Antler.Rooms.Query",
   "Description": "Gets doors to room and from room",
   "Name": "Room.Windows",
   "ElementResolver": {

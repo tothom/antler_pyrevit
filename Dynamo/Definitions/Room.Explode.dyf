@@ -1,7 +1,7 @@
 {
   "Uuid": "0f76f476-b1a6-450a-886c-e9a872f6bd28",
   "IsCustomNode": true,
-  "Category": "Antler.Rooms",
+  "Category": "Antler.Rooms.Query",
   "Description": "Get geometry and material information for each Face in geometry",
   "Name": "Room.Explode",
   "ElementResolver": {

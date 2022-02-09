@@ -1,8 +1,8 @@
 {
   "Uuid": "b883bd2f-3723-43d8-a887-b671ba090bd3",
   "IsCustomNode": true,
-  "Category": "Antler.Rooms",
-  "Description": "Returns locationpoint of rooom",
+  "Category": "Antler.Rooms.Query",
+  "Description": "Returns locationpoint of room",
   "Name": "Room.LocationPoint",
   "ElementResolver": {
     "ResolutionMap": {}
