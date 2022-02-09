@@ -25,7 +25,7 @@ sheets = []
 for ui_view in revit.uidoc.GetOpenUIViews():
     view = revit.doc.GetElement(ui_view.ViewId)
 
-    logger.info([view, view.Title])
+    logger.debug([view, view.Title])
 
     if isinstance(view, DB.ViewSheet):
         sheets.append(view)
@@ -36,6 +36,9 @@ sheet = antler.forms.select_elements(
     sheets,
     naming_function=lambda x:"{number} - {name}".format(number=x.SheetNumber, name=x.Name),
     multiselect=False)
+
+if not sheet:
+    script.exit()
 
 with DB.Transaction(revit.doc, __commandname__) as tg:
 
