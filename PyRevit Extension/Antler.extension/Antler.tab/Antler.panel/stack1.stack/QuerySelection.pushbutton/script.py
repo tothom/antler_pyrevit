@@ -17,10 +17,15 @@ current_selection = uidoc.Selection.GetElementIds()
 
 # print(current_selection)
 
-selection = current_selection or uidoc.Selection.PickObjects(
-    UI.Selection.ObjectType.Element, "Select objects to expand.")
+selection = current_selection# or uidoc.Selection.PickObjects(
+    # UI.Selection.ObjectType.Element, "Select objects to expand.")
 
 elements = [doc.GetElement(id) for id in selection]
+
+if not elements:
+    category = antler.forms.select_category(multiselect=False)
+
+    elements = antler.forms.select_types(categories=[category])
 
 for element in elements:
     print("Element: {}".format(element))
