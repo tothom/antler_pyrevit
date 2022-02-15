@@ -1,0 +1,370 @@
+{
+  "Uuid": "6d8522a2-75f3-4ca6-8e68-8cd8865077bf",
+  "IsCustomNode": true,
+  "Category": "Antler.FamilyInstance",
+  "Description": "Gets symbol geometry as solid and faces with materials",
+  "Name": "FamilyInstance.SymbolGeometry",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "CoordinateSystem": {
+        "Key": "Autodesk.DesignScript.Geometry.CoordinateSystem",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Coordinates.BasePoint": {
+        "Key": "Revit.Elements.Coordinates",
+        "Value": "RevitNodes.dll"
+      },
+      "Surface": {
+        "Key": "Autodesk.DesignScript.Geometry.Surface",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Vector.YAxis": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Vector": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Vector.XAxis": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "solids",
+      "Id": "1d6e8930d8ec4739a6b93d5fca787fa4",
+      "Inputs": [
+        {
+          "Id": "c251d3df68b14756a214de247efc0279",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "family_instance",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "994e1a63356b446a91b7a4eb6c80fab3",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "aa0c5b0fef90471a84089cdcd30b6815",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.Transpose@var[]..[]",
+      "Id": "576a3d87360a4d2ebe8af80249060cf8",
+      "Inputs": [
+        {
+          "Id": "cd8ed9ec017f43aca350dafb7892eab7",
+          "Name": "lists",
+          "Description": "A list of lists to be transposed.\n\nvar[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "bcf89a8b69ee48c49cb6b51469e6aade",
+          "Name": "lists",
+          "Description": "A list of transposed lists.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Swaps rows and columns in a list of lists. If there are some rows that are shorter than others, null values are inserted as place holders in the resultant array such that it is always rectangular.\n\nList.Transpose (lists: var[]..[]): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "a[0];\na[1];\na[2];",
+      "Id": "1937325b491f46698d43c8e8d228d661",
+      "Inputs": [
+        {
+          "Id": "42a90727940d4ef2b75817f79a376ff1",
+          "Name": "a",
+          "Description": "a",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "e80bf4085a3249529420f6099115ab9e",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "53517cac50b941d99115632c0d0427f9",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3a5a6b1020f34d28a07056a95f17e33f",
+          "Name": "",
+          "Description": "Value of expression at line 3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "materials",
+      "Id": "430a8e5a4284419a9b6f3012ed6402ea",
+      "Inputs": [
+        {
+          "Id": "7dedd2f65cb6417ab01c0e81f7d7797f",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "coordinate_systems",
+      "Id": "bbf4654a822347c28085858b2031e90c",
+      "Inputs": [
+        {
+          "Id": "b8bcf1c628e34f02aca9718074c38dbb",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\n\nclr.AddReference('ProtoGeometry')\nfrom Autodesk.DesignScript.Geometry import *\n\n# Import RevitAPI\nclr.AddReference(\"RevitAPI\")\nimport Autodesk\nfrom Autodesk.Revit.DB import *\n\n# Import DocumentManager and TransactionManager\nclr.AddReference(\"RevitServices\")\nimport RevitServices\nfrom RevitServices.Persistence import DocumentManager\nfrom RevitServices.Transactions import TransactionManager\n\n# Import ToDSType(bool) extension method\nclr.AddReference(\"RevitNodes\")\nimport Revit\nclr.ImportExtensions(Revit.Elements)\nclr.ImportExtensions(Revit.GeometryConversion)\n\n# Import Revit UI\nclr.AddReference('RevitAPIUI')\nfrom Autodesk.Revit.UI import *\n#from Autodesk.Revit.UI.Selection import *\n\nfrom Autodesk.DesignScript.Geometry import *\n\n#The inputs to this node will be stored as a list in the IN variables.\ninput = IN[0]\n\ndoc = DocumentManager.Instance.CurrentDBDocument\nuiapp = DocumentManager.Instance.CurrentUIApplication\napp = uiapp.Application\n\ndef get_family_instance_faces(family_instance, options=DB.Options()):\n\tfaces = []\n\t# material_ids = []\n\n\tfor geometry_element in family_instance.get_Geometry(options):\n\n\t\tgeometry_element_faces = []\n\t\t# geometry_element_material_ids = []\n\n\t\tfor geometry in geometry_element.GetSymbolGeometry():\n\t\t\tif isinstance(geometry, Autodesk.Revit.DB.Solid):\n\t\t\t\t# face_materials_ids = []\n\t\t\t\t# faces = []\n\t\t\t\tgeometry_element_faces.append(geometry.Faces)\n\n\t\t\t\t# for face in geometry.Faces:\n\t\t\t\t# \tfaces.append(face)\n\t\t\t\t\t# face_materials_ids.append(face.MaterialElementId)\n\n\t\t\t\t# geometry_element_faces.append(faces)\n\t\t\t\t# geometry_element_material_ids.append(face_materials_ids)\n\n\t\t\t# geometry_element_faces.append(solid_faces)\n\t\t\t# geometry_element_material_ids.append(solid_face_material_ids)\n\n\t\tfaces.append(geometry_element_faces)\n\t\t# material_ids.append(geometry_element_material_ids)\n\n\treturn faces\n\n\noutput = None\n\nif isinstance(input, list):\n    output = [function(a) for a in UnwrapElement(input)]\nelif input is None:\n\toutput = None\nelse:\n    output = function(UnwrapElement(input))\n\n\n#Assign your output to the OUT variable.\nOUT = output",
+      "VariableInputPorts": true,
+      "Id": "2245e36466e34b56bc88281dd64e67ae",
+      "Inputs": [
+        {
+          "Id": "690779cd07b546c79376150e347a99d1",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "7ef337bdb57549788382fd7773f3db3a",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "aa0c5b0fef90471a84089cdcd30b6815",
+      "End": "690779cd07b546c79376150e347a99d1",
+      "Id": "dfa8eefc44604363bf365e0d285a6747"
+    },
+    {
+      "Start": "bcf89a8b69ee48c49cb6b51469e6aade",
+      "End": "42a90727940d4ef2b75817f79a376ff1",
+      "Id": "db87f8db0e374ae3816496a57b361d96"
+    },
+    {
+      "Start": "e80bf4085a3249529420f6099115ab9e",
+      "End": "c251d3df68b14756a214de247efc0279",
+      "Id": "2e22170e1c2a4b0bb02d63717def45f8"
+    },
+    {
+      "Start": "53517cac50b941d99115632c0d0427f9",
+      "End": "7dedd2f65cb6417ab01c0e81f7d7797f",
+      "Id": "a1bcc1c7f80e42a9a2ec99f039f24111"
+    },
+    {
+      "Start": "3a5a6b1020f34d28a07056a95f17e33f",
+      "End": "b8bcf1c628e34f02aca9718074c38dbb",
+      "Id": "cc3c8c4707284adc80e974a10c574bd2"
+    },
+    {
+      "Start": "7ef337bdb57549788382fd7773f3db3a",
+      "End": "cd8ed9ec017f43aca350dafb7892eab7",
+      "Id": "0f641c484cb4490d9f5a40d2a2c9369d"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -4739.5019768467628,
+      "EyeY": 9793.7157071208567,
+      "EyeZ": -817.61075750022383,
+      "LookX": 10602.188181961716,
+      "LookY": -5510.2542005324431,
+      "LookZ": -892.270543550389,
+      "UpX": 0.25790725399894443,
+      "UpY": 0.965925737679506,
+      "UpZ": -0.021705268459954141
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "1d6e8930d8ec4739a6b93d5fca787fa4",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1013.41923934596,
+        "Y": -3.67017517306647
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "994e1a63356b446a91b7a4eb6c80fab3",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 11.0,
+        "Y": 1.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List.Transpose",
+        "Id": "576a3d87360a4d2ebe8af80249060cf8",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 548.601023177861,
+        "Y": 46.1223482142942
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "1937325b491f46698d43c8e8d228d661",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 787.029934856381,
+        "Y": 36.653362286053
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "430a8e5a4284419a9b6f3012ed6402ea",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 998.834857632412,
+        "Y": 65.2309093980516
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "bbf4654a822347c28085858b2031e90c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1011.44194372822,
+        "Y": 150.059398159608
+      },
+      {
+        "ShowGeometry": false,
+        "Name": "Symbol Geomtry",
+        "Id": "2245e36466e34b56bc88281dd64e67ae",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 308.60749271234897,
+        "Y": 20.877633705065392
+      }
+    ],
+    "Annotations": [],
+    "X": -240.73599169149918,
+    "Y": 126.39469867899768,
+    "Zoom": 2.2401763721469354
+  }
+}

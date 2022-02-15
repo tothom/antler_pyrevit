@@ -132,3 +132,34 @@ def find_associated_floor(window_door, view_3d, ray_offset=1, max_proximity=3):
 		reference = reference_with_context.GetReference()
 
 		return reference.ElementId, reference.GlobalPoint
+
+
+def get_family_instance_faces(family_instance, options=DB.Options()):
+	faces = []
+	# material_ids = []
+
+	for geometry_element in family_instance.get_Geometry(options):
+
+		geometry_element_faces = []
+		# geometry_element_material_ids = []
+
+		for geometry in geometry_element.GetSymbolGeometry():
+			if isinstance(geometry, Autodesk.Revit.DB.Solid):
+				# face_materials_ids = []
+				# faces = []
+				geometry_element_faces.append(geometry.Faces)
+
+				# for face in geometry.Faces:
+				# 	faces.append(face)
+					# face_materials_ids.append(face.MaterialElementId)
+
+				# geometry_element_faces.append(faces)
+				# geometry_element_material_ids.append(face_materials_ids)
+
+			# geometry_element_faces.append(solid_faces)
+			# geometry_element_material_ids.append(solid_face_material_ids)
+
+		faces.append(geometry_element_faces)
+		# material_ids.append(geometry_element_material_ids)
+
+	return faces

@@ -25,8 +25,8 @@ if selected_views_or_sheets:
         # else:
         #     if element.ViewType == ViewType.Legend:
         #         pass
-        #     else:
-        selected_views.append(element)
+        else:
+            selected_views.append(element)
 
 # Select Views by menu if not views were already selected.
 else:

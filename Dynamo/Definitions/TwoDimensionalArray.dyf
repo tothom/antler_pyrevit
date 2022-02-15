@@ -1,0 +1,256 @@
+{
+  "Uuid": "f696d4d6-32be-4d2c-a105-fce3496face4",
+  "IsCustomNode": true,
+  "Category": "Antler",
+  "Description": "",
+  "Name": "TwoDimensionalArray",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "List": {
+        "Key": "List",
+        "Value": "BuiltIn.ds"
+      },
+      "Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      },
+      "Surface": {
+        "Key": "Autodesk.DesignScript.Geometry.Surface",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Line": {
+        "Key": "Autodesk.DesignScript.Geometry.Line",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Vector.XAxis": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Vector": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      },
+      "BoundingBox.union": {
+        "Key": "Autodesk.DesignScript.Geometry.BoundingBox",
+        "Value": "ProtoGeometry.dll"
+      },
+      "BoundingBox.MinPoint": {
+        "Key": "Autodesk.DesignScript.Geometry.BoundingBox",
+        "Value": "ProtoGeometry.dll"
+      },
+      "BoundingBox": {
+        "Key": "Autodesk.DesignScript.Geometry.BoundingBox",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "\r\nA = IN[0]\r\nB = IN[1]\r\n\r\n# Place your code below this line\r\n\r\n\r\noutput = [[(a, b) for b in B] for a in A]\r\n\r\n\r\n\t\r\n\t\r\n\r\n# Assign your output to the OUT variable.\r\nOUT = output",
+      "VariableInputPorts": true,
+      "Id": "f4599b324a2f4773a8beb8a5a40d1b99",
+      "Inputs": [
+        {
+          "Id": "3cec1289538c447eaec84d8edf0669cb",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "17b9fcac8fe8403588db8f681c21bca2",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "026523e1b5c343ff9c433507872479b6",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "a",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "6b27221dd20e457795d462709ba099da",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "f01734bb28c74ccab5f24cd06df3f9cb",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "b",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "9c36b3922b1849fca9b4e0c053256d0f",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "346c9732126543e692d6842f94a03a89",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "array",
+      "Id": "1995d69e5ca345b28a44b2e4a932a545",
+      "Inputs": [
+        {
+          "Id": "1bd17142c996470faf5ffb2d7220d4fc",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "026523e1b5c343ff9c433507872479b6",
+      "End": "1bd17142c996470faf5ffb2d7220d4fc",
+      "Id": "a792de260ae44bafbf8c63551ceb3479"
+    },
+    {
+      "Start": "f01734bb28c74ccab5f24cd06df3f9cb",
+      "End": "3cec1289538c447eaec84d8edf0669cb",
+      "Id": "2de328e7b90f4bf685f8bf3c89bb08be"
+    },
+    {
+      "Start": "346c9732126543e692d6842f94a03a89",
+      "End": "17b9fcac8fe8403588db8f681c21bca2",
+      "Id": "878a92b347644813b2aefaf65aca4172"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -926.31118005478083,
+      "EyeY": 1320.0389080347763,
+      "EyeZ": 3924.2331773534665,
+      "LookX": 960.51388101730072,
+      "LookY": -9.3416234218880163,
+      "LookZ": -4019.561907906364,
+      "UpX": -0.049313541905580668,
+      "UpY": 0.97723110646268418,
+      "UpZ": 0.20636748568138572
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": false,
+        "Name": "Python Script",
+        "Id": "f4599b324a2f4773a8beb8a5a40d1b99",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "6b27221dd20e457795d462709ba099da",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "9c36b3922b1849fca9b4e0c053256d0f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -1.0,
+        "Y": 150.5
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "1995d69e5ca345b28a44b2e4a932a545",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 643.0,
+        "Y": 0.5
+      }
+    ],
+    "Annotations": [],
+    "X": -0.5,
+    "Y": 110.5,
+    "Zoom": 1.0
+  }
+}
