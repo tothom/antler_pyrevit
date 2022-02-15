@@ -3,4 +3,6 @@ title:     Transform by Coordinates
 tooltip:
 
 context:
-  - active-floor-plan
+    any:
+    - active-floor-plan
+    - active-3d-view
