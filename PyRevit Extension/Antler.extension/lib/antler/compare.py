@@ -98,7 +98,8 @@ def find_similar_element(element_type, doc, parameter=DB.BuiltInParameter.ALL_MO
     elif count == 1:
         return collector.FirstElement()
     else:
-        raise KeyError
+        # raise KeyError
+        return None
 
     # iterator = collector.GetElementIterator()
     # iterator.Reset()
