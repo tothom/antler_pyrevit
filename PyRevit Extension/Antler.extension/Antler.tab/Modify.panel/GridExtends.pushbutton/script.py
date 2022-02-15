@@ -20,28 +20,45 @@ class grid_filter(UI.Selection.ISelectionFilter):
     def AllowReference(self, ref, pt):
         return True
 
+if EXEC_PARAMS.config_mode:
+    grid_refs = revit.uidoc.Selection.PickObjects(
+        UI.Selection.ObjectType.Element,
+        grid_filter(),
+        "Select destination grids to match vertical extends")
 
-source_grid_ref = revit.uidoc.Selection.PickObject(
-    UI.Selection.ObjectType.Element, grid_filter(), "Select source grid")
-
-destination_grid_refs = revit.uidoc.Selection.PickObjects(
-    UI.Selection.ObjectType.Element,
-    grid_filter(),
-    "Select destination grids to match vertical extends")
-# grids = antler.ui.preselect(DB.Grid)
-
-source_grid = revit.doc.GetElement(source_grid_ref)
-
-outline = source_grid.GetExtents()
-
-top_extent = outline.MaximumPoint.Z
-bottom_extent = outline.MinimumPoint.Z
-
-with DB.Transaction(revit.doc, __commandname__) as t:
-    t.Start()
-
-    for ref in destination_grid_refs:
+    for ref in grid_refs:
         grid = revit.doc.GetElement(ref)
-        grid.SetVerticalExtents(bottom_extent, top_extent)
+        outline = grid.GetExtents()
 
-    t.Commit()
+        print("{name}: min: {min}, max: {max}".format(
+            name=grid.Name,
+            min=outline.MinimumPoint,
+            max=outline.MaximumPoint
+        ))
+
+else:
+    source_grid_ref = revit.uidoc.Selection.PickObject(
+        UI.Selection.ObjectType.Element, grid_filter(), "Select source grid")
+
+
+    destination_grid_refs = revit.uidoc.Selection.PickObjects(
+        UI.Selection.ObjectType.Element,
+        grid_filter(),
+        "Select destination grids to match vertical extends")
+    # grids = antler.ui.preselect(DB.Grid)
+
+    source_grid = revit.doc.GetElement(source_grid_ref)
+
+    outline = source_grid.GetExtents()
+
+    top_extent = outline.MaximumPoint.Z
+    bottom_extent = outline.MinimumPoint.Z
+
+    with DB.Transaction(revit.doc, __commandname__) as t:
+        t.Start()
+
+        for ref in destination_grid_refs:
+            grid = revit.doc.GetElement(ref)
+            grid.SetVerticalExtents(bottom_extent, top_extent)
+
+        t.Commit()
