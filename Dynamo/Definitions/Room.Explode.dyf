@@ -3,7 +3,7 @@
   "IsCustomNode": true,
   "Category": "Antler.Rooms.Query",
   "Description": "Get geometry and material information for each Face in geometry",
-  "Name": "Room.Explode",
+  "Name": "Explode",
   "ElementResolver": {
     "ResolutionMap": {}
   },

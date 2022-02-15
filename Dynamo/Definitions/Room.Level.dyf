@@ -1,9 +1,9 @@
 {
   "Uuid": "a8399566-013a-426f-b313-c30a82858f3d",
   "IsCustomNode": true,
-  "Category": "Antler.Room.Query",
+  "Category": "Antler.Rooms.Query",
   "Description": "Get Room Level",
-  "Name": "Room.Level",
+  "Name": "Level",
   "ElementResolver": {
     "ResolutionMap": {
       "PolyCurve": {

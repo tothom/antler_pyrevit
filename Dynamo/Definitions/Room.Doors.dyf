@@ -3,7 +3,7 @@
   "IsCustomNode": true,
   "Category": "Antler.Rooms.Query",
   "Description": "Gets doors to room and from room",
-  "Name": "Room.Doors",
+  "Name": "Doors",
   "ElementResolver": {
     "ResolutionMap": {}
   },

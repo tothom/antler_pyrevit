@@ -3,7 +3,7 @@
   "IsCustomNode": true,
   "Category": "Antler.Rooms.Query",
   "Description": "Returns locationpoint of room",
-  "Name": "Room.LocationPoint",
+  "Name": "LocationPoint",
   "ElementResolver": {
     "ResolutionMap": {}
   },
