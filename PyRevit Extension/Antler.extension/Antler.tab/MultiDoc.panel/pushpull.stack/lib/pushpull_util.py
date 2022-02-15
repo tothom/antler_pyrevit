@@ -8,7 +8,14 @@ logger = script.get_logger()
 output = script.get_output()
 
 
-def push_element_to_doc(element, doc):
+def transfer_element(element, doc):
+    """
+    Transfers element to target doc. Attempts to find similar element in
+    target, and then ovveride properties, and if no element is found, simply
+    copy the element.
+    """
+    assert element.Document != doc, "Target doc must be different than element doc."
+
     with DB.Transaction(doc, "Push element") as t:
         t.Start()
 
