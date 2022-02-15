@@ -60,7 +60,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "import clr\n\nclr.AddReference('ProtoGeometry')\nfrom Autodesk.DesignScript.Geometry import *\n\n# Import RevitAPI\nclr.AddReference(\"RevitAPI\")\nimport Autodesk\nfrom Autodesk.Revit.DB import *\n\n# Import DocumentManager and TransactionManager\nclr.AddReference(\"RevitServices\")\nimport RevitServices\nfrom RevitServices.Persistence import DocumentManager\nfrom RevitServices.Transactions import TransactionManager\n\n# Import ToDSType(bool) extension method\nclr.AddReference(\"RevitNodes\")\nimport Revit\nclr.ImportExtensions(Revit.Elements)\nclr.ImportExtensions(Revit.GeometryConversion)\n\n# Import Revit UI\nclr.AddReference('RevitAPIUI')\nfrom Autodesk.Revit.UI import *\n#from Autodesk.Revit.UI.Selection import *\n\nimport sys\n\n#The inputs to this node will be stored as a list in the IN variables.\ninput = IN[0]\n\ndoc = DocumentManager.Instance.CurrentDBDocument\n\ndef function(id):\n\ttry:\n\t\telement = doc.GetElement(id)\n\texcept:\n\t\telem_id = ElementId(int(id))\n\t\telement = doc.GetElement(elem_id)\n\treturn element\n\nelement = None\n\nif isinstance(input, list):\n    element = [function(a) for a in UnwrapElement(input)]\nelif input is None:\n\telement = None\nelse:\n    element = function(UnwrapElement(input))\n\n\n\n#Assign your output to the OUT variable.\nOUT = element",
+      "Code": "import clr\n\nclr.AddReference('ProtoGeometry')\nfrom Autodesk.DesignScript.Geometry import *\n\n# Import RevitAPI\nclr.AddReference(\"RevitAPI\")\nimport Autodesk\nfrom Autodesk.Revit.DB import *\n\n# Import DocumentManager and TransactionManager\nclr.AddReference(\"RevitServices\")\nimport RevitServices\nfrom RevitServices.Persistence import DocumentManager\nfrom RevitServices.Transactions import TransactionManager\n\n# Import ToDSType(bool) extension method\nclr.AddReference(\"RevitNodes\")\nimport Revit\nclr.ImportExtensions(Revit.Elements)\nclr.ImportExtensions(Revit.GeometryConversion)\n\n# Import Revit UI\nclr.AddReference('RevitAPIUI')\nfrom Autodesk.Revit.UI import *\n#from Autodesk.Revit.UI.Selection import *\n\nimport sys\n\n#The inputs to this node will be stored as a list in the IN variables.\ndoc = DocumentManager.Instance.CurrentDBDocument\n\nids = IN[0]\n\ndef function(element_id):\n\tif isinstance(element_id, (list, tuple)):\n\t\treturn [function(e) for e in element_id]\n\telse:\n\t\t# Code follows here:\n\t\t#element = UnwrapElement(element)\n\t\telement = doc.GetElement(element_id)\n\t\treturn element\n\nOUT = function(ids)",
       "VariableInputPorts": true,
       "Id": "5d842c6b493e40db950247a4976b458a",
       "Inputs": [
@@ -109,21 +109,21 @@
       "ScaleFactor": 1.0,
       "HasRunWithoutCrash": false,
       "IsVisibleInDynamoLibrary": true,
-      "Version": "2.6.1.8786",
+      "Version": "2.3.0.5885",
       "RunType": "Manual",
       "RunPeriod": "1000"
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": -17.0,
-      "EyeY": 24.0,
-      "EyeZ": 50.0,
-      "LookX": 12.0,
-      "LookY": -13.0,
-      "LookZ": -58.0,
-      "UpX": 0.0,
-      "UpY": 1.0,
-      "UpZ": 0.0
+      "EyeX": -847.943748961656,
+      "EyeY": 3780.2238424751354,
+      "EyeZ": 1834.9383080566042,
+      "LookX": 847.943748961656,
+      "LookY": -2130.2238424751354,
+      "LookZ": -1844.4633172118777,
+      "UpX": 0.23357403664127235,
+      "UpY": 0.82903757255504318,
+      "UpZ": -0.5080746723653381
     },
     "NodeViews": [
       {
@@ -158,8 +158,8 @@
       }
     ],
     "Annotations": [],
-    "X": -15.771263409350581,
-    "Y": 45.193918611209995,
-    "Zoom": 1.1512162048526833
+    "X": -875.2360481442272,
+    "Y": -274.78513286637349,
+    "Zoom": 4.0
   }
 }
