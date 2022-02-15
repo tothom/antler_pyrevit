@@ -95,3 +95,22 @@ def get_view_by_name(name, doc=revit.doc):
     else:
         logger.warning("More than one view found.")
         raise KeyError
+
+
+def collect_view_templates(doc=revit.doc):
+    collector = DB.FilteredElementCollector(doc)
+    collector.OfClass(DB.View)
+    collector.WhereElementIsNotElementType()
+    # collector.WhereElementIsNotElementType()
+
+    # is_view_template = lambda x: x.IsTemplate
+
+    elements = collector.ToElements()
+
+    elements = [a for a in elements if a.IsTemplate]
+
+    # collector.WherePasses(lambda x: x.IsTemplate)
+    #
+    # logger.info(collector)
+
+    return elements
