@@ -52,6 +52,7 @@ def element_to_dict(element):
 
     return parameter_dict
 
+
 def family_symbol_to_dict(family_symbol, include_parameters=None, doc=revit.doc):
     """
     """

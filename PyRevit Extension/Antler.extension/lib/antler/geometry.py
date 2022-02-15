@@ -20,7 +20,7 @@ def analysis_mesh_from_curveloop(curve_loops, height_offset, **mesh_settings):
 		curve_loops, DB.XYZ(0, 0, 1), height_offset, material)
 
 
-def room_query(room_element, doc=revit.doc, boundary_location=DB.SpatialElementBoundaryLocation.Finish, ):
+def room_query(room_element, doc=revit.doc, **options):
 	faces = []
 	materials = []
 	elements = []
@@ -32,7 +32,6 @@ def room_query(room_element, doc=revit.doc, boundary_location=DB.SpatialElementB
 
 	for name, value in options:
 		setattr(spatialElementBoundaryOptions, name, value)
-
 
 	spatialElementBoundaryOptions.SpatialElementBoundaryLocation = DB.SpatialElementBoundaryLocation.Finish
 
@@ -97,3 +96,39 @@ def crv_loops_from_room(room, inner_boundary=False):
 		crv_loops.Add(crv_loop)
 
 	return crv_loops
+
+
+def find_associated_floor(window_door, view_3d, ray_offset=1, max_proximity=3):
+	floor_filter = DB.ElementCategoryFilter(DB.BuiltInCategory.OST_Floors)
+	# floor_filter = DB.ElementClassFilter(DB.Floor)
+
+	# collector = DB.FilteredElementCollector(revit.doc, view_3d).OfClass(DB.Floor)
+	element_list = List
+
+	location_offset = window_door.FacingOrientation.Negate().Multiply(ray_offset)
+
+	logger.info(window_door.FacingOrientation)
+	logger.info(location_offset)
+
+	# location_offset.Multiply(ray_offset)
+
+	origin = window_door.Location.Point.Add(location_offset)
+
+	logger.info(window_door.Location.Point)
+	logger.info(origin)
+
+	direction = DB.XYZ(0,0,-1)
+
+	# floors_list = List[object](floors)
+
+	intersector = DB.ReferenceIntersector(floor_filter, DB.FindReferenceTarget.Element, view_3d)
+
+	reference_with_context = intersector.FindNearest(origin, direction)
+
+	logger.info(reference_with_context)
+	logger.info(reference_with_context.Proximity)
+
+	if reference_with_context:# and reference_with_context.Proximity < max_proximity:
+		reference = reference_with_context.GetReference()
+
+		return reference.ElementId, reference.GlobalPoint
