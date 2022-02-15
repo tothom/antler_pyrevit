@@ -31,7 +31,7 @@ def get_parameter_value(parameter, convert=True):
             value = internal_value
 
         return value
-        
+
     else:
         return internal_value
 
@@ -96,3 +96,51 @@ def get_common_parameter_definitions(elements, filter_function=lambda x:True):
     common_parameter_definitions = [valid_definitions_dict[id] for id in set.intersection(*valid_definition_sets)]
 
     return list(common_parameter_definitions)
+
+
+def verbose_layer_string(layer):
+    material = revit.doc.GetElement(layer.MaterialId)
+
+    layer_string = "{width} mm {material_name} ({function})".format(
+        function=layer.Function,
+        width=layer.Width*304.8,
+        material_name=material_dict.get('Name')
+    )
+
+    return layer_string
+
+def minimal_layer_string(layer):
+    for parameter in layer.Parameters:
+        logger.debug("{parameter}: {value}".format(
+            parameter=parameter.Definition.Name,
+            value=get_parameter_value(parameter)
+        ))
+
+    layer_string = "{width}".format(
+        width=layer.Width*304.8,
+    )
+
+    return layer_string
+
+def element_layer_report(
+        element,
+        sep='; ',
+        layer_string_function=verbose_layer_string
+        ):
+
+    try:
+        compound_structure = element.GetCompoundStructure()
+    except Exception as e:
+        logger.warning(e)
+        return ""
+
+    layer_string_list = []
+
+    for layer in compound_structure.GetLayers():
+        layer_string = layer_string_function(layer)
+
+        layer_string_list.append(layer_string)
+
+    compound_string = sep.join(layer_string_list)
+
+    return compound_string
