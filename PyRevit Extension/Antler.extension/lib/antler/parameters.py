@@ -31,7 +31,7 @@ def get_parameter_value(parameter, convert=True):
             value = internal_value
 
         return value
-        
+
     else:
         return internal_value
 
