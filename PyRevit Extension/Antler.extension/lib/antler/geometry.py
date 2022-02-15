@@ -97,3 +97,52 @@ def crv_loops_from_room(room, inner_boundary=False):
 		crv_loops.Add(crv_loop)
 
 	return crv_loops
+
+
+# def transform2coordinatesystem(transform):
+# 	origin = transform.Origin
+# 	origin_pt = Autodesk.DesignScript.Geometry.Point.ByCoordinates(origin.X, origin.Y, origin.Z)
+#
+# 	basisX = transform.BasisX
+# 	vectorX = Vector.ByCoordinates(basisX.X,basisX.Y,basisX.Z)
+#
+# 	basisY = transform.BasisY
+# 	vectorY = Vector.ByCoordinates(basisY.X,basisY.Y,basisY.Z)
+#
+# 	basisZ = transform.BasisZ
+# 	vectorZ = Vector.ByCoordinates(basisZ.X,basisZ.Y,basisZ.Z)
+#
+# 	coordinate_system = CoordinateSystem.ByOriginVectors(origin_pt, vectorX, vectorY, vectorZ)
+#
+# 	return coordinate_system
+
+
+def get_family_instance_faces(family_instance, options=DB.Options()):
+	faces = []
+	# material_ids = []
+
+	for geometry_element in family_instance.get_Geometry(options):
+
+		geometry_element_faces = []
+		# geometry_element_material_ids = []
+
+		for geometry in geometry_element.GetSymbolGeometry():
+			if isinstance(geometry, Autodesk.Revit.DB.Solid):
+				# face_materials_ids = []
+				# faces = []
+				geometry_element_faces.append(geometry.Faces)
+
+				# for face in geometry.Faces:
+				# 	faces.append(face)
+					# face_materials_ids.append(face.MaterialElementId)
+
+				# geometry_element_faces.append(faces)
+				# geometry_element_material_ids.append(face_materials_ids)
+
+			# geometry_element_faces.append(solid_faces)
+			# geometry_element_material_ids.append(solid_face_material_ids)
+
+		faces.append(geometry_element_faces)
+		# material_ids.append(geometry_element_material_ids)
+
+	return faces
