@@ -1,91 +1,88 @@
 # -*- coding: utf-8 -*-
 
-import antler
+
 from rpw import revit, DB, UI
 from pyrevit import forms, script, EXEC_PARAMS
 import re
+from System.Collections.Generic import List
+import clr
+
+from collections import OrderedDict
+
+import antler
 
 uidoc = revit.uidoc
 doc = revit.doc
 
 logger = script.get_logger()
 
-# lib_path  = re.split('\w*\.extension', __commandpath__)[0] + 'lib'
-# import sys
-# if not lib_path in sys.path:
-#     sys.path.append(lib_path)
 
 
-# ELEMENT_TYPE_CONVERSION_DICT = {
-#     DB.Wall: 'WallType',
-#     DB.Floor: 'FloorType',
-#     # DB.Roof: 'RoofType',
-#     DB.FootPrintRoof: 'RoofType',
-#     DB.Ceiling: 'Ceiling',
-# }
 
+docs = antler.forms.select_docs()
 
-def report_layer_structure(element):
-    """
-    """
-    logger.debug(type(element))
+logger.debug(docs)
 
-    element_type_id = element.GetTypeId()
+docs = docs or []
 
-    element_type = doc.GetElement(element_type_id)
+# select_compound_classes
+compound_classes = [
+    DB.Floor,
+    DB.RoofBase,
+    DB.Wall,
+    DB.Ceiling
+]
 
-    if not element_type:
-        return None
+# select_compound_classes
+compound_categories_dict = {
+    'Floors': DB.BuiltInCategory.OST_Floors,
+    # 'RoofBase',
+    # 'Wall',
+    # 'Ceiling'
+}
 
-    # element_type = eval(
-    #     'element.' + ELEMENT_TYPE_CONVERSION_DICT[type(element)])
-    # logger.debug(element_type)
+selected = forms.SelectFromList.show(
+    sorted(compound_categories_dict.keys()),
+    button_name='Select Categories',
+    multiselect=False
+)
 
-    # Collect layer debugrmation
-    compound_structure = element_type.GetCompoundStructure()
+builtin_category = compound_categories_dict[selected]
 
-    layers_dict = antler.interop.compound_structure_to_dict(
-        compound_structure)
+# compound_classes_list = List[None](compound_classes)
+# element_multiclass_filter = DB.ElementMulticlassFilter(compound_classes_list)
+# collector = DB.FilteredElementCollector(revit.doc).WhereElementIsElementType().WherePasses(element_multiclass_filter)
+# type_elements = collector.ToElements()
+# print(type_elements)
 
-    # Print layer debugrmation
-    antler.util.print_dict_list([a.get('Material')
-                              for a in layers_dict.values()])
+for doc in docs:
+    type_elements = DB.FilteredElementCollector(doc).OfCategory(
+        builtin_category).WhereElementIsElementType().ToElements()
 
-    # Write layer string to parameter
-    build_list = []
+    # logger.info(type_elements)
 
-    for layer in layers_dict.values():
-        layer_string = '-'
+    # report_dict = OrderedDict()
 
-        material = layer['Material']
+    report = []
 
-        if material:
-            description = material['Description']
+    for type_element in type_elements:
 
-            if description:
-                layer_string = description
+        instance_elements = antler.collectors.collect_instances_of_element_type(type_element)
+        count = len(instance_elements)#.GetElementCount()
 
-        logger.debug(layer_string)
-        build_list.append(layer_string)
+        logger.debug(type_element)
 
-    return build_list
+        name = type_element.get_Parameter(DB.BuiltInParameter.ALL_MODEL_TYPE_NAME).AsString()
+        logger.debug(name)
 
+        report.append(OrderedDict({
+            'Name': name,
+            'Count': count,
+            'Layers': element_layer_report(type_element, sep=';'),
+            })
+        )
 
-selection = uidoc.Selection.GetElementIds() or uidoc.Selection.PickObjects(
-    UI.Selection.ObjectType.Element, "Select objects to check.")
+    # report_dict = OrderedDict(sorted(report_dict.items()))
 
-elements = [doc.GetElement(id) for id in selection]
-
-with DB.Transaction(revit.doc, __commandname__) as t:
-    t.Start()
-
-    for element in elements:
-        build_list = report_layer_structure(element)
-
-        if EXEC_PARAMS.config_mode:
-            build_string = '\r\n'.join(build_list)
-
-            parameter = element_type.LookupParameter('Oppbygning')
-            parameter.Set(build_string)
-
-    t.Commit()
+    # antler.util.print_dict_as_table(report_dict, title=doc.Title)
+    antler.util.print_dict_list(report, title=doc.Title, sort_key="Name")
