@@ -41,7 +41,7 @@ for element in elements:
     logger.debug("Element: {}".format(element))
 
     parameter = element.get_Parameter(selected_definition)
-    internal_value = antler.parameters.get_parameter_internal_value(parameter, convert=False)
+    internal_value = antler.parameters.get_parameter_value(parameter, convert=False)
     internal_values.append(internal_value)
 
 # internal_value_sum = sum(internal_values)
@@ -50,7 +50,6 @@ output.print_md(
     "Sum of parameter {definition} for {count} elements is **{formatted_value}**".format(
         definition=selected_definition_key,
         count=len(elements),
-        value=sum(values),
         formatted_value=DB.UnitFormatUtils.Format(
             revit.doc.GetUnits(),
             selected_definition.UnitType,
