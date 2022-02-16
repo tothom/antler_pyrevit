@@ -1,16 +1,17 @@
 import decimal
 import difflib
-from rpw import revit, DB
-import System.Enum
+# from rpw import revit, DB
+# import System.Enum
+import math
 
-from pyrevit import script
+# from pyrevit import script
 
 """
 Contains helper functions for Antler. It could be converters, formatters,
 simple general functions etc...
 """
 
-logger = script.get_logger()
+# logger = script.get_logger()
 
 
 def best_fuzzy_match(str_list, search_str, min=0.33):
@@ -35,6 +36,27 @@ def drange(x, y, jump):
         yield float(x)
         x += decimal.Decimal(jump)
 
+
+def step_centered_range(min, max, step_min):
+    max = float(max)
+    min = float(min)
+    step_min = float(step_min)
+
+    assert step_min > 0
+    assert max > min
+
+    step = (max - min) / (math.floor((max - min) / step_min))
+
+    n = min + (step / 2.0)
+
+    while n < max:
+        yield float(n)
+
+        n += step
+
+# values = [a for a in step_centered_range(120, 210, 7)]
+#
+# print(values)
 
 def builtin_category_from_category(category):
     """
@@ -79,7 +101,7 @@ def string_from_template(element, template_string):
         parameter = element.LookupParameter(parameter_name)
 
         if not parameter:
-            raise ValueError, "Parameter '{}' not found".format(parameter_name)
+            raise ValueError("Parameter '{}' not found".format(parameter_name))
 
         value = parameter.AsString() or parameter.AsValueString() or ""
 
