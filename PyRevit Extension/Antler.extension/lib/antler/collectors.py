@@ -114,3 +114,18 @@ def collect_view_templates(doc=revit.doc):
     # logger.info(collector)
 
     return elements
+
+
+def room_at_pt(rooms, pt):
+    for room in rooms:
+        if room.IsPointInRoom(pt):
+            return room
+
+def get_rooms_from_pt_list(pts, phase=None):
+    if not phase:
+        phase_parameter = revit.uidoc.ActiveView.get_Parameter(DB.BuiltInParameter.VIEW_PHASE)
+
+        
+
+
+    rooms = None
