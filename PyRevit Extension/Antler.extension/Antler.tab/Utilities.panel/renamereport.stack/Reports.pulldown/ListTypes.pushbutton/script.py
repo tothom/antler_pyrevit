@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from rpw import revit, DB, UI
-from pyrevit import forms, script
+from pyrevit import forms, script, EXEC_PARAMS
 import re
 
 # lib_path  = re.split('\w*\.extension', __commandpath__)[0] + 'lib'

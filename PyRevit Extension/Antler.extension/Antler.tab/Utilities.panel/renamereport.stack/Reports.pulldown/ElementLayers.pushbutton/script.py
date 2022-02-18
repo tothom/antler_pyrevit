@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-
-
 from rpw import revit, DB, UI
 from pyrevit import forms, script, EXEC_PARAMS
 import re
@@ -15,8 +13,6 @@ uidoc = revit.uidoc
 doc = revit.doc
 
 logger = script.get_logger()
-
-
 
 
 docs = antler.forms.select_docs()
