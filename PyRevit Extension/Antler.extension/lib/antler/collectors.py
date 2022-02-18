@@ -116,16 +116,32 @@ def collect_view_templates(doc=revit.doc):
     return elements
 
 
+def room_collector(doc=revit.doc, phase_id=None):
+    collector = DB.FilteredElementCollector(doc).WhereElementIsNotElementType()
+    #collector.OfClass(DB.SpatialElement)
+    collector.OfCategory(DB.BuiltInCategory.OST_Rooms)
+    
+    if phase_id:
+        provider = DB.ParameterValueProvider(DB.ElementId(DB.BuiltInParameter.ROOM_PHASE_ID))
+        rule = DB.FilterElementIdRule(provider , DB.FilterNumericEquals(), phase_id)
+        parameter_filter = DB.ElementParameterFilter(rule)
+
+        collector.WherePasses(parameter_filter)
+
+    return collector
+
+
 def room_at_pt(rooms, pt):
     for room in rooms:
         if room.IsPointInRoom(pt):
             return room
 
-def get_rooms_from_pt_list(pts, phase=None):
-    if not phase:
-        phase_parameter = revit.uidoc.ActiveView.get_Parameter(DB.BuiltInParameter.VIEW_PHASE)
 
-        
+def get_rooms_from_pt_list(pts, phase, view=revit.uidoc.ActiveView):
+    # if not phase:
+    #     phase_parameter = view.get_Parameter(DB.BuiltInParameter.VIEW_PHASE)
+    #     phase_id = phase_parameter.AsElementId()
 
+    rooms = room_collector(phase_id=phase.Id).ToElements()
 
-    rooms = None
+    return [room_at_pt(rooms, pt) for pt in pts]
