@@ -1,7 +1,8 @@
 import antler
 
-from rpw import revit, DB, UI
-from pyrevit import forms, script
+from rpw import revit, DB
+from pyrevit import forms, script, EXEC_PARAMS
+from pyrevit.coreutils import colors
 
 import clr
 clr.AddReference("System.Drawing")
@@ -9,13 +10,25 @@ clr.AddReference("System.Drawing")
 from System.Drawing import Color  # noqa: E402
 
 logger = script.get_logger()
+config = script.get_config()
 
 elements = antler.ui.preselect()
 
 if not elements:
 	script.exit()
 
-swatch = forms.select_swatch()
+if EXEC_PARAMS.config_mode or not config.has_option('swatch_name'):
+	swatch = forms.select_swatch() or script.exit()
+	# if swatch:
+	config.set_option('swatch_name', swatch.name)
+	script.save_config()
+else:
+	swatch_name = config.get_option('swatch_name')
+	swatch = colors.COLORS[swatch_name]
+
+
+
+# swatch = forms.select_swatch()
 
 logger.debug(swatch)
 
