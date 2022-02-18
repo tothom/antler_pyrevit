@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import clr
 
 from rpw import revit, DB, UI
 from pyrevit import forms, script, EXEC_PARAMS
@@ -13,22 +14,39 @@ logger = script.get_logger()
 def get_properties(obj):
     pass
 
-current_selection = uidoc.Selection.GetElementIds()
-
-# print(current_selection)
-
-selection = current_selection# or uidoc.Selection.PickObjects(
-    # UI.Selection.ObjectType.Element, "Select objects to expand.")
-
-elements = [doc.GetElement(id) for id in selection]
+elements = [doc.GetElement(id) for id in uidoc.Selection.GetElementIds()]
 
 if not elements:
     category = antler.forms.select_category(multiselect=False)
-
     elements = antler.forms.select_types(categories=[category])
 
 for element in elements:
     print("Element: {}".format(element))
+
+    print("Element Type: {}".format(type(element)))
+
+    # Location
+    direction = antler.transform.element_direction(element)
+    print("Direction: {direction}".format(direction=direction))
+
+    location = element.Location
+
+    try:
+        print(clr.Convert(location, DB.LocationCurve))
+    except Exception as e:
+        logger.warning(e)
+
+    try:
+        print(clr.Convert(location, DB.LocationPoint).Point)
+    except Exception as e:
+        logger.warning(e)
+
+    try:
+        bbox = element.get_BoundingBox(revit.uidoc.ActiveView)
+    except Exception as e:
+        logger.warning(e)
+    else:
+        print([bbox.Min, bbox.Max])
 
     # print("\n\t Parameters")
     parameter_dict = {parameter.Definition.Name: parameter.AsString(
@@ -36,26 +54,6 @@ for element in elements:
 
     antler.util.print_dict_as_table(parameter_dict, title="Parameters", sort=True)
 
-    # for k, v in parameter_dict.items():
-    #     print(k, v)
-
-    # print("\n\t Parameters Map")
-    # parameters_map = {parameter.Definition.Name: parameter.AsString(
-    # ) or parameter.AsValueString() for parameter in element.ParametersMap}
-    #
-    # for k, v in parameters_map.items():
-    #     print(k, v)
-
-    # print("\n\t dir(element.Parameters)")
-    # for attr in dir(element.Parameters):
-    #     try:
-    #         value = getattr(element.Parameters, attr)
-    #         if not callable(value):
-    #             print(attr, value, type(value))  # , callable(value))
-    #     except Exception as e:
-    #         print(e)
-
-    # print("\n\t dir() -> Element Properties")
 
     element_property_dict = {}
 
@@ -79,11 +77,6 @@ for element in elements:
         ) or parameter.AsValueString() for parameter in element_type.Parameters}
 
         antler.util.print_dict_as_table(type_parameter_dict, title="Type Parameters", sort=True)
-
-        # print("\n".join(["{}: {}".format(k, v)
-        #       for k, v in type_parameter_dict.items()]))
-        # for k, v in type_parameter_dict.items():
-        #     print(k, v)
 
         type_property_dict = {}
 
