@@ -12,6 +12,16 @@ logger = script.get_logger()
 output = script.get_output()
 
 
+if EXEC_PARAMS.config_mode:
+    # Pull elements from other doc to this doc
+    pass
+else:
+    # Push elements from this doc to other doc
+    pass
+
+
+# Select what to
+
 selection = antler.ui.preselect()
 
 if selection:
@@ -44,6 +54,6 @@ with DB.TransactionGroup(revit.doc, __commandname__) as tg:
 
     for element in elements:
         for doc in docs:
-            transfer.push_element_to_doc(element, doc)
+            transfer.transfer_element(element, doc)
 
     tg.Assimilate()

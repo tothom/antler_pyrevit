@@ -8,6 +8,8 @@ logger = script.get_logger()
 output = script.get_output()
 
 
+
+
 def transfer_element(element, doc):
     """
     Transfers element to target doc. Attempts to find similar element in

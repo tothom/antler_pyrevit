@@ -6,7 +6,7 @@ from System.Collections.Generic import List
 import antler
 from collections import OrderedDict
 
-import pushpull_util
+import transfer
 
 logger = script.get_logger()
 output = script.get_output()
