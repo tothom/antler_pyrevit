@@ -3,7 +3,9 @@ from rpw import revit, DB
 from rpw.exceptions import RevitExceptions
 from pyrevit import forms, script
 
-import clr
+import parameters
+
+import hashlib
 
 logger = script.get_logger()
 output = script.get_output()
@@ -170,3 +172,33 @@ class Finder():
         name_parameter_filter = DB.ElementParameterFilter(rule)
 
         self.filters.append(name_parameter_filter)
+
+
+def hash_element_by_parameters(element, exceptions=[]):
+    """
+    Useful for tracing changes in element parameters. For example to see if a
+    Element Type has changes since last time, you can compare hashes.
+    """
+    # logger.info(exceptions)
+
+    parameter_dictionary = {}
+
+    for parameter in element.ParametersMap:
+        logger.debug(parameter.Definition.Name)
+        in_exceptions = any([parameter.Id == a.Id for a in exceptions])
+
+        if not in_exceptions:
+            value = parameters.get_parameter_value(parameter, convert=False)
+            key = parameter.Definition.Name
+
+            parameter_dictionary[key] = value
+        else:
+            logger.debug("{} not included in hash".format(parameter.Definition.Name))
+
+    fset = frozenset(parameter_dictionary.items())
+
+    return hash(fset)
+
+    # h = hashlib.sha1()
+    # h.update(fset)
+    # h.digest()
