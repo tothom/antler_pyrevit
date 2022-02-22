@@ -13,21 +13,21 @@ output = script.get_output()
 
 # print(dir(revit))
 
-
-class room_filter(UI.Selection.ISelectionFilter):
-    def AllowElement(self, element):
-        if element.Category.Name == "Rooms":
-            return True
-        else:
-            return False
-
-    def AllowReference(self, ref, pt):
-        return True
+#
+# class room_filter(UI.Selection.ISelectionFilter):
+#     def AllowElement(self, element):
+#         if element.Category.Name == "Rooms":
+#             return True
+#         else:
+#             return False
+#
+#     def AllowReference(self, ref, pt):
+#         return True
 
 
 try:
     rooms = revit.uidoc.Selection.PickObjects(
-        UI.Selection.ObjectType.Element, room_filter(), "Select rooms")
+        UI.Selection.ObjectType.Element, antler.filters.category_name_filter('Rooms'), "Select rooms")
 except RevitExceptions.OperationCanceledException:
     script.exit()
 
