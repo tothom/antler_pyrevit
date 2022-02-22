@@ -1,17 +1,15 @@
-import decimal
-import difflib
-from rpw import revit, DB
-import System.Enum
-import math
-
-from pyrevit import script
-
 """
 Contains helper functions for Antler. It could be converters, formatters,
 simple general functions etc...
 """
+from rpw import revit, DB
+from pyrevit import forms, script
 
-# logger = script.get_logger()
+import decimal
+import difflib
+import System.Enum
+
+logger = script.get_logger()
 
 
 def best_fuzzy_match(str_list, search_str, min=0.33):

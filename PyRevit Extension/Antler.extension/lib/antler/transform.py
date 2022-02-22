@@ -3,7 +3,6 @@ from pyrevit import forms, script
 
 import math
 import clr
-# import frange
 import util
 
 logger = script.get_logger()

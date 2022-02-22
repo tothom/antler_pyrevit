@@ -3,9 +3,10 @@ from pyrevit import forms, script
 
 import math
 import clr
-import util
 
 from System.Collections.Generic import List
+
+import util
 
 logger = script.get_logger()
 

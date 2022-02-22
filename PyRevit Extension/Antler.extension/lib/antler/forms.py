@@ -8,11 +8,13 @@ from System.Collections.Generic import List
 import util, parameters
 import collectors
 
+from antler import LOGGER
+
 """
 Contains all functions which generate UI forms in Antler.
 """
 
-logger = script.get_logger()
+# LOGGER = script.get_LOGGER()
 
 
 def select_element_parameters(element):
@@ -61,7 +63,7 @@ def select_category(doc=revit.doc, multiselect=False):
         multiselect=multiselect
     )
 
-    logger.debug(selected)
+    LOGGER.debug(selected)
 
     if multiselect:
         return [categories_dict[a] for a in selected]
@@ -73,6 +75,8 @@ def select_category(doc=revit.doc, multiselect=False):
 
 def select_elements(elements, naming_function=lambda x: x.Name, multiselect=True, doc=revit.doc, **kwargs):
     selection_dict = OrderedDict()
+
+    LOGGER.debug(elements)
 
     if not naming_function:
         def naming_function(x): return "{0}".format(x.Name)
@@ -87,8 +91,8 @@ def select_elements(elements, naming_function=lambda x: x.Name, multiselect=True
         **kwargs
     )
 
-    logger.debug(dict(selection_dict))
-    logger.debug(keys)
+    LOGGER.debug(dict(selection_dict))
+    LOGGER.debug(keys)
 
     if multiselect:
         if keys:
@@ -185,7 +189,7 @@ def select_family_types(**kwargs):
 
 def select_detail_family_symbol(doc=revit.doc):
     elements = collectors.elements_of_class_collector(
-        DB.FamilySymbol).ToElements
+        DB.FamilySymbol).ToElements()
 
     selected_elements = select_elements(elements, lambda x: "[{}] {}".format(
         x.Family.Name,
@@ -266,25 +270,25 @@ def select_types(categories=[], doc=revit.doc):
 
     type_elements = collector.ToElements()
 
-    # logger.info(type_elements)
+    # LOGGER.info(type_elements)
 
     selection_dict = {}
 
     for element in type_elements:
-        logger.debug(element)
+        LOGGER.debug(element)
 
         key_parts = []
 
         try:
             key_parts.append(element.Category.Name)
         except Exception as e:
-            logger.debug(e)
+            LOGGER.debug(e)
             # category_name = "No Category"
 
         try:
             key_parts.append(element.Family.Name)
         except Exception as e:
-            logger.debug(e)
+            LOGGER.debug(e)
             # family_name = "No Family"
 
         key_parts.append(DB.Element.Name.GetValue(element))
@@ -298,7 +302,7 @@ def select_types(categories=[], doc=revit.doc):
         #     )
 
         if key in selection_dict:
-            logger.warning("Key {} already in dict.".format(key))
+            LOGGER.warning("Key {} already in dict.".format(key))
 
         selection_dict[key] = element
 
