@@ -1,12 +1,13 @@
 from rpw import revit, DB
 from pyrevit import script
-import clr
 
-clr.AddReference("System.Core")
-import System
-clr.ImportExtensions(System.Linq)
+# import clr
+# clr.AddReference("System.Core")
+# import System
+# clr.ImportExtensions(System.Linq)
 
-# from collections import OrderedDict
+from collections import OrderedDict
+
 import util
 import filters
 
@@ -82,11 +83,7 @@ def get_view_by_name(name, doc=revit.doc):
     collector.OfClass(DB.View)
     collector.WhereElementIsNotElementType()
 
-    provider = DB.ParameterValueProvider(DB.ElementId(DB.BuiltInParameter.VIEW_NAME))
-    rule = DB.FilterStringRule(provider , DB.FilterStringEquals(), name, False)
-    view_name_parameter_filter = DB.ElementParameterFilter(rule)
-
-    collector.WherePasses(view_name_parameter_filter)
+    collector.WherePasses(filter.view_name_filter(name))
 
     count = collector.GetElementCount()
 
@@ -120,13 +117,9 @@ def room_collector(doc=revit.doc, phase_id=None):
     collector = DB.FilteredElementCollector(doc).WhereElementIsNotElementType()
     #collector.OfClass(DB.SpatialElement)
     collector.OfCategory(DB.BuiltInCategory.OST_Rooms)
-    
-    if phase_id:
-        provider = DB.ParameterValueProvider(DB.ElementId(DB.BuiltInParameter.ROOM_PHASE_ID))
-        rule = DB.FilterElementIdRule(provider , DB.FilterNumericEquals(), phase_id)
-        parameter_filter = DB.ElementParameterFilter(rule)
 
-        collector.WherePasses(parameter_filter)
+    if phase_id:
+        collector.WherePasses(filter.room_phase_filter(phase_id))
 
     return collector
 

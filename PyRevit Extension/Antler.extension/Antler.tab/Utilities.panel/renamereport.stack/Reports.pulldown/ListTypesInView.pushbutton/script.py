@@ -36,7 +36,7 @@ for element in elements:
         names[element.Name]['Elements'].append(element)
 
 for k, v in names.items():
-    
+    pass
 
 output.print_table(
     title="Types in View",
