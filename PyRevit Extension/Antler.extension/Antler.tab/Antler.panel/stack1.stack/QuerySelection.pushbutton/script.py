@@ -30,13 +30,13 @@ for element in elements:
     output.print_md("### Transform")
     try:
         total_transform = element.GetTotalTransform()
-        print(total_transform)
+        print(antler.util.query_transform(total_transform))
     except Exception as e:
         logger.warning(e)
 
     try:
         transform = element.GetTransform()
-        print(transform)
+        print(antler.util.query_transform(transform))
     except Exception as e:
         logger.warning(e)
 
