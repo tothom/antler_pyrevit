@@ -10,6 +10,7 @@ uidoc = revit.uidoc
 doc = revit.doc
 
 logger = script.get_logger()
+output = script.get_output()
 
 def get_properties(obj):
     pass
@@ -24,6 +25,8 @@ for element in elements:
     print("Element: {}".format(element))
 
     print("Element Type: {}".format(type(element)))
+
+    output.print_md("### Location")
 
     # Location
     direction = antler.transform.element_direction(element)
