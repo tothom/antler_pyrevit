@@ -158,7 +158,7 @@ def print_dict_as_table(dictionary, title="", columns=(), formats=[], sort=False
         data.append((k, v))
 
     if sort:
-        data = sorted(data, key=lambda x:x[0])
+        data = sorted(data, key=lambda x:x[0].lower())
 
     output.print_table(
         table_data=data,
@@ -214,6 +214,8 @@ def close_revit():
 
     if processes.Length > 0:
         revit_handle = processes[0].MainWindowHandle
+
+        logger.info(revit_handle)
     # else:
     #     return
 
