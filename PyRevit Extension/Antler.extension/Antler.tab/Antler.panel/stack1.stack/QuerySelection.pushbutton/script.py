@@ -45,6 +45,8 @@ for element in elements:
     direction = antler.transform.element_direction(element)
     print("Direction: {direction}".format(direction=direction))
 
+
+    output.print_md("### Location")
     location = element.Location
 
     try:
@@ -57,6 +59,7 @@ for element in elements:
     except Exception as e:
         logger.warning(e)
 
+    output.print_md("### Bounding Box")
     try:
         bbox = element.get_BoundingBox(revit.uidoc.ActiveView)
     except Exception as e:
