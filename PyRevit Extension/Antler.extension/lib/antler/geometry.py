@@ -164,3 +164,21 @@ def get_family_instance_faces(family_instance, options=DB.Options()):
 		# material_ids.append(geometry_element_material_ids)
 
 	return faces
+
+
+def plane_from_view_direction(view_direction, origin=DB.XYZ(0,0,0)):
+	view_direction = view_direction.Normalize()
+
+	if view_direction.IsAlmostEqualTo(DB.XYZ(0,0,1)):
+		x_axis = DB.XYZ(1,0,0)
+
+	elif view_direction.IsAlmostEqualTo(DB.XYZ(0,0,-1)):
+		x_axis = DB.XYZ(-1,0,0)
+
+	else:
+		x_axis = DB.XYZ(0,0,1).CrossProduct(view_direction)
+		x_axis = x_axis.Normalize()
+
+	plane = DB.Plane.CreateByOriginAndBasis(origin, x_axis, view_direction)
+
+	return plane

@@ -26,12 +26,27 @@ for element in elements:
 
     print("Element Type: {}".format(type(element)))
 
-    output.print_md("### Location")
+    # Tranformation
+    output.print_md("### Transform")
+    try:
+        total_transform = element.GetTotalTransform()
+        print(antler.util.query_transform(total_transform))
+    except Exception as e:
+        logger.warning(e)
+
+    try:
+        transform = element.GetTransform()
+        print(antler.util.query_transform(transform))
+    except Exception as e:
+        logger.warning(e)
+
 
     # Location
     direction = antler.transform.element_direction(element)
     print("Direction: {direction}".format(direction=direction))
 
+
+    output.print_md("### Location")
     location = element.Location
 
     try:
@@ -44,6 +59,7 @@ for element in elements:
     except Exception as e:
         logger.warning(e)
 
+    output.print_md("### Bounding Box")
     try:
         bbox = element.get_BoundingBox(revit.uidoc.ActiveView)
     except Exception as e:
