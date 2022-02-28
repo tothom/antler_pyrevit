@@ -1,7 +1,7 @@
 from rpw import revit, DB
 from pyrevit import script
 
-# import clr
+import clr
 # clr.AddReference("System.Core")
 # import System
 # clr.ImportExtensions(System.Linq)
@@ -47,12 +47,14 @@ def elements_on_level_collector(level, doc=revit.doc):
 
 def revit_link_instances_collector(doc=revit.doc):
     collector = DB.FilteredElementCollector(doc)
+    #collector.OfCategory(DB.BuiltInCategory.OST_RvtLinks)
     collector.OfClass(clr.GetClrType(DB.RevitLinkInstance))
 
     return collector
 
 def revit_link_types_collector(doc=revit.doc):
     collector = DB.FilteredElementCollector(doc)
+    #collector.OfCategory(DB.BuiltInCategory.OST_RvtLinks)
     collector.OfClass(clr.GetClrType(DB.RevitLinkType))
 
     return collector
