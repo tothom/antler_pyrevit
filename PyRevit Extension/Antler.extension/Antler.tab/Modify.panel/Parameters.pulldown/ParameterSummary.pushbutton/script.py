@@ -46,8 +46,13 @@ else:
 
 report = []
 
+
 for definition in definitions:
     internal_values = []
+
+    logger.debug(definition.Name)
+
+    has_values = []
 
     for element in elements:
         logger.debug("Element: {}".format(element))
@@ -56,24 +61,29 @@ for definition in definitions:
         internal_value = antler.parameters.get_parameter_value(parameter, convert=False)
         internal_values.append(internal_value)
 
+        logger.debug(parameter.HasValue)
+
+        has_values.append(parameter.HasValue)
+
     # internal_value_sum = sum(internal_values)
 
-    format_value = lambda x:DB.UnitFormatUtils.Format(
-        revit.doc.GetUnits(),
-        definition.UnitType,
-        x,
-        True,
-        False)
+    if all(has_values):
+        format_value = lambda x:DB.UnitFormatUtils.Format(
+            revit.doc.GetUnits(),
+            definition.UnitType,
+            x,
+            True,
+            False)
 
-    parameter_summary = {
-        'Parameter': definition.Name,
-        'Minimum': format_value(min(internal_values)),
-        'Maximum': format_value(max(internal_values)),
-        'Sum': format_value(sum(internal_values)),
-        'Average': format_value(sum(internal_values)/len(internal_values)),
-    }
+        parameter_summary = {
+            'Parameter': definition.Name,
+            'Minimum': format_value(min(internal_values)),
+            'Maximum': format_value(max(internal_values)),
+            'Sum': format_value(sum(internal_values)),
+            'Average': format_value(sum(internal_values)/len(internal_values)),
+        }
 
-    report.append(parameter_summary)
+        report.append(parameter_summary)
 
 antler.util.print_dict_list(
     report,
