@@ -8,26 +8,37 @@ logger = script.get_logger()
 output = script.get_output()
 
 
-
-
 def transfer_element(element, doc):
+    """"
+
+    """
+    assert element_type.Document != doc, "Target doc must be different than element doc."
+
+
+def transfer_instance(instance, doc):
+    """
+    Copies an instance of any category to target document. 
+    """
+    pass
+
+def transfer_element_type(element_type, doc):
     """
     Transfers element to target doc. Attempts to find similar element in
     target, and then ovveride properties, and if no element is found, simply
     copy the element.
     """
-    assert element.Document != doc, "Target doc must be different than element doc."
+    assert element_type.Document != doc, "Target doc must be different than element doc."
 
     with DB.Transaction(doc, "Push element") as t:
         t.Start()
 
         # find_match
-        match = antler.compare.find_similar_element(element, doc)
+        match = antler.compare.find_similar_element(element_type, doc)
 
         logger.debug(match)
 
         if match:
-            diff = antler.compare.diff_elements(element, match)
+            diff = antler.compare.diff_elements(element_type, match)
 
             logger.debug(diff)
             # override element parameters
@@ -46,7 +57,7 @@ def transfer_element(element, doc):
             try:
                 DB.ElementTransformUtils.CopyElements(
                     revit.doc,
-                    List[DB.ElementId]([element.Id]),
+                    List[DB.ElementId]([element_type.Id]),
                     doc,
                     DB.Transform.Identity,
                     DB.CopyPasteOptions()
@@ -55,7 +66,7 @@ def transfer_element(element, doc):
                 logger.warning(e)
             else:
                 logger.info("Element {element} copied to {doc}".format(
-                    element=element,
+                    element=element_type,
                     doc=doc.Title
                 ))
 
