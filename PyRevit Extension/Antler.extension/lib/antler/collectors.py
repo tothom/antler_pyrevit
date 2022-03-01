@@ -117,7 +117,6 @@ def collect_view_templates(doc=revit.doc):
 
 def room_collector(doc=revit.doc, phase_id=None):
     collector = DB.FilteredElementCollector(doc).WhereElementIsNotElementType()
-    #collector.OfClass(DB.SpatialElement)
     collector.OfCategory(DB.BuiltInCategory.OST_Rooms)
 
     if phase_id:
@@ -126,10 +125,21 @@ def room_collector(doc=revit.doc, phase_id=None):
     return collector
 
 
-def room_at_pt(rooms, pt):
-    for room in rooms:
-        if room.IsPointInRoom(pt):
-            return room
+def collect_room_at_pt(pt, phase=None):
+#	collector = DB.FilteredElementCollector(doc)
+#	collector.OfCategory(DB.BuiltInCategory.OST_Rooms)
+    collector = room_collector(phase)
+
+	bbox_pt_filter = DB.BoundingBoxContainsPointFilter(pt)
+
+	collector.WherePasses(bbox_pt_filter)
+
+	if collector.GetElementCount() > 0:
+		rooms = collector.ToElements()
+
+		for room in rooms:
+			if room.IsPointInRoom(pt):
+				return room
 
 
 def get_rooms_from_pt_list(pts, phase, view=revit.uidoc.ActiveView):
