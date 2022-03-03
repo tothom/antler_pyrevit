@@ -2,9 +2,10 @@ from rpw import revit, DB
 from pyrevit import script
 
 import clr
-# clr.AddReference("System.Core")
-# import System
-# clr.ImportExtensions(System.Linq)
+
+clr.AddReference("System.Core")
+import System
+clr.ImportExtensions(System.Linq)
 
 from collections import OrderedDict
 
@@ -52,6 +53,7 @@ def revit_link_instances_collector(doc=revit.doc):
 
     return collector
 
+
 def revit_link_types_collector(doc=revit.doc):
     collector = DB.FilteredElementCollector(doc)
     #collector.OfCategory(DB.BuiltInCategory.OST_RvtLinks)
@@ -79,6 +81,7 @@ def collect_instances_of_element_type(element_type):
     enumerable = collector.Where(lambda e: e.GetTypeId().IntegerValue.Equals(element_type.Id.IntegerValue))
 
     return enumerable.ToList()
+
 
 def get_view_by_name(name, doc=revit.doc):
     collector = DB.FilteredElementCollector(doc)
