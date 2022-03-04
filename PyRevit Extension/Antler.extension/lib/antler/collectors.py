@@ -126,30 +126,3 @@ def room_collector(doc=revit.doc, phase_id=None):
         collector.WherePasses(filter.room_phase_filter(phase_id))
 
     return collector
-
-
-def collect_room_at_pt(pt, phase=None):
-#    collector = DB.FilteredElementCollector(doc)
-#    collector.OfCategory(DB.BuiltInCategory.OST_Rooms)
-    collector = room_collector(phase)
-
-    bbox_pt_filter = DB.BoundingBoxContainsPointFilter(pt)
-
-    collector.WherePasses(bbox_pt_filter)
-
-    if collector.GetElementCount() > 0:
-        rooms = collector.ToElements()
-
-        for room in rooms:
-            if room.IsPointInRoom(pt):
-                return room
-
-
-def get_rooms_from_pt_list(pts, phase, view=revit.uidoc.ActiveView):
-    # if not phase:
-    #     phase_parameter = view.get_Parameter(DB.BuiltInParameter.VIEW_PHASE)
-    #     phase_id = phase_parameter.AsElementId()
-
-    rooms = room_collector(phase_id=phase.Id).ToElements()
-
-    return [room_at_pt(rooms, pt) for pt in pts]
