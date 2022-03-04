@@ -31,6 +31,8 @@ for level in levels:
 
     data.append({
         'Level Name': level.Name,
+        'Elevation': DB.UnitFormatUtils.Format(
+            revit.doc.GetUnits(), DB.UnitType.UT_Length, level.Elevation, True, False),
         'Element Count': count
     })
 
@@ -38,20 +40,20 @@ for level in levels:
 
     # print("{}: {}".format(level.Name, count))
 
-def print_dict_list_as_table(data, title="", formats=[]):
-    keys = set().union(*(d.keys() for d in data))
+# def print_dict_list_as_table(data, title="", formats=[]):
+#     keys = set().union(*(d.keys() for d in data))
+#
+#     if not formats:
+#         formats = ['' for _ in keys]
+#
+#     output.print_table(
+#         table_data=[[a.get(k) for k in keys] for a in data],
+#         title=title,
+#         columns=keys,
+#         formats=formats
+#     )
 
-    if not formats:
-        formats = ['' for _ in keys]
-
-    output.print_table(
-        table_data=[[a.get(k) for k in keys] for a in data],
-        title=title,
-        columns=keys,
-        formats=formats
-    )
-
-antler.util.print_dict_list_as_table(data, title="Level Element Count")
+antler.util.print_dict_list(data, title="Level Element Count")
 
 # keys = set().union(*(d.keys() for d in data))
 #
