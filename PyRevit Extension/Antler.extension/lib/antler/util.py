@@ -220,7 +220,3 @@ def close_revit():
     #     return
 
     WM_CLOSE = 0x10
-
-
-def query_transform(transform):
-    return transform.BasisX, transform.BasisY, transform.BasisZ
