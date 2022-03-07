@@ -30,7 +30,7 @@ except Exception as e:
 import analysis
 import interop
 import ui
-import transform
+# import transform
 import util
 import color
 import compare

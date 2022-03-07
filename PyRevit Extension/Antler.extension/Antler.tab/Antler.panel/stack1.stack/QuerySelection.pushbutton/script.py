@@ -42,7 +42,7 @@ for element in elements:
 
 
     # Location
-    direction = antler.transform.element_direction(element)
+    direction = antler.geometry.transform.element_direction(element)
     print("Direction: {direction}".format(direction=direction))
 
 

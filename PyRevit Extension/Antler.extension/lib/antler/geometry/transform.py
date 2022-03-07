@@ -3,10 +3,21 @@ from pyrevit import forms, script
 
 import math
 import clr
-import util
+
+from antler import util
 
 logger = script.get_logger()
 
+def query(transform):
+    # return transform.__dict__
+    # return {attr: getattr(transform, attr) for attr in dir(transform)}
+    return {
+        'BasisX': transform.BasisX,
+        'BasisY': transform.BasisY,
+        'BasisZ': transform.BasisZ,
+        'Origin': transform.Origin,
+        'Determinant': transform.Determinant,
+    }
 
 def transform_z_rotation(transform):
     """
@@ -174,3 +185,17 @@ def straighten_element(
         doc, element.Id, axis, rotation_angle)
 
     return element
+
+
+def from_plane(plane):
+    transform = DB.Transform.Identity
+
+    transform.BasisX = plane.XVec
+    transform.BasisY = plane.YVec
+    transform.BasisZ = plane.Normal
+    transform.Origin = plane.Origin
+
+    return transform
+
+def orient(from_plane, to_plane):
+    transform = DB.Transform.Identity

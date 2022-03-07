@@ -33,7 +33,7 @@ with DB.Transaction(revit.doc, __commandname__) as t:
 
         print("Checking element {element}".format(element=element_link))
 
-        direction = antler.transform.element_direction(element)
+        direction = antler.geometry.transform.element_direction(element)
 
         if direction is None:
             continue
