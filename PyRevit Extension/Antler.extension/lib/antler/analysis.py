@@ -21,6 +21,11 @@ MATERIAL_CACHE = {}
 
 # DOC = revit.doc
 
+def analysis_mesh_from_curveloop(curve_loops, height_offset, **mesh_settings):
+    material = None
+    operation_result = DB.TessellatedShapeBuilder.CreateMeshByExtrusion(
+        curve_loops, DB.XYZ(0, 0, 1), height_offset, material)
+
 class AnalysisRay():
     def __init__(self, origin, direction):
         self.origin = origin
@@ -54,6 +59,8 @@ class AnalysisRay():
 
             if material.Transparency < 0.5:
                 passed_through = False
+
+                return passed_through
 
         return passed_through
 
