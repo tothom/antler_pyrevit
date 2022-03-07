@@ -2,9 +2,10 @@ from rpw import revit, DB
 from pyrevit import script
 
 import clr
-# clr.AddReference("System.Core")
-# import System
-# clr.ImportExtensions(System.Linq)
+
+clr.AddReference("System.Core")
+import System
+clr.ImportExtensions(System.Linq)
 
 from collections import OrderedDict
 
@@ -52,6 +53,7 @@ def revit_link_instances_collector(doc=revit.doc):
 
     return collector
 
+
 def revit_link_types_collector(doc=revit.doc):
     collector = DB.FilteredElementCollector(doc)
     #collector.OfCategory(DB.BuiltInCategory.OST_RvtLinks)
@@ -79,6 +81,7 @@ def collect_instances_of_element_type(element_type):
     enumerable = collector.Where(lambda e: e.GetTypeId().IntegerValue.Equals(element_type.Id.IntegerValue))
 
     return enumerable.ToList()
+
 
 def get_view_by_name(name, doc=revit.doc):
     collector = DB.FilteredElementCollector(doc)
@@ -123,33 +126,3 @@ def room_collector(doc=revit.doc, phase_id=None):
         collector.WherePasses(filter.room_phase_filter(phase_id))
 
     return collector
-
-
-def collect_room_at_pt(pt, doc=revit.doc, element_filter=None):
-    collector = DB.FilteredElementCollector(doc)
-    collector.OfCategory(DB.BuiltInCategory.OST_Rooms)
-    # collector = room_collector(phase)
-
-    bbox_pt_filter = DB.BoundingBoxContainsPointFilter(pt)
-
-    collector.WherePasses(bbox_pt_filter)
-
-    if collector.GetElementCount() > 0:
-        if element_filter:
-            collector.WherePasses(element_filter)
-
-        for room in collector.ToElements():
-            if room.IsPointInRoom(pt):
-                return room
-
-
-
-
-def get_rooms_from_pt_list(pts, phase, view=revit.uidoc.ActiveView):
-    # if not phase:
-    #     phase_parameter = view.get_Parameter(DB.BuiltInParameter.VIEW_PHASE)
-    #     phase_id = phase_parameter.AsElementId()
-
-    rooms = room_collector(phase_id=phase.Id).ToElements()
-
-    return [room_at_pt(rooms, pt) for pt in pts]

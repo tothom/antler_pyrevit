@@ -1,24 +1,15 @@
 # -*- coding: utf-8 -*-
-from rpw import revit, DB, UI
-from pyrevit import forms, script, EXEC_PARAMS
-import re
-from System.Collections.Generic import List
-import clr
+from rpw import DB
+from pyrevit import forms, script
 
 from collections import OrderedDict
 
 import antler
 
-uidoc = revit.uidoc
-doc = revit.doc
-
 logger = script.get_logger()
 
-
 docs = antler.forms.select_docs()
-
 logger.debug(docs)
-
 docs = docs or []
 
 # select_compound_classes
@@ -43,13 +34,9 @@ selected = forms.SelectFromList.show(
     multiselect=False
 )
 
+
 builtin_category = compound_categories_dict[selected]
 
-# compound_classes_list = List[None](compound_classes)
-# element_multiclass_filter = DB.ElementMulticlassFilter(compound_classes_list)
-# collector = DB.FilteredElementCollector(revit.doc).WhereElementIsElementType().WherePasses(element_multiclass_filter)
-# type_elements = collector.ToElements()
-# print(type_elements)
 
 for doc in docs:
     type_elements = DB.FilteredElementCollector(doc).OfCategory(
@@ -74,7 +61,7 @@ for doc in docs:
         report.append(OrderedDict({
             'Name': name,
             'Count': count,
-            'Layers': element_layer_report(type_element, sep=';'),
+            'Layers': antler.parameters.element_layer_report(type_element, sep=';'),
             })
         )
 

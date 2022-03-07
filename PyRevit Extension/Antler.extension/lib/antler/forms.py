@@ -73,20 +73,23 @@ def select_category(doc=revit.doc, multiselect=False):
     # category_found = Revit.Elements.Category.ByName(str(category))
 
 
-def select_elements(elements, naming_function=lambda x: x.Name, multiselect=True, doc=revit.doc, **kwargs):
+def select_elements(elements, naming_function=lambda x: x.Name, multiselect=True, doc=revit.doc, sort_by_key=True, **kwargs):
     selection_dict = OrderedDict()
 
     LOGGER.debug(elements)
 
-    if not naming_function:
-        def naming_function(x): return "{0}".format(x.Name)
+    # if not naming_function:
+    #     def naming_function(x): return "{0}".format(x.Name)
 
     for element in elements:
         key = naming_function(element)
         selection_dict[key] = element
 
+    if sort_by_key:
+        selection_dict = OrderedDict(sorted(selection_dict.items()))
+
     keys = forms.SelectFromList.show(
-        sorted(selection_dict.keys()),
+        selection_dict.keys(),
         multiselect=multiselect,
         **kwargs
     )
@@ -322,14 +325,26 @@ def select_worksets(doc=revit.doc, kind=DB.WorksetKind.UserWorkset, **kwargs):
 
     return select_elements(worksets, **kwargs)
 
+
 def select_levels(doc=revit.doc, *args, **kwargs):
     levels = DB.FilteredElementCollector(doc).OfCategory(
         DB.BuiltInCategory.OST_Levels).WhereElementIsNotElementType().ToElements()
 
+    levels = sorted(levels, key=lambda x:x.Elevation, reverse=True)
+
+    LOGGER.debug([a.Elevation for a in levels])
+
     selected_elements = select_elements(levels, lambda level: "{} ({})".format(
-        level.Name, parameters.get_parameter_value(level.get_Parameter(DB.BuiltInParameter.LEVEL_ELEV))
-            ),
+        level.Name,
+        DB.UnitFormatUtils.Format(
+            doc.GetUnits(), DB.UnitType.UT_Length, level.Elevation, False, True)),
+        sort_by_key=False,
         *args, **kwargs
         )
 
     return selected_elements
+
+def select_parameters(element, *args, **kwargs):
+    parameters = element.Parameters
+
+    

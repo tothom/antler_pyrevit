@@ -7,15 +7,13 @@ import antler
 
 import math
 
-uidoc = revit.uidoc
-doc = revit.doc
 
 logger = script.get_logger()
 output = script.get_output()
 
 
-current_selection = uidoc.Selection.GetElementIds() or script.exit()
-elements = [doc.GetElement(id) for id in current_selection]
+current_selection = revit.uidoc.Selection.GetElementIds() or script.exit()
+elements = [revit.doc.GetElement(id) for id in current_selection]
 
 
 common_definitions = antler.parameters.get_common_parameter_definitions(

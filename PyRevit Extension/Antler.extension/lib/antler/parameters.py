@@ -99,12 +99,23 @@ def get_common_parameter_definitions(elements, filter_function=lambda x:True):
 
 
 def verbose_layer_string(layer):
+    logger.debug(layer)
+
     material = revit.doc.GetElement(layer.MaterialId)
+
+    logger.debug(material)
+
+    if material:
+        material_name = material.Name
+    else:
+        material_name = "*By Category*"
 
     layer_string = "{width} mm {material_name} ({function})".format(
         function=layer.Function,
-        width=layer.Width*304.8,
-        material_name=material_dict.get('Name')
+        # width=layer.Width*304.8,
+        width=DB.UnitFormatUtils.Format(
+            revit.doc.GetUnits(), DB.UnitType.UT_Length, layer.Width, True, False),
+        material_name=material_name
     )
 
     return layer_string
