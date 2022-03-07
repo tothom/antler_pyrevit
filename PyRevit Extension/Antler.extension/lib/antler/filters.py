@@ -24,7 +24,9 @@ def hosted_by_filter(host_element):
     return parameter_filter
 
 
-def room_phase_filter(phase_id):
+def room_phase_filter(phase):
+    phase_id = phase.Id
+
     provider = DB.ParameterValueProvider(
         DB.ElementId(DB.BuiltInParameter.ROOM_PHASE_ID))
     rule = DB.FilterElementIdRule(provider, DB.FilterNumericEquals(), phase_id)
