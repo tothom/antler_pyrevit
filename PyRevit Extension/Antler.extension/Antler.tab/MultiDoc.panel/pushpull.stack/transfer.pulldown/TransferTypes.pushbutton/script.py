@@ -11,6 +11,8 @@ import transfer
 logger = script.get_logger()
 output = script.get_output()
 
+# Form - Transfer to this model or transfer from this model?
+# Should be two buttons...
 
 if EXEC_PARAMS.config_mode:
     # Pull elements from other doc to this doc
@@ -18,6 +20,41 @@ if EXEC_PARAMS.config_mode:
 else:
     # Push elements from this doc to other doc
     pass
+
+
+"""
+Form - What do you want to transfer (and syncronize)?
+    - Transfer types of current selection?
+        - Yes or no?
+        If no:
+            Form:
+            - Element Types?
+                - Select Category
+                - Select Element Types of Category
+                - Match Element Types
+                - Action: Transfer and override
+            - View Templates
+                - Select View Templates
+                - Match View Templates
+                - Action: Transfer and override
+            - Sheets?
+                - Transfer to other doc as placeholder sheets?
+            - Views?
+                -
+            - Grids
+                - Match Grids
+            - Scope Boxes
+                - Match Scope Boxes
+            - Levels
+                - Match Levels
+            - Materials
+                - Select Materials
+                - Match Materials
+                - Transfer Materials
+                    - Materials, assets etc...
+"""
+
+
 
 
 # Select what to
