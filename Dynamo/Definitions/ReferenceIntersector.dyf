@@ -365,7 +365,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\nfrom System.Collections.Generic import List\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\nclr.AddReference (\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nintersector = IN[0]\r\norigin_pts = IN[1]\r\ndirection = IN[2] or DB.XYZ(0,0,-1)\r\n\r\n\r\n# Place your code below this line\r\ndef find_associated_floor(\r\n\tintersector, origin_xyz, direction=DB.XYZ(0,0,-1)):\r\n\t#location_offset = family_instance.FacingOrientation.Negate().Multiply(ray_offset)\r\n\r\n\t#origin = family_instance.Location.Point.Add(location_offset)\r\n\r\n\r\n\treference_with_context = intersector.FindNearest(origin_xyz, direction)\r\n\r\n\tif reference_with_context:\r\n\t\treference = reference_with_context.GetReference()\r\n\t\t\r\n\t\telement = doc.GetElement(reference.ElementId)\r\n\r\n\t\treturn element, reference.GlobalPoint.ToPoint()\r\n\telse:\r\n\t\treturn None, None\r\n\r\nelements = []\r\npts = []\r\n\r\nfor origin_pt in origin_pts:\r\n\torigin_xyz = origin_pt.ToRevitType()\r\n\t\r\n\telement, pt = find_associated_floor(\r\n\t\tintersector, \r\n\t\torigin_xyz\r\n\t\t)\r\n\t\r\n\telements.append(element)\r\n\tpts.append(pt)\r\n\r\n# Assign your output to the OUT variable.\r\nOUT = elements, pts",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\nfrom System.Collections.Generic import List\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\nclr.AddReference (\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nintersector = IN[0]\r\norigin_pts = IN[1]\r\ndirection = IN[2] or DB.XYZ(0,0,-1)\r\n\r\n\r\n# Place your code below this line\r\ndef find_associated_floor(\r\n\tintersector, origin_xyz, direction=DB.XYZ(0,0,-1)):\r\n\t#location_offset = family_instance.FacingOrientation.Negate().Multiply(ray_offset)\r\n\r\n\t#origin = family_instance.Location.Point.Add(location_offset)\r\n\r\n\r\n\treference_with_context = intersector.FindNearest(origin_xyz, direction)\r\n\r\n\tif reference_with_context:\r\n\t\treference = reference_with_context.GetReference()\r\n\t\t\r\n\t\telement = doc.GetElement(reference.ElementId)\r\n\r\n\t\treturn element, reference.GlobalPoint.ToPoint()\r\n\telse:\r\n\t\treturn None, None\r\n\r\nelements = []\r\npts = []\r\n\r\nfor origin_pt in origin_pts:\r\n\tif origin_pt:\r\n\t\torigin_xyz = origin_pt.ToRevitType()\r\n\t\t\r\n\t\telement, pt = find_associated_floor(\r\n\t\t\tintersector, \r\n\t\t\torigin_xyz\r\n\t\t\t)\r\n\telse:\r\n\t\telement = None\r\n\t\tpt = None\r\n\r\n\telements.append(element)\r\n\tpts.append(pt)\r\n\r\n# Assign your output to the OUT variable.\r\nOUT = elements, pts",
       "VariableInputPorts": true,
       "Id": "756eb5a270634842ba8365bf92eb4bfa",
       "Inputs": [
@@ -506,8 +506,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 249.00596835489046,
-        "Y": 1.4295442358621244
+        "X": 255.65250922190944,
+        "Y": 3.6450578582018238
       },
       {
         "ShowGeometry": false,
@@ -611,13 +611,13 @@
       },
       {
         "ShowGeometry": false,
-        "Name": "Python Script",
+        "Name": "ElementCategoryFilter",
         "Id": "37e4b98c6ea34f49be068dbdb6676300",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": -14.159637860911403,
-        "Y": -72.948168179447634
+        "X": -54.569208277333018,
+        "Y": -73.397163406296755
       },
       {
         "ShowGeometry": false,
@@ -641,19 +641,19 @@
           "a421b35f57324642be115eb76190704e",
           "f13a4e5c10b245a98d9f5d200df7316d"
         ],
-        "Left": 239.00596835489046,
-        "Top": -51.570455764137876,
-        "Width": 745.474919057596,
-        "Height": 498.11847396080589,
+        "Left": 245.65250922190944,
+        "Top": -49.354942141798176,
+        "Width": 738.828378190577,
+        "Height": 495.90296033846619,
         "FontSize": 36.0,
-        "InitialTop": 1.4295442358621244,
-        "InitialHeight": 526.530113131997,
+        "InitialTop": 3.6450578582018238,
+        "InitialHeight": 522.11847396080589,
         "TextblockHeight": 43.0,
         "Background": "#FFC1D676"
       }
     ],
-    "X": 117.69809486424049,
-    "Y": 196.242805114535,
-    "Zoom": 1.0060041900272456
+    "X": 123.5856858388363,
+    "Y": 151.23429285485025,
+    "Zoom": 0.96556678260774254
   }
 }
