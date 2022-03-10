@@ -14,6 +14,8 @@ from System.Collections.Generic import List
 
 import antler
 
+
+
 logger = script.get_logger()
 output = script.get_output()
 
@@ -22,24 +24,28 @@ other_doc = antler.forms.select_docs(
 
 logger.debug(other_doc.Title)
 
-views = forms.select_views(
-        title="Select Views to pull into current model",
-        doc=other_doc
-    )
+view_templates = antler.collectors.view_template_collector(doc=other_doc).ToElements()
 
-view_id_list = List[DB.ElementId]()
-[view_id_list.Add(view.Id) for view in views]
+logger.debug(view_templates)
 
-if views:
-    with DB.Transaction(revit.doc, __commandname__) as t:
-        t.Start()
 
-        DB.ElementTransformUtils.CopyElements(
-            other_doc,
-            view_id_list,
-            revit.doc,
-            DB.Transform.Identity,
-            DB.CopyPasteOptions()
-            )
+selected_view_templates = antler.forms.select_elements(
+        view_templates,
+        naming_function=lambda x:x.Title,
+        title="Select View Templates to pull into current model"
+    ) or script.exit()
 
-        t.Commit()
+view_id_list = List[DB.ElementId]([view.Id for view in selected_view_templates])
+
+with DB.Transaction(revit.doc, __commandname__) as t:
+    t.Start()
+
+    DB.ElementTransformUtils.CopyElements(
+        other_doc,
+        view_id_list,
+        revit.doc,
+        DB.Transform.Identity,
+        DB.CopyPasteOptions()
+        )
+
+    t.Commit()

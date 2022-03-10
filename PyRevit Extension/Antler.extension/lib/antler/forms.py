@@ -73,7 +73,7 @@ def select_category(doc=revit.doc, multiselect=False):
     # category_found = Revit.Elements.Category.ByName(str(category))
 
 
-def select_elements(elements, naming_function=lambda x: x.Name, multiselect=True, doc=revit.doc, sort_by_key=True, **kwargs):
+def select_elements(elements, naming_function=lambda x: x.Name, multiselect=True, sort_by_key=True, **kwargs):
     selection_dict = OrderedDict()
 
     LOGGER.debug(elements)
@@ -346,5 +346,3 @@ def select_levels(doc=revit.doc, *args, **kwargs):
 
 def select_parameters(element, *args, **kwargs):
     parameters = element.Parameters
-
-    
