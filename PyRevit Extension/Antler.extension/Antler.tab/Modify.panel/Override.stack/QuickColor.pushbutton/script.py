@@ -35,7 +35,7 @@ logger.debug(swatch)
 color = Color.FromArgb(swatch.red, swatch.green, swatch.blue)
 
 line_color = color
-fill_color = antler.color.relative_color_hsv(line_color, dv=+0.4, ds=-0.4)
+fill_color = antler.color.relative_color_hsv(line_color, dv=+0.3, ds=-0.3)
 
 logger.debug(line_color)
 logger.debug(fill_color)
