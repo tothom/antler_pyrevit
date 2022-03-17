@@ -139,19 +139,6 @@ def select_families(doc=revit.doc):  # , multiselect=True):
     families = collectors.family_collector().ToElements()
     return select_elements(families, lambda x: "({}) {}".format(x.FamilyCategory.Name, x.Name))
 
-    # selection_dict = OrderedDict()
-    #
-    # for family in families:
-    #     key = "({}) {}".format(family.FamilyCategory.Name, family.Name)
-    #
-    #     selection_dict[key] = family
-    #
-    # selected = forms.SelectFromList.show(
-    #     sorted(selection_dict.keys()),
-    #     multiselect=True
-    # )
-    #
-    # return [selection_dict[key] for key in selected]
 
 
 def select_family_types(**kwargs):
@@ -163,31 +150,6 @@ def select_family_types(**kwargs):
         )
     )
 
-    # fam_type_collector = DB.FilteredElementCollector(
-    #      doc).WhereElementIsElementType().OfClass(DB.FamilySymbol)
-    #  fam_types = fam_type_collector.ToElements()
-    #
-    #   fam_types_dict = OrderedDict()
-    #
-    #    # print(dir(fam_types[0]))
-    #    # print(fam_types)
-    #
-    #    for fam_type in fam_types:
-    #         symbol_name = fam_type.get_Parameter(
-    #             DB.BuiltInParameter.SYMBOL_NAME_PARAM).AsString()
-    #         family_name = fam_type.FamilyName
-    #
-    #         family_type_name = "{0} - {1}".format(family_name, symbol_name)
-    #
-    #         fam_types_dict[family_type_name] = fam_type
-    #
-    #     selected = forms.SelectFromList.show(
-    #         sorted(fam_types_dict.keys()), multiselect=True)
-    #
-    #     if selected:
-    #         return [fam_types_dict[key] for key in selected]
-    #     else:
-    #         return []
 
 
 def select_detail_family_symbol(doc=revit.doc):
@@ -201,22 +163,6 @@ def select_detail_family_symbol(doc=revit.doc):
         ))
 
     return selected_elements
-
-    # selection_dict = OrderedDict()
-    #
-    # for element in elements:
-    #     key = "[{}] {}".format(
-    #         element.Family.Name,
-    #         element.get_Parameter(
-    #             DB.BuiltInParameter.SYMBOL_NAME_PARAM).AsString()
-    #         )
-    #     selection_dict[key] = element
-    #
-    # selected = forms.SelectFromList.show(
-    #     sorted(selection_dict.keys()),
-    # )
-    #
-    # return selection_dict[key]
 
 
 def select_filled_region(doc=revit.doc):

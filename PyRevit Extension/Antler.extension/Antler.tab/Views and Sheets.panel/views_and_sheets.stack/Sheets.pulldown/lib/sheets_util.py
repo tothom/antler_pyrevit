@@ -5,10 +5,11 @@ from pyrevit import forms, script
 
 logger = script.get_logger()
 
-def titleblocks_on_sheet(sheet, doc=revit.doc):
+def titleblocks_on_sheet(sheet):
     """
     Returns all Titleblocks on Sheet
     """
+    doc = sheet.Document
     titleblock_category_id = doc.Settings.Categories.get_Item(DB.BuiltInCategory.OST_TitleBlocks).Id
 
     elements_on_sheet = DB.FilteredElementCollector(doc).OwnedByView(sheet.Id)
