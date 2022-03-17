@@ -73,17 +73,20 @@ for i, doc in enumerate(docs_to_sync):
     else:
         if EXEC_PARAMS.config_mode:
             try:
+                print("Trying to close document.")
                 doc.Close()
             except InvalidOperationException as e:
                 close_doc = UI.RevitCommandId.LookupPostableCommandId(
                     UI.PostableCommand.Close)
                 revit.uiapp.PostCommand(close_doc)
+            else:
+                print("Document closed.")
 
         #     logger.warning(e.Message)
 
     t1 = time.time()
 
-    print("Sync took {:.3g}s.".format(t1-t0))
+    print("Process took {:.3g}s.".format(t1-t0))
 
     output.indeterminate_progress(False)
     output.update_progress(i + 1, len(docs_to_sync))
