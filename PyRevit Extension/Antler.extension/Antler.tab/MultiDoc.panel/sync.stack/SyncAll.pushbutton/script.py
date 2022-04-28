@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from System.Collections.Generic import *
+# from System.Collections.Generic import *
 from rpw import revit, DB, UI
 
 from pyrevit import forms, script
@@ -11,6 +11,7 @@ from collections import OrderedDict
 from Autodesk.Revit.Exceptions import InvalidOperationException
 
 import time
+import sync
 
 logger = script.get_logger()
 output = script.get_output()
@@ -30,11 +31,15 @@ selected = forms.SelectFromList.show(
     options.keys(),
     title="Select relinquish options",
     multiselect=True
-)
+)# or script.exit()
+
+logger.debug(selected)
+
+if selected is None:
+    script.exit()
 
 for a in selected:
     setattr(relinquish_options, options[a], True)
-
 
 transact_options = DB.TransactWithCentralOptions()
 sync_options = DB.SynchronizeWithCentralOptions()
@@ -51,46 +56,9 @@ sync_options.SetRelinquishOptions(relinquish_options)
 # 	sync_options.SaveLocalFile
 # 	)
 
-docs_to_sync = [
+docs = [
     doc for doc in revit.docs if doc.IsWorkshared and not doc.IsLinked]
 
-t_start = time.time()
+sync.sync_multiple_docs(docs, transact_options, sync_options, close_docs=EXEC_PARAMS.config_mode)
 
-print("Synchronising {0} docs...".format(len(docs_to_sync)))
-output.indeterminate_progress(True)
-
-for i, doc in enumerate(docs_to_sync):
-    print("Trying to synchronize {0}...".format(doc.Title))
-
-    t0 = time.time()
-
-    try:
-        doc.SynchronizeWithCentral(transact_options, sync_options)
-        print("Document synchronized!")
-    except Exception as e:
-        logger.warning("Document NOT synchronized!")
-        logger.debug(type(e), e)
-    else:
-        if EXEC_PARAMS.config_mode:
-            try:
-                print("Trying to close document.")
-                doc.Close()
-            except InvalidOperationException as e:
-                close_doc = UI.RevitCommandId.LookupPostableCommandId(
-                    UI.PostableCommand.Close)
-                revit.uiapp.PostCommand(close_doc)
-            else:
-                print("Document closed.")
-
-        #     logger.warning(e.Message)
-
-    t1 = time.time()
-
-    print("Process took {:.3g}s.".format(t1-t0))
-
-    output.indeterminate_progress(False)
-    output.update_progress(i + 1, len(docs_to_sync))
-
-t_end = time.time()
-
-print("Done in {:.3g} s! 👍".format(t_end - t_start))
+output.self_destruct(20)
