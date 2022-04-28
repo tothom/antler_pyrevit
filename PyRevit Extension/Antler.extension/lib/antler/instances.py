@@ -38,3 +38,9 @@ def filled_region_from_room(filled_region_type, room, view=revit.uidoc.ActiveVie
     element = DB.FilledRegion.Create(doc, filled_region_type.Id, view.Id, crv_loops)
 
     return element
+
+
+def count_elements_of_type(element_type):
+    instances = antler.collectors.collect_instances_of_element_type(element_type)
+
+    return len(instances)
