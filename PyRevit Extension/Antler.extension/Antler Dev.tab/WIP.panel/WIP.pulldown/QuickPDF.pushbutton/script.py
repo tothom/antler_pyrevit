@@ -17,11 +17,9 @@ __doc__ = "Quick PDF"
 __title__ = "Quick PDF"
 __author__ = "Thomas Holth"
 
-uidoc = revit.uidoc
-doc = revit.doc
 
-
-
+def query_print_settings():
+    pass
 
 
 def get_view_print_name(view):
@@ -34,11 +32,18 @@ def get_view_print_name(view):
     return name
 
 
-view = uidoc.ActiveView
+view = revit.uidoc.ActiveView
 
 default_name = get_view_print_name(view)
 
 Clipboard.SetText(default_name)
+
+
+
+for print_settings_id in revit.doc.GetPrintSettingIds():
+    print_settings = revit.doc.GetElement(print_settings_id)
+
+    print_parameters = print_settings.PrintParameters
 
 """
 # def print_to_pdf(view, file_path):
