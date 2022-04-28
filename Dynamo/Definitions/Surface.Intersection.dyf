@@ -1,0 +1,334 @@
+{
+  "Uuid": "901bc856-bea7-4423-a2dd-6ed67cf6208a",
+  "IsCustomNode": true,
+  "Category": "Antler.Geometry.Surfaces",
+  "Description": "Get intersection of multiple coplanar surfaces.",
+  "Name": "Intersection",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "List": {
+        "Key": "List",
+        "Value": "BuiltIn.ds"
+      },
+      "Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      },
+      "Surface": {
+        "Key": "Autodesk.DesignScript.Geometry.Surface",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Line": {
+        "Key": "Autodesk.DesignScript.Geometry.Line",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Vector.XAxis": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Vector": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      },
+      "BoundingBox.union": {
+        "Key": "Autodesk.DesignScript.Geometry.BoundingBox",
+        "Value": "ProtoGeometry.dll"
+      },
+      "BoundingBox.MinPoint": {
+        "Key": "Autodesk.DesignScript.Geometry.BoundingBox",
+        "Value": "ProtoGeometry.dll"
+      },
+      "BoundingBox": {
+        "Key": "Autodesk.DesignScript.Geometry.BoundingBox",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Math": {
+        "Key": "DSCore.Math",
+        "Value": "DSCoreNodes.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.List.Clean@var[]..[],bool",
+      "Id": "8bc7bb44e5654514a4d9d9c1d2bf8646",
+      "Inputs": [
+        {
+          "Id": "c22ceecca9d44f0ea02f2e17408105c8",
+          "Name": "list",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": true,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "5b8881533f8c49deb9cc836387e006c6",
+          "Name": "preserveIndices",
+          "Description": "Provide an option to preserve the indices of the data such that non-trailing nulls may not be filtered out\n\nbool\nDefault value : true",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "b649562c793649708e91c5c982aa0684",
+          "Name": "var[]..[]",
+          "Description": "A list cleaned of nulls and empty lists",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Cleans data of nulls and empty lists from a given list of arbitrary dimension\n\nList.Clean (list: var[]..[], preserveIndices: bool = true): var[]..[]"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.BoolSelector, CoreNodeModels",
+      "NodeType": "BooleanInputNode",
+      "InputValue": false,
+      "Id": "88efa6373e0a4b0280eb71aa6be0e625",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "c188a24fb278429e8989468e72321592",
+          "Name": "",
+          "Description": "Boolean",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Selection between a true and false."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "// Union of surfaces\n\nsrfs;\n\ndeconstructed = List.Deconstruct(srfs);\n\nfirst = Dictionary.ValueAtKey(deconstructed, \"first\");\nrest = Dictionary.ValueAtKey(deconstructed, \"rest\");\n\n\nunion = [Imperative]\n{\n\tcurrent = [first];\n\n\tfor (srf in rest)\n\t\t{\n\t\tif (Surface.DoesIntersect(current, srf))\n\t\t\t{\n\t\t\tdiff = Surface.Difference(current, srf);\n\n\t\t\tif (diff == null)\n\t\t\t\t{\n\t\t\t\tcurrent = [srf];\n\t\t\t\t}\n\t\t\telse\n\t\t\t\t{\n\t\t\t\tcurrent = List.Join([diff, [srf]]);\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\tcleaned_list = List.Clean(current, false);\n\n\treturn current;\n};",
+      "Id": "727e577b02724edebd56b47647c7585c",
+      "Inputs": [
+        {
+          "Id": "d6608277b6924100862b3efe6b2522fa",
+          "Name": "srfs",
+          "Description": "srfs",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "020ed495d6d048f6bfe7ed8c81a603f0",
+          "Name": "",
+          "Description": "Value of expression at line 3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a0fc1686b88a4181a8d6762cdab87531",
+          "Name": "",
+          "Description": "deconstructed",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1e8eb5bb79734a02a141a568bc0c5188",
+          "Name": "",
+          "Description": "first",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "dda23bafceba481ca022705036168a69",
+          "Name": "",
+          "Description": "rest",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "8645a6728083437d80380eb61f59d052",
+          "Name": "",
+          "Description": "union",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "srfs",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "249fbe5f891046069059e67c37a8266c",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "8f484e81b8474abb8ee1a020aa580eea",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "intersection",
+      "Id": "7d35a2683caa43078d44ec0411306df9",
+      "Inputs": [
+        {
+          "Id": "4c4906e9c0174f6fbe57026e3af91ba0",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "b649562c793649708e91c5c982aa0684",
+      "End": "4c4906e9c0174f6fbe57026e3af91ba0",
+      "Id": "41bc66bdfb5c401a9972610d591a8bfd"
+    },
+    {
+      "Start": "c188a24fb278429e8989468e72321592",
+      "End": "5b8881533f8c49deb9cc836387e006c6",
+      "Id": "6dc4b6630d0d4d1898c7152256ae7a97"
+    },
+    {
+      "Start": "8645a6728083437d80380eb61f59d052",
+      "End": "c22ceecca9d44f0ea02f2e17408105c8",
+      "Id": "1e5c9b8d9b7b4702b66160d14b0aaca6"
+    },
+    {
+      "Start": "8f484e81b8474abb8ee1a020aa580eea",
+      "End": "d6608277b6924100862b3efe6b2522fa",
+      "Id": "37e6fecdbca24d1f9ebda14e12bfa690"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.6.1.8786",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 3560.6425953899011,
+      "EyeY": 3646.463053948065,
+      "EyeZ": -2657.9377205340988,
+      "LookX": -2770.6425953899011,
+      "LookY": -2726.463053948065,
+      "LookZ": 2657.9377205340988,
+      "UpX": -0.28196400500066954,
+      "UpY": 0.92050485345244759,
+      "UpZ": 0.27049420447485234
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": false,
+        "Name": "List.Clean",
+        "Id": "8bc7bb44e5654514a4d9d9c1d2bf8646",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1163.3172795116061,
+        "Y": 344.42953225024257
+      },
+      {
+        "ShowGeometry": false,
+        "Name": "Boolean",
+        "Id": "88efa6373e0a4b0280eb71aa6be0e625",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 826.8847676317082,
+        "Y": 378.83351347419534
+      },
+      {
+        "ShowGeometry": false,
+        "Name": "Code Block",
+        "Id": "727e577b02724edebd56b47647c7585c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "249fbe5f891046069059e67c37a8266c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "7d35a2683caa43078d44ec0411306df9",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1528.429332684083,
+        "Y": 173.81889708073328
+      }
+    ],
+    "Annotations": [],
+    "X": 387.23009021596818,
+    "Y": 308.76657205707539,
+    "Zoom": 0.82269535937499993
+  }
+}
