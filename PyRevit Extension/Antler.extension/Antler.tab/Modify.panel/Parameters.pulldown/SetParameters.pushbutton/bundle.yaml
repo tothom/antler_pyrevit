@@ -1,0 +1,9 @@
+title:        "Set Parameter Values"
+
+tooltip:      "Shows a parameter summary of selected elements. For each
+              parameter all selected elements have in common, the sum, min, max
+              and average are shown in a table.
+
+              Shift + click to select which parameters you want to show in the
+              table. If not, all common parameters for selected elements are
+              shown."

@@ -37,7 +37,7 @@ definitions_dict = {a.Name: a for a in definitions}
 
 source_key = forms.SelectFromList.show(
 	sorted(definitions_dict.keys()),
-	title="Select Instance parameter top copy from"
+	title="Select Instance parameter to copy from"
 )
 
 if not source_key:
@@ -51,7 +51,7 @@ filtered_definitions_dict = dict(filter(
 
 destination_key = forms.SelectFromList.show(
 	sorted(filtered_definitions_dict.keys()),
-	title="Select Instance parameter top copy from"
+	title="Select Instance parameter to copy from"
 )
 
 if not destination_key:

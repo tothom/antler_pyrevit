@@ -49,6 +49,7 @@ for definition in definitions:
     internal_values = []
 
     logger.debug(definition.Name)
+    logger.debug(definition.GetSpecTypeId())
 
     has_values = []
 
@@ -66,12 +67,13 @@ for definition in definitions:
     # internal_value_sum = sum(internal_values)
 
     if all(has_values):
-        format_value = lambda x:DB.UnitFormatUtils.Format(
+        format_value = lambda x: DB.UnitFormatUtils.Format(
             revit.doc.GetUnits(),
-            definition.UnitType,
+            definition.GetSpecTypeId(),
             x,
-            True,
             False)
+
+        logger.debug(format_value(sum(internal_values)))
 
         parameter_summary = {
             'Parameter': definition.Name,
