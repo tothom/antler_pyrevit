@@ -1,6 +1,9 @@
 
 from rpw import revit, DB
 
+def query_view(view):
+    pass
+
 
 def override_element_color(element, view, fill_color=None, line_color=None):
     """
@@ -37,5 +40,8 @@ def override_element_color(element, view, fill_color=None, line_color=None):
 
         # Sets cut overrides
         graphic_settings.SetCutLineColor(line_color)
+
+        graphic_settings.SetSurfaceForegroundPatternColor(line_color)
+        graphic_settings.SetCutForegroundPatternColor(line_color)
 
     view.SetElementOverrides(element.Id, graphic_settings)
