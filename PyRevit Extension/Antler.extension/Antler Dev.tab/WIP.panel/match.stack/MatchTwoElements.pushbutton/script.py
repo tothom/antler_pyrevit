@@ -31,14 +31,14 @@ destination = revit.doc.GetElement(destination_ref)
 parameters = antler.compare.diff_elements(source, destination)
 # elements = [doc.GetElement(id) for id in selection]
 
-with DB.Transaction(revit.doc, __commandname__) as tg:
-    tg.Start()
-
-    for parameter, value in parameters.items():
-        if not parameter.IsReadOnly:
-            antler.parameters.set_parameter_value(parameter, value)
-        else:
-            logger.debug("Parameter {} is read only".format(
-                parameter.Definition.Name))
-
-    tg.Commit()
+# with DB.Transaction(revit.doc, __commandname__) as tg:
+#     tg.Start()
+#
+#     for parameter, value in parameters.items():
+#         if not parameter.IsReadOnly:
+#             antler.parameters.set_parameter_value(parameter, value)
+#         else:
+#             logger.debug("Parameter {} is read only".format(
+#                 parameter.Definition.Name))
+#
+#     tg.Commit()
