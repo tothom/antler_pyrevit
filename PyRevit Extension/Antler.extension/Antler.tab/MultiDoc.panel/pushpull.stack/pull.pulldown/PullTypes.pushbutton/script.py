@@ -2,9 +2,10 @@
 
 from rpw import revit, DB
 from pyrevit import script, EXEC_PARAMS, forms
+
 from System.Collections.Generic import List
-import antler
-from collections import OrderedDict
+
+import antler.forms
 
 
 logger = script.get_logger()
@@ -16,10 +17,11 @@ other_doc = antler.forms.select_docs(
 
 categories = antler.forms.select_category(doc=other_doc, multiselect=True)
 
-elements = antler.forms.select_types(doc=other_doc, categories=categories)
+elements = antler.forms.select_types_of_category(
+    doc=other_doc, categories=categories) or script.exit()
 
-if not elements:
-    script.exit()
+# if not elements:
+#     script.exit()
 
 this_doc = revit.doc
 
@@ -33,6 +35,6 @@ with DB.Transaction(this_doc, __commandname__) as t:
         this_doc,
         DB.Transform.Identity,
         DB.CopyPasteOptions()
-        )
+    )
 
     t.Commit()
