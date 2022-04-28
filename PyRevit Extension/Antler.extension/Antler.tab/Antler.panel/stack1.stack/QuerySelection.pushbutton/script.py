@@ -65,7 +65,8 @@ for element in elements:
     except Exception as e:
         logger.warning(e)
     else:
-        print([bbox.Min, bbox.Max])
+        if bbox:
+            print([bbox.Min, bbox.Max])
 
     # print("\n\t Parameters")
     parameter_dict = {parameter.Definition.Name: parameter.AsString(
