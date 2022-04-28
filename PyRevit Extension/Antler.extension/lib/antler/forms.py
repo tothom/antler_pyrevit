@@ -5,8 +5,12 @@ import clr
 from collections import OrderedDict
 from System.Collections.Generic import List
 
-import util, parameters
+from System.Windows.Forms import OpenFileDialog, SaveFileDialog, DialogResult
+
+import util
+import parameters
 import collectors
+import parameters
 
 from antler import LOGGER
 
@@ -31,6 +35,10 @@ def select_element_parameters(element):
     return selected_definitions  # TODO: Return Parameter objects, not just strings
 
 
+def select_parameters_of_category(category, doc=revit.doc):
+    raise ValueError("Not yet implemented!")
+
+
 def select_instance_parameters_of_category(category, doc=revit.doc):
     """
 
@@ -52,14 +60,33 @@ def select_instance_parameters_of_category(category, doc=revit.doc):
     return [parameters_dict[a] for a in parameters_selected]
 
 
-def select_category(doc=revit.doc, multiselect=False):
+# def select_parameters(elements):
+
+
+def select_category(
+        doc=revit.doc,
+        included_category_types=[DB.CategoryType.Model],
+        include_imported_categories=False,
+        multiselect=False):
     """
     """
-    categories_dict = {c.Name: c for c in doc.Settings.Categories}
+    categories_dict = {}
+
+    for category in doc.Settings.Categories:
+        LOGGER.debug(category.Parent)
+
+        if not include_imported_categories:
+            # Imported categories seem to have dot in them, from the file extension.
+            if "." in category.Name:
+                continue
+
+        if category.CategoryType in included_category_types:
+            categories_dict[category.Name] = category
 
     selected = forms.SelectFromList.show(
         sorted(categories_dict.keys()),
-        button_name='Select Categories',
+        button_name='Select Categories' if multiselect else 'Select Category',
+        title='Select Categories' if multiselect else 'Select Category',
         multiselect=multiselect
     )
 
@@ -70,10 +97,13 @@ def select_category(doc=revit.doc, multiselect=False):
     else:
         return categories_dict.get(selected)
 
-    # category_found = Revit.Elements.Category.ByName(str(category))
 
-
-def select_elements(elements, naming_function=lambda x: x.Name, multiselect=True, sort_by_key=True, **kwargs):
+def select_elements(
+        elements,
+        naming_function=lambda x: parameters.get_element_name(x),
+        multiselect=True,
+        sort_by_key=True,
+        **kwargs):
     selection_dict = OrderedDict()
 
     LOGGER.debug(elements)
@@ -120,9 +150,9 @@ def select_of_class(revit_class, naming_function, *args, **kwargs):
 
 
 def select_of_category(category, naming_function, doc=revit.doc, *args, **kwargs):
-    builtin_category = util.builtin_category_from_category(category)
+    # builtin_category = util.builtin_category_from_category(category)
 
-    collector = DB.FilteredElementCollector(doc).OfCategory(builtin_category)
+    collector = DB.FilteredElementCollector(doc).OfCategoryId(category.Id)
     collector.WhereElementIsElementType()
 
     elements = collector.ToElements()
@@ -133,12 +163,9 @@ def select_of_category(category, naming_function, doc=revit.doc, *args, **kwargs
     return selected_elements
 
 
-
-
 def select_families(doc=revit.doc):  # , multiselect=True):
     families = collectors.family_collector().ToElements()
     return select_elements(families, lambda x: "({}) {}".format(x.FamilyCategory.Name, x.Name))
-
 
 
 def select_family_types(**kwargs):
@@ -151,7 +178,6 @@ def select_family_types(**kwargs):
     )
 
 
-
 def select_detail_family_symbol(doc=revit.doc):
     elements = collectors.elements_of_class_collector(
         DB.FamilySymbol).ToElements()
@@ -160,7 +186,7 @@ def select_detail_family_symbol(doc=revit.doc):
         x.Family.Name,
         x.get_Parameter(
             DB.BuiltInParameter.SYMBOL_NAME_PARAM).AsString()
-        ))
+    ))
 
     return selected_elements
 
@@ -179,7 +205,7 @@ def select_filled_region(doc=revit.doc):
     for element in elements:
         key = "{}".format(
             DB.Element.Name.GetValue(element)
-            )
+        )
         selection_dict[key] = element
 
     selected = forms.SelectFromList.show(
@@ -208,7 +234,7 @@ def select_docs(multiselect=True, selection_filter=lambda x: True, **kwargs):
         return doc_dict.get(selected)
 
 
-def select_types(categories=[], doc=revit.doc):
+def select_types_of_category(categories=[], doc=revit.doc, count_elements=False):
     collector = DB.FilteredElementCollector(doc).WhereElementIsElementType()
 
     if categories:
@@ -226,23 +252,30 @@ def select_types(categories=[], doc=revit.doc):
     for element in type_elements:
         LOGGER.debug(element)
 
-        key_parts = []
+        name_parts = []
 
         try:
-            key_parts.append(element.Category.Name)
+            name_parts.append(element.Category.Name)
         except Exception as e:
             LOGGER.debug(e)
             # category_name = "No Category"
 
         try:
-            key_parts.append(element.Family.Name)
+            name_parts.append(element.Family.Name)
         except Exception as e:
             LOGGER.debug(e)
             # family_name = "No Family"
 
-        key_parts.append(DB.Element.Name.GetValue(element))
+        name_parts.append(DB.Element.Name.GetValue(element))
 
-        key = ' - '.join(key_parts)
+        key = ' - '.join(name_parts)
+
+        if count_elements:
+            instance_elements = collectors.collect_instances_of_element_type(
+                element)
+            count = len(instance_elements)  # .GetElementCount()
+
+            key += ' [{}]'.format(count)
 
         # "{category_name} - {family_name} - {type_name}".format(
         #     category_name=category_name,
@@ -276,7 +309,7 @@ def select_levels(doc=revit.doc, *args, **kwargs):
     levels = DB.FilteredElementCollector(doc).OfCategory(
         DB.BuiltInCategory.OST_Levels).WhereElementIsNotElementType().ToElements()
 
-    levels = sorted(levels, key=lambda x:x.Elevation, reverse=True)
+    levels = sorted(levels, key=lambda x: x.Elevation, reverse=True)
 
     LOGGER.debug([a.Elevation for a in levels])
 
@@ -286,9 +319,70 @@ def select_levels(doc=revit.doc, *args, **kwargs):
             doc.GetUnits(), DB.UnitType.UT_Length, level.Elevation, False, True)),
         sort_by_key=False,
         *args, **kwargs
-        )
+    )
 
     return selected_elements
 
-def select_parameters(element, *args, **kwargs):
-    parameters = element.Parameters
+
+def select_project_parameters(doc=revit.doc, multiselect=False, **kwargs):
+    project_parameters_dict = collectors.collect_project_parameters(doc)
+
+    readable_project_parameters_dict = {}
+
+    for definition, binding in project_parameters_dict.items():
+        parameter = doc.GetElement(definition.Id)
+
+        is_shared = isinstance(parameter, DB.SharedParameterElement)
+
+        group_label = DB.LabelUtils.GetLabelFor(definition.ParameterGroup)
+
+        try:
+            categories = [category.Name for category in binding.Categories]
+        except Exception as e:
+            LOGGER.debug(e)
+            categories = ""
+
+        compound_key = "{name} - {group} - {shared} - {binding} - {categories}".format(
+            name=definition.Name,
+            group=group_label,
+            shared='Shared' if is_shared else 'Project',
+            binding='Instance' if isinstance(
+                binding, DB.InstanceBinding) else 'Type',
+            categories=categories
+        )
+
+        readable_project_parameters_dict[compound_key] = (definition, binding)
+
+    selected = forms.SelectFromList.show(
+        sorted(readable_project_parameters_dict.keys()),
+        title='Select Project Parameters',
+        multiselect=multiselect,
+        **kwargs
+    ) or script.exit()
+
+    if multiselect:
+        return [readable_project_parameters_dict[a] for a in selected]
+    else:
+        return readable_project_parameters_dict[selected]
+
+
+def select_area_scheme(doc=revit.doc, multiselect=False):
+    area_schemes = antler.collectors.area_schemes_collector(doc)
+
+    LOGGER.info(area_schemes)
+
+    return select_elements(
+        area_schemes, multiselect=False)
+
+
+def save_file_dialog(default_name='', filter={'All Files': '*.*'}):
+    filter_string = '|'.join(
+        ["{k} ({v})|{v}".format(k=k, v=v) for k, v in filter.items()])
+
+    dialog = SaveFileDialog()
+
+    dialog.Filter = filter_string
+    dialog.FileName = default_name
+
+    if dialog.ShowDialog() == DialogResult.OK:
+        return dialog.FileName
