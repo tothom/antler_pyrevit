@@ -7,11 +7,25 @@ import parameters
 
 import hashlib
 
+import clr
+
+from System.Collections.Generic import IEnumerable
+
+clr.AddReference("System.Core")
+import System
+clr.ImportExtensions(System.Linq)
+
+
+
+
 logger = script.get_logger()
 output = script.get_output()
 
+def compare_parameters(source_parameter, destination_parameter):
+    pass
 
-def diff_elements(source_element, destination_element):
+
+def diff_elements(source_element, destination_element, exceptions=[]):
     """
     Returns parameters in destination element which are different from source
     element.
@@ -22,36 +36,58 @@ def diff_elements(source_element, destination_element):
     Function does not test the category, family or type differences between the
     elements.
     """
+    # diff = []
+    diff_dict_list = []
 
-    diff_parameters = {}
-
-    for source_parameter in source_element.ParametersMap:
-        logger.debug(source_parameter)
-
+    for source_parameter in source_element.Parameters:
         definition = source_parameter.Definition
 
         source_value = antler.parameters.get_parameter_value(source_parameter)
-        logger.debug(source_value)
 
-        destination_parameter = destination_element.get_Parameter(definition)
+        if source_value is None or definition.Name in exceptions:
+            continue
 
-        if not destination_parameter:
-            destination_value = None
-        else:
+        # destination_parameter = destination_element.get_Parameter(definition)
+        destination_parameter = destination_element.LookupParameter(definition.Name)
+
+        if destination_parameter:
             destination_value = antler.parameters.get_parameter_value(
                 destination_parameter)
 
-        equal = source_value == destination_value
+            equal = source_value == destination_value
 
-        if not equal:
-            diff_parameters[destination_parameter] = source_value
+            if not equal:
+                # diff_parameters[destination_parameter] = source_value
+                # diff.append(definition)
 
-    return diff_parameters
+                diff_dict_list.append({
+                    'Definition': definition,
+                    'Source': source_element,
+                    'Destination': destination_element,
+                    'Value': source_value,
+                    # 'Status': status
+                })
+
+                logger.info("{equal}: {source}: '{source_value}' - {dest}: '{dest_value}'".format(
+                    source=source_parameter.Definition.Name,
+                    source_value=source_value,
+                    equal='EQUAL' if equal else 'DIFF',
+                    dest=destination_parameter.Definition.Name if destination_parameter else 'N/A',
+                    dest_value=destination_value
+                ))
+        else:
+            logger.warning("Parameter with name {name} not found in destination.".format(
+                name=definition.Name
+            ))
+
+    # return diff_parameters
+    return diff_dict_list
+
+
 
 def print_diff(diff_parameters):
 
     output.print_md("**{}**".format(definition.Name))
-
 
     output.print_md("{source}\t**{equal}**\t{dest}".format(
         source=source_value,
@@ -64,19 +100,31 @@ def find_by_category():
     pass
 
 
-def find_similar_element(element_type, doc, parameter=DB.BuiltInParameter.ALL_MODEL_TYPE_NAME):
+
+def find_similar_element(element, doc, parameter=DB.BuiltInParameter.ALL_MODEL_TYPE_NAME):
     # Assures that input element is of class ElementType
-    element_type = clr.Convert(element_type, DB.ElementType)
+    # element = clr.Convert(element, DB.ElementType)
 
     # category_filter
     builtin_category = antler.util.builtin_category_from_category(
-        element_type.Category)
+        element.Category)
     category_filter = DB.ElementCategoryFilter(builtin_category)
 
     # parameter_filter
-    parameter_value = element_type.get_Parameter(parameter).AsString()
+    if isinstance(parameter, basestring):
+        element_parameter = element.LookupParameter(parameter)
+    else:
+        element_parameter = element.get_Parameter(parameter)
 
-    logger.info(parameter_value)
+    if not element_parameter.HasValue:
+        return
+
+    parameter_value = element_parameter.AsString()
+
+    if parameter_value == '':
+        return
+
+    logger.debug(parameter_value)
 
     provider = DB.ParameterValueProvider(DB.ElementId(parameter))
     rule = DB.FilterStringRule(
@@ -88,7 +136,12 @@ def find_similar_element(element_type, doc, parameter=DB.BuiltInParameter.ALL_MO
         category_filter, name_parameter_filter)
 
     # get_collector
-    collector = DB.FilteredElementCollector(doc).WhereElementIsElementType()
+    collector = DB.FilteredElementCollector(doc)
+
+    if isinstance(element, DB.ElementType):
+        collector.WhereElementIsElementType()
+    else:
+        collector.WhereElementIsNotElementType()
     collector.WherePasses(logical_and_filter)
 
     count = collector.GetElementCount()
@@ -100,7 +153,7 @@ def find_similar_element(element_type, doc, parameter=DB.BuiltInParameter.ALL_MO
     elif count == 1:
         return collector.FirstElement()
     else:
-        # raise KeyError
+        raise KeyError("More than one element found.")
         return None
 
     # iterator = collector.GetElementIterator()
@@ -202,3 +255,13 @@ def hash_element_by_parameters(element, exceptions=[]):
     # h = hashlib.sha1()
     # h.update(fset)
     # h.digest()
+
+
+def match_project_parameter(project_parameter_binding, doc):
+    matches = []
+
+    iterator = revit.doc.ParameterBindings.ForwardIterator()
+    iterator.Reset()
+
+    while iterator.MoveNext():
+        pass
