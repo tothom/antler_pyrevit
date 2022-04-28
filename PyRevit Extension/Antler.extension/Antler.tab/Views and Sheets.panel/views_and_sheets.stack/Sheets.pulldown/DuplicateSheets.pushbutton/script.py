@@ -23,8 +23,8 @@ option = options[selected_option]
 
 
 if sheets:
-    tg = DB.TransactionGroup(revit.doc, __commandname__)
-    tg.Start()
+    # tg = DB.TransactionGroup(revit.doc, __commandname__)
+    # tg.Start()
 
     sheets_new = []
 
@@ -32,4 +32,4 @@ if sheets:
         sheet_new = sheets_util.duplicate_sheet(sheet, duplicate_option=option)
         revit.uidoc.ActiveView = sheet_new
 
-    tg.Assimilate()
+    # tg.Assimilate()

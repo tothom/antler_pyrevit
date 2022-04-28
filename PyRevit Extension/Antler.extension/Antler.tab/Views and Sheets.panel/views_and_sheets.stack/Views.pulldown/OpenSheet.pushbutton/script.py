@@ -1,8 +1,7 @@
 """
 """
-from System.Collections.Generic import *
-from rpw import revit, DB, UI
 
+from rpw import revit, DB
 from pyrevit import forms, script
 
 logger = script.get_logger()

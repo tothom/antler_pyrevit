@@ -15,15 +15,19 @@ logger = script.get_logger()
 
 elements = [revit.doc.GetElement(id) for id in revit.uidoc.Selection.GetElementIds()]
 
-sheet_strings = []
+strings = []
 
 for element in elements:
     if isinstance(element, (DB.ViewSheet)):
-        sheet_string = ("{number} - {name}".format(number=element.SheetNumber, name=element.Name))
+        string = ("{number} - {name}".format(number=element.SheetNumber, name=element.Name))
+    elif isinstance(element, DB.View):
+        string = ("{name}".format(name=element.Name))
+    else:
+        string = ""
 
-        print(sheet_string)
+    print(string)
 
-        sheet_strings.append(sheet_string)
+    strings.append(string)
 
 # choice = forms.CommandSwitchWindow.show(
 #         ["Copy to Clipboard"]

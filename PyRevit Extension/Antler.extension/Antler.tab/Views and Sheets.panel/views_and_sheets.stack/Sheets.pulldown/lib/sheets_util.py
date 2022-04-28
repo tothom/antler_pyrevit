@@ -3,27 +3,11 @@ from rpw import revit, DB, UI
 
 from pyrevit import forms, script
 
+import antler
+
 logger = script.get_logger()
 
-def titleblocks_on_sheet(sheet):
-    """
-    Returns all Titleblocks on Sheet
-    """
-    doc = sheet.Document
-    titleblock_category_id = doc.Settings.Categories.get_Item(DB.BuiltInCategory.OST_TitleBlocks).Id
 
-    elements_on_sheet = DB.FilteredElementCollector(doc).OwnedByView(sheet.Id)
-
-    titleblocks = []
-
-    for element in elements_on_sheet:
-        if not element.Category:
-            continue
-
-        if element.Category.Id == titleblock_category_id:
-            titleblocks.append(element)
-
-    return titleblocks
 
 def duplicate_sheet(sheet, number=None, name=None, duplicate_option=DB.ViewDuplicateOption.WithDetailing, doc=revit.doc):
     """
@@ -32,7 +16,7 @@ def duplicate_sheet(sheet, number=None, name=None, duplicate_option=DB.ViewDupli
     # Get all Viewports and Titleblock from Sheet
     viewport_ids = sheet.GetAllViewports()
 
-    titleblocks = titleblocks_on_sheet(sheet)
+    titleblocks = antler.collectors.titleblocks_on_sheet_collector(sheet).ToElements()
 
     titleblock = titleblocks[0] # Quick workaround
 
