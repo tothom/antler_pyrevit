@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from rpw import DB
+from rpw import DB, revit
 from pyrevit import forms, script
 
 from collections import OrderedDict
@@ -8,9 +8,9 @@ import antler
 
 logger = script.get_logger()
 
-docs = antler.forms.select_docs()
+docs = antler.forms.select_docs() or script.exit()
 logger.debug(docs)
-docs = docs or []
+# docs = docs or []
 
 # select_compound_classes
 compound_classes = [
@@ -23,6 +23,7 @@ compound_classes = [
 # select_compound_classes
 compound_categories_dict = {
     'Floors': DB.BuiltInCategory.OST_Floors,
+    'Walls': DB.BuiltInCategory.OST_Walls,
     # 'RoofBase',
     # 'Wall',
     # 'Ceiling'
@@ -37,12 +38,14 @@ selected = forms.SelectFromList.show(
 
 builtin_category = compound_categories_dict[selected]
 
+logger.debug(builtin_category)
+
 
 for doc in docs:
     type_elements = DB.FilteredElementCollector(doc).OfCategory(
         builtin_category).WhereElementIsElementType().ToElements()
 
-    # logger.info(type_elements)
+    logger.debug(type_elements)
 
     # report_dict = OrderedDict()
 
@@ -58,10 +61,18 @@ for doc in docs:
         name = type_element.get_Parameter(DB.BuiltInParameter.ALL_MODEL_TYPE_NAME).AsString()
         logger.debug(name)
 
+        compound_structure = type_element.GetCompoundStructure()
+        width = compound_structure.GetWidth()
+
         report.append(OrderedDict({
             'Name': name,
             'Count': count,
-            'Layers': antler.parameters.element_layer_report(type_element, sep=';'),
+            'Layers': antler.parameters.compound_structure_summary(compound_structure, sep=';'),
+            'Width': DB.UnitFormatUtils.Format(
+                        revit.doc.GetUnits(),
+                        DB.SpecTypeId.Length,
+                        width,
+                        False)
             })
         )
 
