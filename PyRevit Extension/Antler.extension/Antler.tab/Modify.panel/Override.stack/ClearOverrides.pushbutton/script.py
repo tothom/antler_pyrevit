@@ -8,7 +8,13 @@ from pyrevit import forms, script, EXEC_PARAMS
 logger = script.get_logger()
 # config = script.get_config()
 
-elements = antler.ui.preselect() or script.exit()
+elements = antler.ui.preselect()
+
+if not elements:
+	collector = DB.FilteredElementCollector(revit.doc, revit.uidoc.ActiveView.Id)
+	collector.WhereElementIsNotElementType()
+
+	elements = collector.ToElements()
 
 empty_override = DB.OverrideGraphicSettings()
 

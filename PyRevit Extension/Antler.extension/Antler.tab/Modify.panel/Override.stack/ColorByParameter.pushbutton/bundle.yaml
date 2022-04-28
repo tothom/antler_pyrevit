@@ -2,5 +2,3 @@ title:      "Color by Parameter"
 
 
 tooltip:    "Color Elements of Category in active view by selected Parameter"
-
-context: selection

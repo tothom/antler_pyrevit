@@ -1,8 +1,10 @@
 import antler
 
-from rpw import revit, DB
+from rpw import revit
 from pyrevit import forms, script, EXEC_PARAMS
 from pyrevit.coreutils import colors
+
+from Autodesk.Revit.DB import Transaction
 
 import clr
 clr.AddReference("System.Drawing")
@@ -40,7 +42,7 @@ fill_color = antler.color.relative_color_hsv(line_color, dv=+0.3, ds=-0.3)
 logger.debug(line_color)
 logger.debug(fill_color)
 
-with DB.Transaction(revit.doc, __commandname__) as t:
+with Transaction(revit.doc, __commandname__) as t:
 	t.Start()
 
 	for element in elements:
