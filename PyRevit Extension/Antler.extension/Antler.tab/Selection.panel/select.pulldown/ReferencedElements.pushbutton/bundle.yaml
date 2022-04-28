@@ -2,4 +2,7 @@ title:      "Referenced Elements"
 
 tooltip:    "Get references of selected Dimension."
 
-context: Dimensions
+context:
+  - any:
+    - Dimensions
+    - OST_Dimensions

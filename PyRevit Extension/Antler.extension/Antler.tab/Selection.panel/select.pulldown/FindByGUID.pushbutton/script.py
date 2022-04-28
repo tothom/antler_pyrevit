@@ -1,5 +1,5 @@
 # from __future__ import print_function
-from rpw import revit, DB, UI
+from rpw import revit, DB
 from pyrevit import forms, script
 from System.Collections.Generic import List
 import re
@@ -7,6 +7,7 @@ import re
 import antler.filters
 
 logger = script.get_logger()
+output = script.get_output()
 
 def element_from_ifc_guid(guid, doc=revit.doc):
     collector = DB.FilteredElementCollector(doc)
@@ -31,8 +32,6 @@ guids = forms.ask_for_string(
 if guids:
     elements = []
 
-    output = script.get_output()
-
     for guid in re.split('[;, ]', guids):
         guid = guid.strip()
 
@@ -45,7 +44,7 @@ if guids:
                 id = output.linkify(found_element.Id)
                 elements.append(found_element)
 
-            print("'{}': {}".format(guid, id))
+            print("'{}': {}".format(guid, id)
 
     if elements:
         element_id_collection = List[DB.ElementId]()
