@@ -100,7 +100,7 @@ def random_color(seed=None, r=None, g=None, b=None):
     if r is None:
         r = random.random()
     if g is None:
-        b = random.random()
+        g = random.random()
     if b is None:
         b = random.random()
 
