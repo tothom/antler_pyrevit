@@ -68,6 +68,7 @@ def builtin_category_from_category(category):
     for builtin_category in System.Enum.GetValues(DB.BuiltInCategory):
         if DB.ElementId(builtin_category).IntegerValue == category.Id.IntegerValue:
             return builtin_category
+
     return None
 
 # def assure_builtin_category(category):
@@ -154,7 +155,7 @@ def print_dict_as_table(dictionary, title="", columns=(), formats=[], sort=False
     data = []
 
     for k, v in dictionary.items():
-        # Workaround bevause markdown interpreter does not allow line breaks in tables.
+        # Workaround because markdown interpreter does not allow line breaks in tables.
         # print("{}: {}".format(k, v))
 
         k = k.replace('\r\n', '')
@@ -173,31 +174,58 @@ def print_dict_as_table(dictionary, title="", columns=(), formats=[], sort=False
     )
 
 
-def print_dict_list(dict_list, title="", sort_key=None, columns=[]):
-    """Prints a list of dictionaries as a table with keys as column names.
+def dict_list_to_array(
+        dict_list,
+        columns=[],
+        sort_key=None,
+        not_found_str='',
+        none_str='',
+        replacements={}
+        #{None: lambda x:''} # type: replacement_func
+        # replace_line_breaks=False
+        ):
     """
-
+    Returns column headers and a organised list of data in a list of rows, where
+    each row cell corresponds to the headers. Input must be a list of
+    dictionaries.
+    """
     if not columns:
         for row in dict_list:
             for key in row.keys():
                 if not key in columns:
                     columns.append(key)
-        # columns.extend(row.keys())
-
-    # columns = sorted(list(set(columns)))
 
     dict_list = sorted(dict_list, key=lambda x: x.get(sort_key))
 
     data = []
 
-    for item in dict_list:
+    for dict_item in dict_list:
         data_row = []
 
         for key in columns:
-            data_row.append(item.get(key, '-'))
+            value = dict_item.get(key, not_found_str)
+
+            if value is None:
+                value = none_str
+
+            logger.debug(value)
+            data_row.append(value)
 
         data.append(data_row)
 
+    return columns, data
+
+def print_dict_list(dict_list, title="", sort_key=None, columns=[]):
+    """Prints a list of dictionaries as a table with keys as column names.
+    """
+    columns, data = dict_list_to_array(
+        dict_list, sort_key=sort_key, columns=columns,
+        not_found_str='*N/A*', none_str='*None*')
+
+    for i, row in enumerate(data):
+        for j, cell in enumerate(row):
+            cell = str(cell).replace('\r\n', '<br/>')
+            data[i][j] = cell
 
     output = script.get_output()
 
@@ -208,9 +236,10 @@ def print_dict_list(dict_list, title="", sort_key=None, columns=[]):
     )
 
 
+
 def close_revit():
     """
-    BTW: Doesn't work.
+    BTW: Doesn't work. :) WIP
     """
     import System.Diagnostics
     import ctypes
