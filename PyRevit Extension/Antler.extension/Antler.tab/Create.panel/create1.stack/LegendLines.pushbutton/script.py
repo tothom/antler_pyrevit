@@ -8,7 +8,6 @@ import antler
 logger = script.get_logger()
 
 
-
 # select_compound_classes
 compound_classes = (
     DB.Floor,
@@ -30,6 +29,16 @@ for id in revit.uidoc.Selection.GetElementIds():
 # OST_LegendComponents
 logger.debug(filtered_elements)
 
+
+
+def create_legend_tag(legend):
+    pass
+
+
+DIRECTION_DICT = {
+    'Section': None,
+    'Plan': None,
+}
 
 with DB.TransactionGroup(revit.doc, __commandname__) as tg:
     tg.Start()
@@ -54,11 +63,14 @@ with DB.TransactionGroup(revit.doc, __commandname__) as tg:
 
         curve_array = DB.CurveArray()
 
+        curve_array.Append(DB.Line.CreateBound(DB.XYZ(x, y, 0), DB.XYZ(x + line_length, y, 0)))
+
         for layer in compound_structure.GetLayers():
             widths.append(layer.Width)
+            y -= layer.Width
 
             start = DB.XYZ(x, y, 0)
-            end = DB.XYZ(x+line_length, y, 0)
+            end = DB.XYZ(x + line_length, y, 0)
 
             logger.debug(start, end)
 
@@ -66,21 +78,19 @@ with DB.TransactionGroup(revit.doc, __commandname__) as tg:
 
             curve_array.Append(line)
 
-            y -= layer.Width
+            # material_id = layer.MaterialId
+            # material = revit.doc.GetElement(material_id)
+            #
+            # layer_string = ""
 
-            material_id = layer.MaterialId
-            material = revit.doc.GetElement(material_id)
 
-            layer_string = ""
 
         with DB.Transaction(revit.doc, "Create Detail Curves") as t:
             t.Start()
 
-            revit.doc.Create.NewDetailCurveArray(revit.uidoc.ActiveView, curve_array)
+            revit.doc.Create.NewDetailCurveArray(
+                revit.uidoc.ActiveView, curve_array)
 
             t.Commit()
-
-
-
 
     tg.Assimilate()
