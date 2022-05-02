@@ -1,41 +1,41 @@
 # -*- coding: utf-8 -*-
 
-from System.Collections.Generic import *
-from rpw import revit, DB, UI
+from rpw import revit, DB
 
-from pyrevit import forms
+from pyrevit import script, forms
 from collections import OrderedDict
+from System.Collections.Generic import List
 
-import os
-import csv
-import json
+import antler.forms
+from antler import LOGGER
 
+import time
 
-__doc__ = "Select Elements by Category"
-__title__ = "Select By Category"
-__author__ = "Thomas Holth"
+output = script.get_output()
 
-uidoc = revit.uidoc
-doc = revit.doc
-
-def select_categories():
-	categories_dict = {c.Name: c for c in doc.Settings.Categories}
-	result = forms.SelectFromList.show(sorted(categories_dict.keys()), multiselect=True)
-
-	return [categories_dict[a] for a in result]
-
-categories = select_categories()
+categories = antler.forms.select_category(multiselect=True)
 # print(categories, categories.Name)
+if not categories:
+	script.exit()
 
-if categories:
-	elements = []
+elements = []
 
-	# Get all Elements in Category
-	for category in categories:
-		element_collector = DB.FilteredElementCollector(doc).WhereElementIsNotElementType().OfCategoryId(category.Id)
-		elements.extend(element_collector.ToElements())
+# Get all Elements in Category
+for category in categories:
+	collector = DB.FilteredElementCollector(revit.doc).WhereElementIsNotElementType()
+	collector.OfCategoryId(category.Id)
+	elements.extend(collector.ToElements())
 
+LOGGER.debug(elements)
 
-	element_id_collection = List[DB.ElementId]([element.Id for element in elements])
+if not elements:
+	# forms.toast("No elements found.")
+	#forms.alert("No elements found.")
+	output.resize(400, 400)
+	print("No elements found.")
+	# time.sleep(5)
+	output.self_destruct(2)
 
-	uidoc.Selection.SetElementIds(element_id_collection)
+element_id_collection = List[DB.ElementId]([element.Id for element in elements])
+
+revit.uidoc.Selection.SetElementIds(element_id_collection)
