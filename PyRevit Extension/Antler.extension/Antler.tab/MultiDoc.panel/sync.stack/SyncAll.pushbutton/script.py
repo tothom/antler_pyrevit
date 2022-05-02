@@ -16,7 +16,10 @@ import sync
 logger = script.get_logger()
 output = script.get_output()
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> development
 relinquish_options = DB.RelinquishOptions(False)
 
 options = OrderedDict()
