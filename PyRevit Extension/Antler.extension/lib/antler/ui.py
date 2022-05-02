@@ -16,6 +16,7 @@ logger = script.get_logger()
 
 
 def preselect(revit_class=()):
+    # TODO: Change to use a filter function instead of class
     selected_element_ids = revit.uidoc.Selection.GetElementIds()
 
     filtered_elements = []
