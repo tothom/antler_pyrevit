@@ -1,0 +1,4 @@
+title:      "Pull Sheet"
+
+tooltip:    "Pulls Sheet from linked model. The new sheet will have all Views as
+            linked views to views that was placed on selected sheets."
