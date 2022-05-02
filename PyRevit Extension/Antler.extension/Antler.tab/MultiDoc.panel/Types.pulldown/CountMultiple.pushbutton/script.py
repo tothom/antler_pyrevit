@@ -63,7 +63,7 @@ for other_doc in other_docs:
             element, other_doc, parameter=match_parameter)
 
         if other_element:
-            instances = antler.collectors.collect_instances_of_element_type(other_element)
+            instances = antler.collectors.get_instances_of_element_type(other_element)
             count_dict[element] += len(instances)
 
     # diff = find_and_compare_elements(elements, other_doc, match_parameter)

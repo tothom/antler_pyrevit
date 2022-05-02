@@ -271,7 +271,7 @@ def select_types_of_category(categories=[], doc=revit.doc, count_elements=False)
         key = ' - '.join(name_parts)
 
         if count_elements:
-            instance_elements = collectors.collect_instances_of_element_type(
+            instance_elements = collectors.get_instances_of_element_type(
                 element)
             count = len(instance_elements)  # .GetElementCount()
 

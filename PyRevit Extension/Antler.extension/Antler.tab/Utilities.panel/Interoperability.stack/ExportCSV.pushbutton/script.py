@@ -274,7 +274,7 @@ def export_elements_of_categories(
         #             })
         if export_types:
             for element in elements:
-                instance_elements = antler.collectors.collect_instances_of_element_type(element)
+                instance_elements = antler.collectors.get_instances_of_element_type(element)
                 count = len(instance_elements)#.GetElementCount()
 
                 element_data[element].update({
@@ -355,7 +355,7 @@ def export_elements_of_category(
                             compound_structure, sep='-', layer_string_function=antler.parameters.minimal_layer_string),
                     })
                 if export_types:
-                    instance_elements = antler.collectors.collect_instances_of_element_type(element)
+                    instance_elements = antler.collectors.get_instances_of_element_type(element)
                     count = len(instance_elements)#.GetElementCount()
 
                     element_data[element].update({

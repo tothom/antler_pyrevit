@@ -53,7 +53,7 @@ for doc in docs:
 
     for type_element in type_elements:
 
-        instance_elements = antler.collectors.collect_instances_of_element_type(type_element)
+        instance_elements = antler.collectors.get_instances_of_element_type(type_element)
         count = len(instance_elements)#.GetElementCount()
 
         logger.debug(type_element)

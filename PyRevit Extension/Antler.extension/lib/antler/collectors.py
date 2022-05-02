@@ -73,7 +73,7 @@ def hosted_by_collector(host_element, doc=revit.doc):
     return collector
 
 
-def collect_instances_of_element_type(element_type):
+def get_instances_of_element_type(element_type):
     """
     Get instances by element type. Returns instances as elements, and not a collector.
     """
@@ -87,6 +87,30 @@ def collect_instances_of_element_type(element_type):
         lambda e: e.GetTypeId().IntegerValue == element_type.Id.IntegerValue)
 
     return enumerable.ToList()
+
+
+def instances_of_element_type_collector(element_type):
+    """
+    Get instances by element type. Returns a FilteredElementCollector with
+    these instances already filtered.
+    """
+    collector = DB.FilteredElementCollector(element_type.Document)
+    collector.WhereElementIsNotElementType()
+    collector.OfCategoryId(element_type.Category.Id)
+
+    collector.WherePasses(DB.FamilyInstanceFilter(element_type.Document, element_type.Id))
+
+    return collector
+
+
+def symbols_of_family_collector(family):
+    """
+    Get collector with symbols (family types) of input family.
+    """
+    collector = DB.FilteredElementCollector(family.Document)
+    collector.WherePasses(DB.FamilySymbolFilter(family.Id))
+
+    return collector
 
 
 def view_template_collector(doc=revit.doc):
