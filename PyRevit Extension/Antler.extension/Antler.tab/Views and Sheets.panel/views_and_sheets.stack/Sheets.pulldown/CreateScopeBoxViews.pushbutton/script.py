@@ -4,13 +4,6 @@ from rpw import revit, DB, UI
 from pyrevit import forms
 from collections import OrderedDict
 
-__doc__ = "Creates Dependent Views from existing Views and Scope Boxes."
-__title__ = "Create\nScope Box Views"
-__author__ = "Thomas Holth"
-
-uidoc = revit.uidoc
-doc = revit.doc
-
 
 # Select Views
 views = forms.select_views()
@@ -31,7 +24,7 @@ else:
 # print(views, scope_boxes_selected)
 
 if views and scope_boxes_selected:
-    with DB.Transaction(doc, __title__) as t:
+    with DB.Transaction(revit.doc, __commandname__) as t:
         t.Start()
 
         for view in views:

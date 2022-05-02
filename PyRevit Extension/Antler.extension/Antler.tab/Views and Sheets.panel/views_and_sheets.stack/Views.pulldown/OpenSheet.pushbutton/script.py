@@ -1,8 +1,7 @@
 """
 """
-from System.Collections.Generic import *
-from rpw import revit, DB, UI
 
+from rpw import revit, DB
 from pyrevit import forms, script
 
 logger = script.get_logger()
@@ -21,7 +20,7 @@ try:
 
     sheet_number = sheet_number_parameter.AsString()
 
-    logger.info("Sheet Number: {}".format(sheet_number))
+    logger.debug("Sheet Number: {}".format(sheet_number))
 
 except Exception as e:
     logger.warning("View is not on a Sheet")
