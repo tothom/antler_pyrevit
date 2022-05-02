@@ -5,7 +5,7 @@ from pyrevit import forms, script, EXEC_PARAMS
 
 import math
 # import clr
-import antler.transform
+import antler.geometry.transform
 
 uidoc = revit.uidoc
 doc = revit.doc
@@ -23,7 +23,7 @@ def configure(config):
     guide_ids = []
 
     for ref in references:
-        if antler.transform.element_direction(doc.GetElement(ref)): # Only elements where direction can be extracted are included.
+        if antler.geometry.transform.element_direction(doc.GetElement(ref)): # Only elements where direction can be extracted are included.
             guide_ids.append(ref.ElementId)
 
     if not guide_ids:
@@ -63,7 +63,7 @@ guides = []
 for id_integer in guide_ids:
     element_id = DB.ElementId(id_integer)
     element = doc.GetElement(element_id)
-    guide = antler.transform.element_direction(element)
+    guide = antler.geometry.transform.element_direction(element)
 
     if guide:
         guides.append(guide)
@@ -90,7 +90,7 @@ if guides:
         t.Start()
 
         for element in elements:
-            antler.transform.straighten_element(
+            antler.geometry.transform.straighten_element(
                 element, guides, axis_pt=axis_pt, angle_snap=angle_snap)
 
         t.Commit()

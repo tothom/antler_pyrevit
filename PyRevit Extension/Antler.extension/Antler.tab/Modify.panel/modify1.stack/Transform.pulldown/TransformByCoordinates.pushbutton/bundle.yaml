@@ -1,0 +1,8 @@
+title:     Transform by Coordinates
+
+tooltip:
+
+context:
+    any:
+    - active-floor-plan
+    - active-3d-view

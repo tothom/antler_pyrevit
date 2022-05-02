@@ -2,7 +2,7 @@
 from rpw import revit, DB, UI
 from pyrevit import forms, script, EXEC_PARAMS
 
-import antler.transform
+import antler.geometry.transform
 import math
 # import clr
 
@@ -57,7 +57,7 @@ with DB.Transaction(doc, __commandname__) as t:
     t.Start()
 
     for element in elements:
-        antler.transform.straighten_element(
+        antler.geometry.transform.straighten_element(
             element, [uidoc.ActiveView.RightDirection, uidoc.ActiveView.UpDirection], axis_pt=axis_pt, angle_snap=angle_snap)
 
     t.Commit()
