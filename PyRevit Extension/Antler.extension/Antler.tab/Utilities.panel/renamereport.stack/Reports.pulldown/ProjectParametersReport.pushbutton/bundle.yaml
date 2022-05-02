@@ -1,0 +1,11 @@
+title:        Project Parameters Report
+
+tooltip:      "Creates a summary of all Project Parameters in model.
+
+              Shift + click to also calculate how many elements which are
+              actually using the parameters. That is how many elements has a
+              value set for the parameter. This could take a long time to
+              calculate because every element in the model must be checked.
+              Keep in mind that a empty parameter value such as empty text is
+              also counted as having a value. Only parameters which has never
+              had a value assigned to it is counted as not having a value."
