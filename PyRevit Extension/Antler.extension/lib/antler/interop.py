@@ -25,7 +25,9 @@ def lookup_parameters(element, include_parameters=None):
         for a in include_parameters:
             # print(type(a))
             if isinstance(a, basestring):
-                parameter = element.LookupParameter(a)
+                parameters = element.GetParameters(parameter_name)
+                logger.info(parameters)
+                logger.info(parameters.Count)
             elif isinstance(a, [DB.Parameter, DB.Definition]):
                 parameter = element.get_Parameter(a)
 
@@ -49,6 +51,7 @@ def element_to_dict(element):
         parameter_dict[key] = value
 
     return parameter_dict
+
 
 def family_symbol_to_dict(family_symbol, include_parameters=None, doc=revit.doc):
     """

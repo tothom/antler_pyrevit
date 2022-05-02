@@ -1,13 +1,12 @@
-import random
-import math
-# import hash
+import clr
+clr.AddReference("System.Drawing")
+from System.Drawing import Color  # noqa: E402
 
 from pyrevit import script
 
-import clr
-clr.AddReference("System.Drawing")
+import random
+import math
 
-from System.Drawing import Color  # noqa: E402
 
 logger = script.get_logger()
 
@@ -101,7 +100,7 @@ def random_color(seed=None, r=None, g=None, b=None):
     if r is None:
         r = random.random()
     if g is None:
-        b = random.random()
+        g = random.random()
     if b is None:
         b = random.random()
 
