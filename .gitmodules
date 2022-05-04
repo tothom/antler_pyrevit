@@ -1,0 +1,3 @@
+[submodule "PyRevit Extension/Antler.extension/lib/antler_revit"]
+	path = PyRevit Extension/Antler.extension/lib/antler_revit
+	url = https://github.com/tothom/antler_revit.git
