@@ -170,6 +170,7 @@ def straighten_element(
     logger.debug([angle / math.pi * 180.0 for angle in angles])
 
     angle = sorted(angles, key=lambda x: abs(math.sin(x)))[0]
+
     rotation_angle = math.atan(math.tan(angle))
 
     if rotation_angle == 0:

@@ -3,6 +3,7 @@ from rpw import revit, DB, UI
 from pyrevit import forms, script, EXEC_PARAMS
 
 import antler
+import antler_revit
 import math
 # import clr
 
@@ -28,42 +29,31 @@ elements = [doc.GetElement(id) for id in selection]
 with DB.Transaction(revit.doc, __commandname__) as t:
     t.Start()
 
-    for element in elements:
-        element_link = output.linkify(element.Id)
+    report = []
 
-        print("Checking element {element}".format(element=element_link))
+    for element in elements:
+        element_report = {}
+
+        element_report['Element'] = output.linkify(element.Id)
+
+        #print("Checking element {element}".format(element=element_link))
 
         direction = antler.geometry.transform.element_direction(element)
 
         if direction is None:
             continue
 
-        angle_to_right = direction.AngleOnPlaneTo(
-            uidoc.ActiveView.RightDirection, DB.XYZ.BasisZ)
+        element_report['Angle To View Up'] = direction.AngleOnPlaneTo(
+            uidoc.ActiveView.UpDirection, DB.XYZ.BasisZ) / math.pi * 180.0 % 180.0
 
-        print("Element is oriented {angle} degrees in relation to right directon of current view".format(
-            element=element_link, angle=angle_to_right / math.pi * 180.0)) % 180
+        element_report['Angle To Project North'] = direction.AngleOnPlaneTo(
+            uidoc.ActiveView.UpDirection, DB.XYZ.BasisZ) / math.pi * 180.0 % 180.0
 
-        if abs(math.tan(angle_to_right)) < TOLERANCE:
-            print("Element is parallel to right directon of view")
-        else:
-            print("Element is NOT parallel to right directon of view")
-
-
-        angle_to_up = direction.AngleOnPlaneTo(
-            uidoc.ActiveView.UpDirection, DB.XYZ.BasisZ)
-
-        print("Element is oriented {angle} degrees in relation to up directon of current view".format(
-            element=element_link, angle=angle_to_up / math.pi * 180.0)) % 180
-
-        if abs(math.tan(angle_to_up)) < TOLERANCE:
-            print("Element is parallel to up directon of view")
-        else:
-            print("Element is NOT parallel to up directon of view")
+        report.append(element_report)
 
         if EXEC_PARAMS.config_mode:
             modulus = math.pi / 2.0
-            hue = (angle_to_up % modulus) / modulus
+            hue = (element_report['Angle To View Up'] % modulus) / modulus
             r, g, b = antler.color.hsv_to_rgb(hue, 0.8, 0.6)
 
             line_color = Color.FromArgb(int(r*255), int(g*255), int(b*255))
@@ -81,3 +71,5 @@ with DB.Transaction(revit.doc, __commandname__) as t:
         # print(math.tan(angle_to_right))
         # print(math.tan(angle_to_up))
     t.Commit()
+
+antler_revit.utils.print_dict_list(report, columns=['Element', 'Angle To View Up', 'Angle To Project North'])
