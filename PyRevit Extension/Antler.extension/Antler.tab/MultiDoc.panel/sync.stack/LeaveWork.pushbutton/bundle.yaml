@@ -1,0 +1,5 @@
+title:      "Leave Work"
+
+tooltip:    "Syncs all models, closes them and exits Revit. Please make sure you
+            don't have any unsaved changes in models or families which are not
+            workshared."
