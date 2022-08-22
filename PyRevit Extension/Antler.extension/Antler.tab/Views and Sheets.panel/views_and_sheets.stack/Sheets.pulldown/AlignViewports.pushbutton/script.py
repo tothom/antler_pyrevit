@@ -1,7 +1,8 @@
 from rpw import revit, DB, UI
-from pyrevit import forms, script
+from pyrevit import forms, script, EXEC_PARAMS
 
 logger = script.get_logger()
+output = script.get_output()
 
 giant_bounding_box = DB.BoundingBoxXYZ()
 
@@ -37,28 +38,36 @@ with DB.TransactionGroup(revit.doc, __commandname__) as tg:
 
     other_sheets = forms.select_sheets(use_selection=True)
 
-    with DB.Transaction(revit.doc, "Set Crop Box") as t:
-        t.Start()
+    if EXEC_PARAMS.config_mode:
+        with DB.Transaction(revit.doc, "Set Crop Box") as t:
+            t.Start()
 
-        this_scope_box_parameter = this_view.get_Parameter(DB.BuiltInParameter.VIEWER_VOLUME_OF_INTEREST_CROP)
+            this_scope_box_parameter = this_view.get_Parameter(DB.BuiltInParameter.VIEWER_VOLUME_OF_INTEREST_CROP)
 
-        this_scope_box_id = this_scope_box_parameter.AsElementId()
-        this_scope_box_parameter.Set(DB.ElementId(-1))
+            this_scope_box_id = this_scope_box_parameter.AsElementId()
+            this_scope_box_parameter.Set(DB.ElementId(-1))
 
-        this_view_attribs = {}
+            this_view_attribs = {}
 
-        for attrib, value in VIEW_ATTRIBS.items():
-            this_view_attribs[attrib] = getattr(this_view, attrib)
-            setattr(this_view, attrib, value)
+            for attrib, value in VIEW_ATTRIBS.items():
+                this_view_attribs[attrib] = getattr(this_view, attrib)
+                setattr(this_view, attrib, value)
 
-        t.Commit()
+            t.Commit()
 
     this_box_center = this_viewport.GetBoxCenter()
 
     if not other_sheets:
         script.exit()
 
-    for other_sheet in other_sheets:
+    # i = 0
+
+    for i, other_sheet in enumerate(other_sheets):
+
+        output.print_md("Processing **{sheet}**".format(
+            sheet=other_sheet.SheetNumber + " - " + other_sheet.Name
+        ))
+
         with DB.Transaction(revit.doc, "Align Viewport") as t:
             t.Start()
 
@@ -71,30 +80,37 @@ with DB.TransactionGroup(revit.doc, __commandname__) as tg:
             other_view = revit.doc.GetElement(other_viewport.ViewId)
             other_scope_box_parameter = other_view.get_Parameter(DB.BuiltInParameter.VIEWER_VOLUME_OF_INTEREST_CROP)
 
-            other_scope_box_id = other_scope_box_parameter.AsElementId()
-            this_scope_box_parameter.Set(DB.ElementId(-1))
+            if EXEC_PARAMS.config_mode:
+                other_scope_box_id = other_scope_box_parameter.AsElementId()
+                this_scope_box_parameter.Set(DB.ElementId(-1))
 
-            other_view_attribs = {}
+                other_view_attribs = {}
 
-            for attrib, value in VIEW_ATTRIBS.items():
-                other_view_attribs[attrib] = getattr(other_view, attrib)
-                setattr(other_view, attrib, value)
+                for attrib, value in VIEW_ATTRIBS.items():
+                    other_view_attribs[attrib] = getattr(other_view, attrib)
+                    setattr(other_view, attrib, value)
 
-            other_viewport.SetBoxCenter(this_box_center)
+                other_viewport.SetBoxCenter(this_box_center)
 
-            for attrib, value in other_view_attribs.items():
-                setattr(other_view, attrib, value)
+                for attrib, value in other_view_attribs.items():
+                    setattr(other_view, attrib, value)
+            else:
+                other_viewport.SetBoxCenter(this_box_center)
 
             t.Commit()
 
-    with DB.Transaction(revit.doc, "Set Scope Box") as t:
-        t.Start()
+        output.update_progress(i+1, len(other_sheets))
 
-        this_scope_box_parameter.Set(this_scope_box_id)
 
-        for attrib, value in this_view_attribs.items():
-            setattr(this_view, attrib, value)
+    if EXEC_PARAMS.config_mode:
+        with DB.Transaction(revit.doc, "Set Scope Box") as t:
+            t.Start()
 
-        t.Commit()
+            this_scope_box_parameter.Set(this_scope_box_id)
+
+            for attrib, value in this_view_attribs.items():
+                setattr(this_view, attrib, value)
+
+            t.Commit()
 
     tg.Assimilate()
