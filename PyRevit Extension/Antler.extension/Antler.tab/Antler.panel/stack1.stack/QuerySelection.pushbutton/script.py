@@ -5,6 +5,7 @@ from rpw import revit, DB, UI
 from pyrevit import forms, script, EXEC_PARAMS
 
 import antler
+import antler_pyrevit
 
 uidoc = revit.uidoc
 doc = revit.doc
@@ -18,8 +19,8 @@ def get_properties(obj):
 elements = [doc.GetElement(id) for id in uidoc.Selection.GetElementIds()]
 
 if not elements:
-    category = antler.forms.select_category(multiselect=False)
-    elements = antler.forms.select_types(categories=[category])
+    category = antler_pyrevit.forms.select_category(multiselect=False)
+    elements = antler_pyrevit.forms.select_types_of_category(categories=[category])
 
 for element in elements:
     print("Element: {}".format(element))
