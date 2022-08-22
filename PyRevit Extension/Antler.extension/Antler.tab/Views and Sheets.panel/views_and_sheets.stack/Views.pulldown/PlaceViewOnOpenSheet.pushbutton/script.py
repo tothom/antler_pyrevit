@@ -54,12 +54,6 @@ else:
     script.exit()
 
 
-with DB.Transaction(revit.doc, __commandname__) as t:
-    try:
-        t.Start()
-        viewport = DB.Viewport.Create(revit.doc, sheet.Id, revit.doc.ActiveView.Id, DB.XYZ(0,0,0))
-        t.Commit()
-    except Exception as e:
-        logger.warning(e)
-    else:
-        revit.uidoc.ActiveView = sheet
+revit.uidoc.ActiveView = sheet
+
+revit.uidoc.PromptToPlaceViewOnSheet(revit.uidoc.ActiveView, False)
