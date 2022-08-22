@@ -3,7 +3,8 @@ from rpw import revit, DB, UI
 
 from pyrevit import forms
 
-import sheets_util
+# import sheets_util
+import antler
 
 # Select Sheets
 sheets = forms.select_sheets(use_selection=True)
@@ -29,7 +30,7 @@ if sheets:
     sheets_new = []
 
     for sheet in sheets:
-        sheet_new = sheets_util.duplicate_sheet(sheet, duplicate_option=option)
+        sheet_new = antler.views.duplicate_sheet(sheet, duplicate_option=option)
         revit.uidoc.ActiveView = sheet_new
 
     # tg.Assimilate()
