@@ -37,7 +37,7 @@ import compare
 import collectors
 import filters
 import forms
-import view
+import views
 import instances
 import parameters
 # import analysis
