@@ -65,7 +65,7 @@ with DB.Transaction(revit.doc, __commandname__) as t:
 
             fill_color = antler.color.relative_color_hsv(line_color, dv=+0.2)
 
-            antler.view.override_element_color(
+            antler.views.override_element_color(
                 element, uidoc.ActiveView, fill_color=fill_color, line_color=line_color)
 
         # print(math.tan(angle_to_right))
