@@ -6,10 +6,11 @@ from pyrevit import forms
 import antler
 
 
-doc = antler.forms.select_docs()
+other_doc = antler.forms.select_docs(multiselect=False) or script.exit()
 
-# # Select Sheets
-# sheets = forms.select_sheets(use_selection=True)
+# Select Sheets
+sheets = forms.select_sheets(
+    use_selection=True, doc=other_doc) or script.exit()
 #
 # options = {
 #  	"Duplicate view": DB.ViewDuplicateOption.Duplicate,
@@ -25,14 +26,15 @@ doc = antler.forms.select_docs()
 # option = options[selected_option]
 #
 #
-# if sheets:
-#     tg = DB.TransactionGroup(doc, __commandname__)
-#     tg.Start()
-#
-#     sheets_new = []
-#
-#     for sheet in sheets:
-#         sheet_new = duplicate_sheet(sheet, duplicate_option=option)
-#         uidoc.ActiveView = sheet_new
-#
-#     tg.Assimilate()
+if sheets:
+    tg = DB.TransactionGroup(revit.doc, __commandname__)
+    tg.Start()
+
+    sheets_new = []
+
+    for sheet in sheets:
+        sheet_new = antler.views.duplicate_sheet(
+            sheet, destination_doc=revit.doc)
+        #uidoc.ActiveView = sheet_new
+
+    tg.Assimilate()
