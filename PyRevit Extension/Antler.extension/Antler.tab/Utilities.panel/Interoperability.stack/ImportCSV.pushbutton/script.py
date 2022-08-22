@@ -4,7 +4,7 @@ from System.Collections.Generic import *
 from rpw import revit, DB, UI
 
 from pyrevit import forms, script, EXEC_PARAMS
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 
 import os
 # import csv
@@ -81,7 +81,7 @@ def interpret_schedule_data(data):
 
 def interpret_data(data):
     # interpreted_data = {}
-    structured_data = {}
+    structured_data = defaultdict(dict)
 
     for item in data:
         parameter_dict = {}
@@ -96,12 +96,17 @@ def interpret_data(data):
         if not doc:
             continue
         else:
-            if not doc in structured_data:
-                structured_data[doc] = {}
+            # if not doc in structured_data:
+            #     structured_data[doc] = {}
 
-            element_id = DB.ElementId(int(item.pop('~ElementId')))
-            element = doc.GetElement(element_id)
 
+            if '~UniqueId' in item:
+                element_unique_id = item.pop('~UniqueId')
+                element = doc.GetElement(element_unique_id)
+            else:
+                element_id = DB.ElementId(int(item.pop('~ElementId')))
+                element = doc.GetElement(element_id)
+                
             # element_type = revit.doc.GetElement(element.GetTypeId())
 
             # logger.debug(element)
@@ -208,7 +213,7 @@ for doc, element_dict in data.items():
 
                     except Exception as e:
                         logger.warning(e)
-                        
+
                     else:
                         output.print_md("{element}: Parameter '{def_name}' changed from '{existing_value}' to **'{value}'**".format(
                             element=output.linkify(element.Id),
