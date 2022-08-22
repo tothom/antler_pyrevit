@@ -15,17 +15,6 @@ transact_options = DB.TransactWithCentralOptions()
 sync_options = DB.SynchronizeWithCentralOptions()
 sync_options.SetRelinquishOptions(relinquish_options)
 
-# print(
-# 	sync_options.RelinquishBorrowedElements,
-# 	sync_options.RelinquishFamilyWorksets,
-# 	sync_options.RelinquishProjectStandardWorksets,
-# 	sync_options.RelinquishUserCreatedWorksets,
-# 	sync_options.RelinquishViewWorksets,
-# 	sync_options.SaveLocalAfter,
-# 	sync_options.SaveLocalBefore,
-# 	sync_options.SaveLocalFile
-# 	)
-
 docs = [
     doc for doc in revit.docs if doc.IsWorkshared and not doc.IsLinked]
 

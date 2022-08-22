@@ -13,33 +13,35 @@ from Autodesk.Revit.Exceptions import InvalidOperationException
 import time
 import sync
 
+import antler_revit
+
 logger = script.get_logger()
 output = script.get_output()
 
-relinquish_options = DB.RelinquishOptions(False)
+relinquish_options = DB.RelinquishOptions(EXEC_PARAMS.config_mode)
 
-options = OrderedDict()
-
-options["Elements checked out by the current user should be relinquished."] = 'CheckedOutElements'
-options["Family worksets owned by the current user should be relinquished."] = 'FamilyWorksets'
-options["Project standards worksets owned by the current user should be relinquished."] = 'StandardWorksets'
-options["User-created worksets owned by the current user should be relinquished."] = 'UserWorksets'
-options["View worksets owned by the current user should be relinquished."] = 'ViewWorksets'
-
-
-selected = forms.SelectFromList.show(
-    options.keys(),
-    title="Select relinquish options",
-    multiselect=True
-)# or script.exit()
-
-logger.debug(selected)
-
-if selected is None:
-    script.exit()
-
-for a in selected:
-    setattr(relinquish_options, options[a], True)
+# options = OrderedDict()
+#
+# options["Elements checked out by the current user should be relinquished."] = 'CheckedOutElements'
+# options["Family worksets owned by the current user should be relinquished."] = 'FamilyWorksets'
+# options["Project standards worksets owned by the current user should be relinquished."] = 'StandardWorksets'
+# options["User-created worksets owned by the current user should be relinquished."] = 'UserWorksets'
+# options["View worksets owned by the current user should be relinquished."] = 'ViewWorksets'
+#
+#
+# selected = forms.SelectFromList.show(
+#     options.keys(),
+#     title="Select relinquish options",
+#     multiselect=True
+# )# or script.exit()
+#
+# logger.debug(selected)
+#
+# if selected is None:
+#     script.exit()
+#
+# for a in selected:
+#     setattr(relinquish_options, options[a], True)
 
 transact_options = DB.TransactWithCentralOptions()
 sync_options = DB.SynchronizeWithCentralOptions()
@@ -56,9 +58,13 @@ sync_options.SetRelinquishOptions(relinquish_options)
 # 	sync_options.SaveLocalFile
 # 	)
 
+#print("Syncing and relinquishing all workshared docs. Enjoy your lunch!")
+
 docs = [
     doc for doc in revit.docs if doc.IsWorkshared and not doc.IsLinked]
 
-sync.sync_multiple_docs(docs, transact_options, sync_options, close_docs=EXEC_PARAMS.config_mode)
+sync.sync_multiple_docs(docs, transact_options, sync_options, close_docs=False)
 
-output.self_destruct(20)
+# output.self_destruct(20)
+
+# antler_revit.utils.close_revit()
