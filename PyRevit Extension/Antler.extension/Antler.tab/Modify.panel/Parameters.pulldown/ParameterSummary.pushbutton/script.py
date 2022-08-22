@@ -16,7 +16,7 @@ current_selection = revit.uidoc.Selection.GetElementIds() or script.exit()
 elements = [revit.doc.GetElement(id) for id in current_selection]
 
 
-common_definitions = antler.parameters.get_common_parameter_definitions(
+common_definitions = antler.parameters.get_definitions_from_elements(
     elements, filter_function=lambda x: x.StorageType in (DB.StorageType.Integer, DB.StorageType.Double))
 logger.debug(common_definitions)
 
@@ -29,10 +29,10 @@ if not common_definitions:
 if EXEC_PARAMS.config_mode:
     parameter_definition_dict = {
         definition.Name: definition for definition in common_definitions}
-    logger.debug(parameter_definition_dict)
+    logger.debug(common_definitions)
 
     selected_definition_keys = forms.SelectFromList.show(
-        sorted(parameter_definition_dict.keys()),
+        sorted(common_definitions_dict.keys()),
         title='Select Parameter to sum',
         multiselect=True
     ) or script.exit()
