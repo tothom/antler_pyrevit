@@ -14,7 +14,7 @@ logger = script.get_logger()
 category = antler.forms.select_category()
 
 collector = DB.FilteredElementCollector(revit.doc)
-collector.OfCategory(antler.util.builtin_category_from_category(category))
+collector.OfCategoryId(category.Id)
 
 collector.WhereElementIsNotElementType()  # .ToElements()
 

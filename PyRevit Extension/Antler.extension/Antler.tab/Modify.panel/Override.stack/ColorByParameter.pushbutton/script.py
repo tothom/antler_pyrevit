@@ -47,14 +47,14 @@ if selection:
 
 else:
 	if EXEC_PARAMS.config_mode or not config.has_option('category'):
-		category = antler.forms.select_category()
+		category = antler.forms.select_category() or script.exit()
 		config.set_option('category', category.Name)
 		script.save_config()
 	else:
 		category = revit.doc.Settings.Categories.get_Item(config.get_option('category'))
 
 	collector = DB.FilteredElementCollector(revit.doc, revit.uidoc.ActiveView.Id)
-	collector.OfCategory(antler.util.builtin_category_from_category(category))
+	collector.OfCategoryId(category.Id)
 
 	elements = collector.ToElements()
 	logger.debug(elements)
