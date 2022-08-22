@@ -8,6 +8,7 @@ from antler import util
 
 logger = script.get_logger()
 
+
 def query(transform):
     # return transform.__dict__
     # return {attr: getattr(transform, attr) for attr in dir(transform)}
@@ -18,6 +19,7 @@ def query(transform):
         'Origin': transform.Origin,
         'Determinant': transform.Determinant,
     }
+
 
 def transform_z_rotation(transform):
     """
@@ -171,16 +173,15 @@ def straighten_element(
 
     angle = sorted(angles, key=lambda x: abs(math.sin(x)))[0]
 
+    # Will find closest rotation angle, i.e. 300 degree rotation will be -60 degree.
     rotation_angle = math.atan(math.tan(angle))
 
     if rotation_angle == 0:
         return element
 
-    if axis_pt:
-        axis = DB.Line.CreateUnbound(axis_pt, normal)
-    else:
-        centre_pt = element_centre_point(element)
-        axis = DB.Line.CreateUnbound(centre_pt, normal)
+    axis_pt = axis_pt or element_centre_point(element)
+
+    axis = DB.Line.CreateUnbound(centre_pt, normal)
 
     DB.ElementTransformUtils.RotateElement(
         doc, element.Id, axis, rotation_angle)
@@ -197,6 +198,7 @@ def from_plane(plane):
     transform.Origin = plane.Origin
 
     return transform
+
 
 def orient(from_plane, to_plane):
     transform = DB.Transform.Identity
