@@ -1,0 +1,8 @@
+title:        Straighten Elements
+
+tooltip:      "Checks orientation of elements and gives the possibility to
+              straighten to chosen element, angle or to view."
+
+
+context:
+  - active-plan-view
