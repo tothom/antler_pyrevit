@@ -106,9 +106,9 @@ def find_similar_element(element, doc, parameter=DB.BuiltInParameter.ALL_MODEL_T
     # element = clr.Convert(element, DB.ElementType)
 
     # category_filter
-    builtin_category = antler.util.builtin_category_from_category(
-        element.Category)
-    category_filter = DB.ElementCategoryFilter(builtin_category)
+    # builtin_category = antler.util.builtin_category_from_category(
+    #     element.Category)
+    category_filter = DB.ElementCategoryFilter(element.Category.Id)
 
     # parameter_filter
     if isinstance(parameter, basestring):
@@ -212,8 +212,8 @@ class Finder():
                 pass
 
     def add_category_filter(self, category):
-        builtin_category = antler.util.builtin_category_from_category(category)
-        category_filter = DB.ElementCategoryFilter(builtin_category)
+        #builtin_category = antler.util.builtin_category_from_category(category)
+        category_filter = DB.ElementCategoryFilter(category.Id)
 
         self.filters.append(category_filter)
 

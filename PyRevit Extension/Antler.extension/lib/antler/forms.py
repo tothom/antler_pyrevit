@@ -44,10 +44,10 @@ def select_instance_parameters_of_category(category, doc=revit.doc):
 
     """
     # TODO: Does not work well on familyinstances such as doors. All instances must be processed to make this work.
-    builtin_category = util.builtin_category_from_category(category)
+    #builtin_category = util.builtin_category_from_category(category)
 
-    element = DB.FilteredElementCollector(doc).OfCategory(
-        builtin_category).WhereElementIsNotElementType().FirstElement()
+    element = DB.FilteredElementCollector(doc).OfCategoryId(
+        category.Id).WhereElementIsNotElementType().FirstElement()
 
     parameters_dict = {e.Definition.Name: e for e in element.ParametersMap}
 
