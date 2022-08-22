@@ -184,3 +184,13 @@ class TransparencyAnalyser():
     @property
     def transparent_area(self):
         return sum(self.grid.result.values())
+
+
+
+def get_sun_vectors(view):
+    if view.SunAndShadowSettings.RelativeToView:
+        # No sun settings are applied to the view...
+        return
+
+    elif view.SunAndShadowSettings.RelativeToView:
+        pass
