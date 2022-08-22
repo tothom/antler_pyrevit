@@ -46,7 +46,7 @@ with Transaction(revit.doc, __commandname__) as t:
 	t.Start()
 
 	for element in elements:
-		antler.view.override_element_color(
+		antler.views.override_element_color(
 				element, revit.uidoc.ActiveView, fill_color=fill_color, line_color=line_color)
 
 	t.Commit()

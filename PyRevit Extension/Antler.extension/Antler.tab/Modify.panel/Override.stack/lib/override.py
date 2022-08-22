@@ -27,8 +27,8 @@ def override_color_by_parameter(view, element, parameter):
         logger.debug(line_color)
         logger.debug(fill_color)
 
-        antler.view.override_element_color(
+        antler.views.override_element_color(
             element, view, fill_color=fill_color, line_color=line_color)
     else:
-        antler.view.override_element_color(
+        antler.views.override_element_color(
             element, view)
