@@ -24,52 +24,7 @@ import antler
 #                                 multiselect=True,
 #                                 button_name='Select Item')
 
-
-def select_parameters(elements, title='Select Parameters to Export'):
-    parameters = antler.parameters.get_all_parameters(
-        elements,
-        hashable_provider=antler.parameters.parameter_name_string_provider,
-        parameters_provider=lambda x:x.Parameters
-        )
-
-    selection = forms.SelectFromList.show(
-        sorted(parameters),
-        title=title,
-        multiselect=True
-    )
-
-    return selection
-
-
-def get_element_parameter_values(elements, parameters):
-    elements_dict = {}
-
-    for element in elements:
-        category = element.Category
-        builtin_category = antler.util.builtin_category_from_category(category)
-
-        element_dict = {
-            '~Document': element.Document.Title,
-            '~ElementId': element.Id,
-            '~Category': DB.LabelUtils.GetLabelFor(builtin_category)
-        }
-
-        for parameter_name in parameters:
-            parameter = element.LookupParameter(parameter_name)
-
-            if parameter:
-                parameter_value = antler.parameters.get_parameter_value(
-                    parameter,
-                    mapping_overrides={DB.StorageType.ElementId: DB.Parameter.AsValueString})
-                # parameter_value = parameter.AsValueString()
-
-                element_dict[parameter_name] = parameter_value
-
-        elements_dict[element] = element_dict
-
-    return elements_dict
-
-
+"""
 def build_elements_dict(elements, parameters):
     export_list = []
 
@@ -108,7 +63,6 @@ def build_elements_dict(elements, parameters):
         export_list.append(element_dict)
 
     return export_list
-
 
 def export_elements_in_schedule(schedule_view, xport_types=False, include_links=False, **kwargs):
     schedule_view = revit.uidoc.ActiveView
@@ -151,6 +105,55 @@ def export_elements_in_schedule(schedule_view, xport_types=False, include_links=
     #     print("Current View must be a Schedule View")
     #     script.exit()
     #
+"""
+
+def select_parameters(elements, title='Select Parameters to Export'):
+    parameters = antler.parameters.get_all_parameters(
+        elements,
+        hashable_provider=antler.parameters.parameter_name_string_provider,
+        parameters_provider=lambda x:x.Parameters
+        )
+
+    selection = forms.SelectFromList.show(
+        sorted(parameters),
+        title=title,
+        multiselect=True
+    )
+
+    return selection
+
+
+def get_element_parameter_values(elements, parameters):
+    elements_dict = {}
+
+    for element in elements:
+        category = element.Category
+        builtin_category = antler.util.builtin_category_from_category(category)
+
+        element_dict = {
+            '~Document': element.Document.Title,
+            '~ElementId': element.Id,
+            '~UniqueId': element.UniqueId,
+            '~Category': DB.LabelUtils.GetLabelFor(builtin_category)
+        }
+
+        for parameter_name in parameters:
+            parameter = element.LookupParameter(parameter_name)
+
+            if parameter:
+                parameter_value = antler.parameters.get_parameter_value(
+                    parameter,
+                    mapping_overrides={DB.StorageType.ElementId: DB.Parameter.AsValueString})
+                # parameter_value = parameter.AsValueString()
+
+                element_dict[parameter_name] = parameter_value
+
+        elements_dict[element] = element_dict
+
+    return elements_dict
+
+
+
 
 
 def export_materials(docs=[revit.doc], parameter_names=[], get_extended_data=False, **kwargs):
