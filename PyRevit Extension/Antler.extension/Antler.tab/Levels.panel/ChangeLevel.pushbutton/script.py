@@ -15,26 +15,6 @@ doc = revit.doc
 
 logger = script.get_logger()
 
-def element_change_level(element, level_new, level_builtin, offset_builtin):
-    """
-    Changes Level of Roof to new Level without moving the Roof.
-    """
-    level_param = element.get_Parameter(
-        level_builtin)  # DB.BuiltInParameter.ROOF_CONSTRAINT_LEVEL_PARAM
-    # DB.BuiltInParameter.ROOF_CONSTRAINT_OFFSET_PARAM
-    offset_param = element.get_Parameter(offset_builtin)
-
-    level_ex = doc.GetElement(level_param.AsElementId())
-
-    if level_ex:
-        elevation_diff = level_ex.Elevation - level_new.Elevation
-        offset_new = elevation_diff + offset_param.AsDouble()
-
-        level_param.Set(level_new.Id)
-        offset_param.Set(offset_new)
-
-    return element
-
 
 BUILTIN_PARAMETER_MAPPING = {
     DB.Floor:                   (DB.BuiltInParameter.LEVEL_PARAM, DB.BuiltInParameter.FLOOR_HEIGHTABOVELEVEL_PARAM),
@@ -61,6 +41,27 @@ BUILTIN_PARAMETER_MAPPING = {
          DB.BuiltInParameter.STAIRS_TOP_OFFSET)
     ]
 }
+
+
+def element_change_level(element, level_new, level_builtin, offset_builtin):
+    """
+    Changes Level of Roof to new Level without moving the Roof.
+    """
+    level_param = element.get_Parameter(
+        level_builtin)  # DB.BuiltInParameter.ROOF_CONSTRAINT_LEVEL_PARAM
+    # DB.BuiltInParameter.ROOF_CONSTRAINT_OFFSET_PARAM
+    offset_param = element.get_Parameter(offset_builtin)
+
+    level_ex = doc.GetElement(level_param.AsElementId())
+
+    if level_ex:
+        elevation_diff = level_ex.Elevation - level_new.Elevation
+        offset_new = elevation_diff + offset_param.AsDouble()
+
+        level_param.Set(level_new.Id)
+        offset_param.Set(offset_new)
+
+    return element
 
 
 # Select Elements
