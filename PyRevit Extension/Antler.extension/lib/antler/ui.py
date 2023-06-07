@@ -4,7 +4,7 @@ from pyrevit import forms, script
 import clr
 from collections import OrderedDict
 
-import util
+import utils
 import collectors
 
 """

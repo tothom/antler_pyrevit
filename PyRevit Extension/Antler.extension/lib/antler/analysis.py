@@ -106,8 +106,8 @@ class AnalysisGrid():
 
                 row = []
 
-                for i in range(int(self.row_steps)):
-                    x = row_start + (self.row_size / 2) + (i * self.row_size)
+                for j in range(int(self.row_steps)):
+                    x = row_start + (self.row_size / 2) + (j * self.row_size)
 
                     ray = AnalysisRay(DB.XYZ(x, y, z), self.ray_direction)
                     row.append(ray)

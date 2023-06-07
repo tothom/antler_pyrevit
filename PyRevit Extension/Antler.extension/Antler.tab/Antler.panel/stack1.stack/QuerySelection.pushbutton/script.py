@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
-import clr
+# import clr
+# clr.AddReference()
 
 from rpw import revit, DB, UI
 from pyrevit import forms, script, EXEC_PARAMS
 
 import antler
 import antler_pyrevit
+
+from pyrevit.framework import clr
+
+clr.AddReference('RevitAPIIFC')
+from Autodesk.Revit.DB import IFC
 
 uidoc = revit.uidoc
 doc = revit.doc
@@ -26,6 +32,16 @@ for element in elements:
     print("Element: {}".format(element))
 
     print("Element Type: {}".format(type(element)))
+
+    element_id = element.Id
+    unique_id = element.UniqueId
+    unique_id_suffix = hex(element_id.IntegerValue)
+    ifc_guid = IFC.ExporterIFCUtils.CreateSubElementGUID(element, 0)
+
+    print("Element ID: {}".format(element_id))
+    print("Unique ID: {}".format(unique_id))
+    print("Unique ID suffix: {}".format(unique_id_suffix))
+    print("IFC GUID: {}".format(ifc_guid))
 
     # Tranformation
     output.print_md("### Transform")

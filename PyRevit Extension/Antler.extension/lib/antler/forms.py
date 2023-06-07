@@ -7,7 +7,7 @@ from System.Collections.Generic import List
 
 from System.Windows.Forms import OpenFileDialog, SaveFileDialog, DialogResult
 
-import util
+import utils
 import parameters
 import collectors
 import parameters

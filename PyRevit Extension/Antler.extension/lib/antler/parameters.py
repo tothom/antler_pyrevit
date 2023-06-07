@@ -29,6 +29,9 @@ def get_element_id_parameter_as_name(parameter):
 
 
 def get_element_id_parameter_value_by_name(parameter, name):
+    """
+    Tries to look up and parameter with elementId as base parameter value type (Material or FamilyType)
+    """
     doc = parameter.Element.Document
 
     if parameter.Definition.ParameterType == DB.ParameterType.Material:
@@ -39,6 +42,16 @@ def get_element_id_parameter_value_by_name(parameter, name):
         else:
             return None
             # raise KeyError("No material with name {} found.".format(name))
+
+    elif parameter.Definition.ParameterType == DB.ParameterType.FamilyType:
+        family_type = collectors.get_material_by_name(name, doc)
+
+        if material:
+            return material.Id
+        else:
+            return None
+            # raise KeyError("No material with name {} found.".format(name))
+
 
 
 

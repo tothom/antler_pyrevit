@@ -6,14 +6,10 @@ from rpw import revit, DB, UI
 from pyrevit import forms, script
 from pyrevit import EXEC_PARAMS
 
-from collections import OrderedDict
 
-from Autodesk.Revit.Exceptions import InvalidOperationException
-
-import time
 import sync
 
-import antler_revit
+
 
 logger = script.get_logger()
 output = script.get_output()
@@ -63,7 +59,7 @@ sync_options.SetRelinquishOptions(relinquish_options)
 docs = [
     doc for doc in revit.docs if doc.IsWorkshared and not doc.IsLinked]
 
-sync.sync_multiple_docs(docs, transact_options, sync_options, close_docs=False)
+sync.sync_multiple_docs(docs, transact_options, sync_options, close_docs=EXEC_PARAMS.config_mode)
 
 # output.self_destruct(20)
 

@@ -5,7 +5,7 @@ from rpw import revit, DB
 from pyrevit import forms, script, EXEC_PARAMS
 
 import sync
-import antler_revit
+import antler
 
 logger = script.get_logger()
 output = script.get_output()
@@ -53,4 +53,4 @@ success = sync.sync_multiple_docs(
     docs, transact_options, sync_options, close_docs=True)
 
 if success and EXEC_PARAMS.config_mode:
-    antler_revit.utils.close_revit()
+    antler.utils.close_revit()

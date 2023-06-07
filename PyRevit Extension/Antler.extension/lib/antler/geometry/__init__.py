@@ -10,7 +10,7 @@ logger = script.get_logger()
 
 import transform
 import bounding_box
-from antler import util
+from antler import utils
 
 
 def z_oriented_plane_from_vector(vector, origin=DB.XYZ(0,0,0)):

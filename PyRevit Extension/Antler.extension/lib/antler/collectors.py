@@ -1,5 +1,5 @@
 import filters
-import util
+import utils
 from collections import OrderedDict
 
 from rpw import revit, DB
@@ -148,7 +148,7 @@ def room_collector(doc=revit.doc, phase_id=None):
     collector.OfCategory(DB.BuiltInCategory.OST_Rooms)
 
     if phase_id:
-        collector.WherePasses(filter.room_phase_filter(phase_id))
+        collector.WherePasses(filters.room_phase_filter(phase_id))
 
     return collector
 
@@ -263,3 +263,6 @@ def get_material_by_name(material_name, doc):
 
 def get_element_by_name(name, hint=None, doc=revit.doc):
     pass
+
+def get_family_type_by_name(name, doc=revit.doc):
+    return None

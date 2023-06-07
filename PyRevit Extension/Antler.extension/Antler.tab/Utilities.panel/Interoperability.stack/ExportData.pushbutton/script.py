@@ -153,9 +153,6 @@ def get_element_parameter_values(elements, parameters):
     return elements_dict
 
 
-
-
-
 def export_materials(docs=[revit.doc], parameter_names=[], get_extended_data=False, **kwargs):
     data = {}
 
