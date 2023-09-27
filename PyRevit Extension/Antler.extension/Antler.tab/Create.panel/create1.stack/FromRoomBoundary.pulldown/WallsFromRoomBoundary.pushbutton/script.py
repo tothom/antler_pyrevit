@@ -13,7 +13,6 @@ output = script.get_output()
 
 # print(dir(revit))
 
-
 class room_filter(UI.Selection.ISelectionFilter):
     def AllowElement(self, element):
         if element.Category.Name == "Rooms":
@@ -24,7 +23,6 @@ class room_filter(UI.Selection.ISelectionFilter):
     def AllowReference(self, ref, pt):
         return True
 
-
 try:
     rooms = revit.uidoc.Selection.PickObjects(
         UI.Selection.ObjectType.Element, room_filter(), "Select rooms")
@@ -33,12 +31,33 @@ except RevitExceptions.OperationCanceledException:
 
 rooms = [revit.doc.GetElement(room) for room in rooms]
 
-family_symbol = antler.forms.select_detail_family_symbol()
+wall_type = antler.forms.select_types_of_category(categories=[DB.BuiltInCategory.OST_Walls], multiselect=False)
+
+height_string = "100"
+
+while True:
+    prompt = "Enter wall height"
+
+    height_string = forms.ask_for_string(
+        default=height_string,
+        prompt=prompt,
+        title="Wall Height"
+    )
+
+    try:
+        height = float(height_string) / 304.8
+        break
+    except:
+        prompt = "Enter a valid wall height"
+        continue
+
+
+    
 
 with DB.Transaction(revit.doc, __commandname__) as t:
     t.Start()
 
     for room in rooms:
-        element = antler.instances.place_at_room_boundary(family_symbol, room)
+        element = antler.instances.place_wall_at_room_boundary(wall_type, room, height=height)
 
     t.Commit()

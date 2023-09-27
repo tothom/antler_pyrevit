@@ -234,11 +234,14 @@ def select_docs(multiselect=True, selection_filter=lambda x: True, **kwargs):
         return doc_dict.get(selected)
 
 
-def select_types_of_category(categories=[], doc=revit.doc, count_elements=False):
+def select_types_of_category(categories=[], doc=revit.doc, count_elements=False, multiselect=True):
     collector = DB.FilteredElementCollector(doc).WhereElementIsElementType()
 
     if categories:
-        category_list = List[DB.ElementId](c.Id for c in categories)
+        try:
+            category_list = List[DB.ElementId](c.Id for c in categories)
+        except:
+            category_list = List[DB.ElementId](DB.ElementId(c) for c in categories)
         multi_category_filter = DB.ElementMulticategoryFilter(category_list)
 
         collector.WherePasses(multi_category_filter)
@@ -290,13 +293,19 @@ def select_types_of_category(categories=[], doc=revit.doc, count_elements=False)
 
     selected = forms.SelectFromList.show(
         sorted(selection_dict.keys()),
-        multiselect=True
+        multiselect=multiselect
     )
 
-    if not selected:
-        return []
+    if multiselect:
+        if not selected:
+            return []
 
-    return [selection_dict[key] for key in selected]
+        return [selection_dict[key] for key in selected]
+    else:
+        if not selected:
+            return None
+        
+        return selection_dict[selected]
 
 
 def select_worksets(doc=revit.doc, kind=DB.WorksetKind.UserWorkset, **kwargs):

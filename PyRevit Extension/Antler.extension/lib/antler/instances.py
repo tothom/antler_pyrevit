@@ -27,6 +27,34 @@ def place_at_room_boundary(family_symbol, room, view=revit.uidoc.ActiveView, pla
                 continue
             element = revit.doc.Create.NewFamilyInstance(
                 curve, family_symbol, view)
+            
+def place_wall_at_room_boundary(wall_type, room, height=1):
+    options = DB.SpatialElementBoundaryOptions()
+    options.SpatialElementBoundaryLocation = DB.SpatialElementBoundaryLocation.Finish
+
+    boundary_segments = room.GetBoundarySegments(options)
+
+    offset = wall_type.Width / 2
+
+    for segment in boundary_segments[0]:
+        curve = segment.GetCurve()
+
+        if isinstance(curve, DB.Line):
+            if curve.ApproximateLength < 1:
+                continue
+
+            curve = curve.CreateOffset(offset, DB.XYZ(0,0,-1))
+
+            wall = DB.Wall.Create(
+                room.Document,
+                curve,
+                wall_type.Id,
+                room.Level.Id,
+                height,
+                0,
+                False,
+                False
+            )
 
 
 def filled_region_from_room(filled_region_type, room, view=revit.uidoc.ActiveView, doc=revit.doc):
